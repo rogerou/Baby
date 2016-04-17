@@ -19,7 +19,7 @@ public class ActivityModule {
 
     public ActivityModule(Activity activity) {
 
-        activity = mActivity;
+        mActivity = activity;
 
     }
 

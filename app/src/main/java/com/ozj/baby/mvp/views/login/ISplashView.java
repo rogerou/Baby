@@ -17,6 +17,8 @@ public interface ISplashView extends BaseView {
 
     void dismissLoginView();
 
+    void hideLoginButton();
+
     void showLoginButton();
 
 }

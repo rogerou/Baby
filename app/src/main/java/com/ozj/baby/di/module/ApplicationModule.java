@@ -29,16 +29,13 @@ public class ApplicationModule {
     @Singleton
     @ContextLife("Application")
     public Context provideConext() {
-
         return mApplication.getApplicationContext();
-
     }
 
 
     @Provides
     @Singleton
     public PreferenceManager providePreferceManager() {
-
         return mPreferenceManager;
     }
 }

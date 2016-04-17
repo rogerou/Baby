@@ -33,6 +33,7 @@ allprojects {
         maven { url "https://raw.githubusercontent.com/umeng/mvn-repo-umeng/master/repository" }
         maven { url "http://dl.bintray.com/tbruyelle/tbruyelle" }
         maven { url "https://jitpack.io" }
+
     }
 }
 

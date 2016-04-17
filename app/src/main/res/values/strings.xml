@@ -5,4 +5,12 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+    <string name="loginOrRegister">登陆/注册</string>
+    <string name="go">确定</string>
+    <string name="username">用户名</string>
+    <string name="next">下一步</string>
+    <string name="passwd">密码</string>
+    <string name="repeatPasswd">重复密码</string>
+    <string name="register">注册</string>
+    <string name="login">登陆</string>
 </resources>
