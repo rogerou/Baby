@@ -10,7 +10,7 @@ public interface ISplashPresenter extends BasePresenter {
 
     void onActivityPause();
 
-    void isWannaCloseSplash();
+    void isLoginButtonVisable();
 
     void doingSplash();
 }

@@ -54,12 +54,13 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     ShimmerFrameLayout shimmerLayout;
     @Bind(R.id.login)
     MaterialLoginView login;
-
-    AnimatorSet mAnimatorSet;
     @Bind(R.id.tv_slogan)
     TextView tvSlogan;
     @Bind(R.id.rootview)
     RelativeLayout rootview;
+
+
+    AnimatorSet mAnimatorSet;
     String username, passwd, repeatPassWd;
     boolean isBlured = false;
 
@@ -84,13 +85,14 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     @Override
     public void initViewsAndListener() {
         mSplashPresenter.attachView(this);
+        mSplashPresenter.isLoginButtonVisable();
         mAnimatorSet = new AnimatorSet();
         mAnimatorSet.setDuration(2000);
         mAnimatorSet.playTogether(
                 ObjectAnimator.ofFloat(tvSlogan, "alpha", 0f, 1f),
                 ObjectAnimator.ofFloat(tvSlogan, "translationY", 300, 0),
-                ObjectAnimator.ofFloat(splashBg, "scaleX", 1.3f, 1.05f),
-                ObjectAnimator.ofFloat(splashBg, "scaleY", 1.3f, 1.05f)
+                ObjectAnimator.ofFloat(splashBg, "scaleX", 1.5f, 1.05f),
+                ObjectAnimator.ofFloat(splashBg, "scaleY", 1.5f, 1.05f)
 
         );
         mAnimatorSet.start();

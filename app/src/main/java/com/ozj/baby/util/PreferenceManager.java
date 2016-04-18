@@ -23,7 +23,7 @@ public class PreferenceManager {
     @Inject
     @Singleton
     public PreferenceManager(@ContextLife("Application") Context context) {
-        mSharedPreferences = context.getSharedPreferences(SETTING, Context.MODE_PRIVATE);
+       mSharedPreferences = context.getSharedPreferences(SETTING, Context.MODE_PRIVATE);
         sInstance = this;
     }
 
@@ -66,7 +66,7 @@ public class PreferenceManager {
 
     public void saveFirsttime(boolean isFirst) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putBoolean(FIRST_TIME, FIRST_TIME_DEFAULT);
+        editor.putBoolean(FIRST_TIME, isFirst);
         editor.apply();
 
     }

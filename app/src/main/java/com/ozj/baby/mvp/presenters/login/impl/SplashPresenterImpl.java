@@ -7,6 +7,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 
+import com.avos.avoscloud.AVUser;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.mvp.presenters.login.ISplashPresenter;
@@ -20,7 +21,6 @@ import rx.functions.Action1;
 
 /**
  * Created by Roger ou on 2016/3/25.
- * 
  */
 public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
 
@@ -54,11 +54,11 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
     }
 
     @Override
-    public void isWannaCloseSplash() {
+    public void isLoginButtonVisable() {
+        mHandler = new Handler(this);
         if (mPreferenceManager.isLogined()) {
             mSplashView.hideLoginButton();
         } else {
-            mHandler = new Handler(this);
             mSplashView.showLoginButton();
         }
     }
@@ -100,10 +100,10 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
     public boolean handleMessage(Message msg) {
         if (msg.what == MESSAGE_WHAT) {
             if (mSplashView.isAnimationRunning()) {
-                mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, 500);
+                mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, 300);
                 return false;
             }
-            if (mPreferenceManager.isLogined()) {
+            if (mPreferenceManager.isLogined() && AVUser.getCurrentUser() != null) {
                 mSplashView.toMainActivity();
             }
         }
