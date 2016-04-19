@@ -6,6 +6,7 @@ import android.content.Context;
 import com.ozj.baby.di.module.ActivityModule;
 import com.ozj.baby.di.scope.ActivityScope;
 import com.ozj.baby.di.scope.ContextLife;
+import com.ozj.baby.mvp.views.home.activity.MainActivity;
 import com.ozj.baby.mvp.views.login.activity.SplashActivity;
 import com.ozj.baby.util.PreferenceManager;
 
@@ -30,5 +31,6 @@ public interface ActivityComponet {
 
     void inject(SplashActivity activity);
 
+    void inject(MainActivity activity);
 
 }

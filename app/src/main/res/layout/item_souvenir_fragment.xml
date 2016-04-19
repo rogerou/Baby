@@ -12,6 +12,7 @@
         android:layout_marginStart="@dimen/spacing_small"
         android:clipChildren="false"
         android:foreground="?android:attr/selectableItemBackground"
+        android:padding="@dimen/activity_horizontal_margin"
         app:cardBackgroundColor="@color/white"
         app:cardUseCompatPadding="true">
 
@@ -20,14 +21,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ellipsize="end"
-            android:lineSpacingExtra="@dimen/line_spacing" />
+            android:lineSpacingExtra="@dimen/line_spacing"
+            android:textColor="@color/PrimaryTextColor"
+            android:textSize="18sp" />
 
+
+        <ImageView
+            android:id="@+id/iv_souvenir_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_content"
+            android:scaleType="centerInside" />
 
         <TextView
             android:id="@+id/txt_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_content"
+            android:layout_below="@+id/iv_souvenir_pic"
             android:layout_marginTop="@dimen/spacing_small"
             android:drawableLeft="@drawable/ic_access_time_grey_500_12dp_vector_state"
             android:drawablePadding="@dimen/icon_padding"
@@ -36,6 +46,52 @@
             android:lines="1"
             android:textColor="@color/grey500"
             android:textSize="12sp" />
-        
+
+        <ImageView
+            android:id="@+id/iv_speaker"
+            android:layout_width="@dimen/user_img_small"
+            android:layout_height="@dimen/user_img_small"
+            android:layout_alignLeft="@+id/txt_time"
+            android:layout_alignStart="@+id/txt_time"
+            android:layout_below="@id/txt_time"
+            android:layout_marginTop="@dimen/spacing_small" />
+
+        <TextView
+            android:id="@+id/tv_author"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/iv_speaker"
+            android:layout_below="@id/txt_time"
+            android:layout_marginLeft="@dimen/icon_spacing"
+            android:layout_marginStart="@dimen/icon_spacing"
+            android:layout_marginTop="@dimen/spacing_small"
+            android:layout_toEndOf="@id/iv_speaker"
+            android:layout_toLeftOf="@+id/like_button"
+            android:layout_toRightOf="@id/iv_speaker"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:textColor="@color/grey600"
+            android:textSize="14sp" />
+
+        <com.like.LikeButton
+            android:id="@+id/like_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/iv_speaker"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/txt_time"
+            android:layout_marginTop="@dimen/spacing_small"
+            app:icon_size="36dp"
+            app:icon_type="star" />
+        <!--<ImageView-->
+        <!--android:id="@+id/img_speaker"-->
+        <!--android:layout_width="@dimen/user_image_small"-->
+        <!--android:layout_height="@dimen/user_image_small"-->
+        <!--android:layout_below="@id/txt_conflict"-->
+        <!--android:layout_marginTop="@dimen/spacing_small"-->
+        <!--android:contentDescription="@string/speaker"-->
+        <!--app:speakerImageSize="@{@dimen/user_image_small}"-->
+        <!--app:speakerImageUrl="@{session.speaker.imageUrl}" />-->
     </RelativeLayout>
 </android.support.v7.widget.CardView>

@@ -25,7 +25,7 @@ import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
 import com.ozj.baby.mvp.model.UserDao;
 import com.ozj.baby.mvp.presenters.login.impl.SplashPresenterImpl;
-import com.ozj.baby.mvp.views.home.MainActivity;
+import com.ozj.baby.mvp.views.home.activity.MainActivity;
 import com.ozj.baby.mvp.views.login.ISplashView;
 import com.ozj.baby.util.PreferenceManager;
 

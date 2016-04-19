@@ -16,4 +16,6 @@
     <dimen name="textsize">28sp</dimen>
     <dimen name="line_spacing">2dp</dimen>
     <dimen name="icon_padding">2dp</dimen>
+    <dimen name="user_img_small">28dp</dimen>
+    <dimen name="icon_spacing">4dp</dimen>
 </resources>
