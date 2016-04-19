@@ -13,4 +13,5 @@
     <string name="repeatPasswd">重复密码</string>
     <string name="register">注册</string>
     <string name="login">登陆</string>
+    <string name="souvenir">纪念册</string>
 </resources>

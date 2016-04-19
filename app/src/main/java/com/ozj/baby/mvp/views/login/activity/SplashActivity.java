@@ -19,6 +19,7 @@ import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SignUpCallback;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
@@ -78,6 +79,7 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     @Override
     public void initContentView() {
         setContentView(R.layout.activity_splash);
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimaryDark),200);
 
     }
 

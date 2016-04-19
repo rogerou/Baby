@@ -47,8 +47,8 @@ dependencies {
     compile files('libs/qq.sdk.1.6.1.jar')
     compile files('libs/weibo.sdk.android.sso.3.0.1-leancloud.jar')
     //support libray
-    compile 'com.android.support:appcompat-v7:23.2.1'
-    compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:design:23.3.0'
     //eventbus
 //    compile 'org.greenrobot:eventbus:3.0.0'
 //    //gson
