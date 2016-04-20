@@ -11,14 +11,18 @@ import android.widget.FrameLayout;
 import com.jaeger.library.StatusBarUtil;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
+import com.ozj.baby.mvp.presenter.home.impl.MainPresenterImpl;
+
+import javax.inject.Inject;
 
 import butterknife.Bind;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-
-    @Bind(R.id.content_view)
+    @Inject
+    MainPresenterImpl mMainPersenter;
+    @Bind(R.id.fragment_container)
     FrameLayout contentView;
     @Bind(R.id.nav_view)
     NavigationView navView;

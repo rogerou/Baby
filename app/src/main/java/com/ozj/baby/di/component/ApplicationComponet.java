@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.ozj.baby.di.module.ApplicationModule;
 import com.ozj.baby.di.scope.ContextLife;
+import com.ozj.baby.mvp.model.rx.RxRealm;
 import com.ozj.baby.util.PreferenceManager;
 
 import javax.inject.Singleton;
@@ -21,4 +22,5 @@ public interface ApplicationComponet {
 
     PreferenceManager getPreferenceManager();
 
+    RxRealm getRxRealm();
 }

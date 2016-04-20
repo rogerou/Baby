@@ -1,4 +1,4 @@
-package com.ozj.baby.mvp.presenters.login;
+package com.ozj.baby.mvp.presenter.login;
 
 import com.ozj.baby.base.BasePresenter;
 
@@ -13,4 +13,5 @@ public interface ISplashPresenter extends BasePresenter {
     void isLoginButtonVisable();
 
     void doingSplash();
+
 }

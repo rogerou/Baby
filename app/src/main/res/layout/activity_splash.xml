@@ -19,7 +19,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/activity_vertical_margin"
-        android:text="Baby\n只为更好的懂你"
+        android:text="@string/baby_slogan"
         android:textColor="@color/white_alpha_40"
         android:textSize="30sp" />
 

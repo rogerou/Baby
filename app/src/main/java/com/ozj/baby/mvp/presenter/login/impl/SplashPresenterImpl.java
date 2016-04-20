@@ -1,4 +1,4 @@
-package com.ozj.baby.mvp.presenters.login.impl;
+package com.ozj.baby.mvp.presenter.login.impl;
 
 import android.Manifest;
 import android.app.Activity;
@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 import com.avos.avoscloud.AVUser;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
-import com.ozj.baby.mvp.presenters.login.ISplashPresenter;
+import com.ozj.baby.mvp.presenter.login.ISplashPresenter;
 import com.ozj.baby.mvp.views.login.ISplashView;
 import com.ozj.baby.util.PreferenceManager;
 import com.tbruyelle.rxpermissions.RxPermissions;

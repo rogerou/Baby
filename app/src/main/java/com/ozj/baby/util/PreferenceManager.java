@@ -23,7 +23,7 @@ public class PreferenceManager {
     @Inject
     @Singleton
     public PreferenceManager(@ContextLife("Application") Context context) {
-       mSharedPreferences = context.getSharedPreferences(SETTING, Context.MODE_PRIVATE);
+        mSharedPreferences = context.getSharedPreferences(SETTING, Context.MODE_PRIVATE);
         sInstance = this;
     }
 
@@ -44,7 +44,7 @@ public class PreferenceManager {
         mSharedPreferences.edit().putString(ID, id).apply();
     }
 
-    public String getCurrentUserId(String ID) {
+    public String getCurrentUserId() {
         return mSharedPreferences.getString(ID, null);
 
     }

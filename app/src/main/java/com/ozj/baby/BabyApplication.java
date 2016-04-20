@@ -10,6 +10,7 @@ import com.orhanobut.logger.Logger;
 import com.ozj.baby.di.component.ApplicationComponet;
 import com.ozj.baby.di.component.DaggerApplicationComponet;
 import com.ozj.baby.di.module.ApplicationModule;
+import com.squareup.leakcanary.LeakCanary;
 
 /**
  * Created by Roger ou on 2016/3/25.
@@ -25,6 +26,7 @@ public class BabyApplication extends Application {
         AVOSCloud.initialize(this, "GpLTBKYub2ekB1GG2UUDdpmu-gzGzoHsz", "IjkswTLu60dF1rnnAHNoLM98");
         AVAnalytics.enableCrashReport(this, true);
         initComponet();
+        LeakCanary.install(this);
         Logger.init("Baby").logLevel(LogLevel.FULL).logTool(new AndroidLogTool());
     }
 
@@ -32,7 +34,7 @@ public class BabyApplication extends Application {
         mAppComponet = DaggerApplicationComponet.builder().applicationModule(new ApplicationModule(this)).build();
     }
 
-    public ApplicationComponet getAppConponet() {
+    public ApplicationComponet getAppComponet() {
         return mAppComponet;
 
     }

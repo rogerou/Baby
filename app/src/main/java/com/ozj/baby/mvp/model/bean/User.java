@@ -14,9 +14,42 @@ public class User extends RealmObject {
     private String username;
     @PrimaryKey
     private String ID;
-    private String loverId;
-    private Long timestamp;
-    
+    private long timestamp;
+    private User anotherUser;
+
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getID() {
+        return ID;
+    }
+
+    public void setID(String ID) {
+        this.ID = ID;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
 
     public User getAnotherUser() {
         return anotherUser;
@@ -41,8 +74,6 @@ public class User extends RealmObject {
     public void setAvatar(String avatar) {
         this.avatar = avatar;
     }
-
-    private User anotherUser;
 
 
 }

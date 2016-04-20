@@ -8,6 +8,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ozj.baby.BabyApplication;
+import com.ozj.baby.di.component.DaggerFragmentComponet;
+import com.ozj.baby.di.component.FragmentComponet;
+import com.ozj.baby.di.module.FragmentModule;
+
 import butterknife.ButterKnife;
 
 /**
@@ -17,6 +22,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     private BaseActivity mActivity;
     private View mLayoutView;
+    public FragmentComponet mFragmentComponet;
 
     /**
      * 初始化布局
@@ -27,6 +33,9 @@ public abstract class BaseFragment extends Fragment implements BaseView {
      * 初始化Views
      */
     public abstract void initViews();
+
+    public abstract void initDagger();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +56,13 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mFragmentComponet = DaggerFragmentComponet
+                .builder()
+                .applicationComponet(((BabyApplication) getBaseActivity()
+                        .getApplication())
+                        .getAppComponet())
+                .fragmentModule(new FragmentModule(BaseFragment.this)).build();
+
         mLayoutView = getCreateView(inflater, container);
         ButterKnife.bind(this, mLayoutView);
         initViews();
@@ -73,7 +89,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     @Override
     public void hideProgress() {
         if (getStatus() && getBaseActivity() != null) {
-            
+
             getBaseActivity().hideProgress();
         }
 
