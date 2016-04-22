@@ -2,6 +2,7 @@ package com.ozj.baby.mvp.model.rx;
 
 import android.content.Context;
 
+import com.avos.avoscloud.AVObject;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.mvp.model.bean.Souvenir;
 import com.ozj.baby.mvp.model.bean.User;
@@ -13,10 +14,10 @@ import javax.inject.Singleton;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
-import io.realm.RealmResults;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Administrator on 2016/4/20.
@@ -49,6 +50,9 @@ public class RxRealm {
         return rxRealm;
     }
 
+    public List<Souvenir> getALLSouvenir() {
+        return mRealm.where(Souvenir.class).findAll();
+    }
 
     public rx.Observable<Boolean> SaveUser(final User user) {
         return rx.Observable.create(new rx.Observable.OnSubscribe<Boolean>() {
@@ -58,9 +62,10 @@ public class RxRealm {
                 mRealm.copyToRealmOrUpdate(user);
                 mRealm.commitTransaction();
                 subscriber.onNext(true);
+
                 subscriber.onCompleted();
             }
-        }).subscribeOn(AndroidSchedulers.mainThread());
+        }).subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<User> getUserByID(final String id) {
@@ -78,27 +83,29 @@ public class RxRealm {
 
     }
 
-    public Observable<Boolean> SaveSouvenir(final List<Souvenir> list) {
+    public Observable<Boolean> SaveSouvenir(final List<AVObject> list) {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(Subscriber<? super Boolean> subscriber) {
                 mRealm.beginTransaction();
-                mRealm.copyToRealmOrUpdate(list);
+                for (AVObject souvenir : list) {
+                    mRealm.copyToRealmOrUpdate(new Souvenir(souvenir));
+                }
                 mRealm.commitTransaction();
                 subscriber.onNext(true);
                 subscriber.onCompleted();
             }
-        }).subscribeOn(AndroidSchedulers.mainThread());
+        }).subscribeOn(Schedulers.io());
 
     }
 
-    public Observable<RealmResults<Souvenir>> getAllSouvenir() {
+    public Observable<List<Souvenir>> getAllSouvenir() {
 
-        return Observable.create(new Observable.OnSubscribe<RealmResults<Souvenir>>() {
+        return Observable.create(new Observable.OnSubscribe<List<Souvenir>>() {
             @Override
-            public void call(Subscriber<? super RealmResults<Souvenir>> subscriber) {
+            public void call(Subscriber<? super List<Souvenir>> subscriber) {
                 mRealm.beginTransaction();
-                RealmResults<Souvenir> souvenirlist = mRealm.where(Souvenir.class).findAll();
+                List<Souvenir> souvenirlist = mRealm.where(Souvenir.class).findAll();
                 mRealm.commitTransaction();
                 subscriber.onNext(souvenirlist);
                 subscriber.onCompleted();
@@ -116,7 +123,7 @@ public class RxRealm {
                 mRealm.commitTransaction();
                 subscriber.onNext(true);
                 subscriber.onCompleted();
-                
+
             }
         }).subscribeOn(AndroidSchedulers.mainThread());
     }

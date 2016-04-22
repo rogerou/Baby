@@ -1,12 +1,14 @@
 package com.ozj.baby.mvp.model.rx;
 
+import javax.inject.Singleton;
+
 import rx.Observable;
 import rx.subjects.PublishSubject;
 import rx.subjects.SerializedSubject;
 
 /**
  * Created by Roger ou on 2016/4/14.
- * <p>
+ * <p/>
  * 利用Rxjava实现Eventbus
  */
 public class RxBus {
@@ -14,6 +16,7 @@ public class RxBus {
     //主题
     private final SerializedSubject mSubject;
 
+    @Singleton
     public RxBus() {
         mSubject = new SerializedSubject<>(PublishSubject.create());
     }

@@ -20,11 +20,21 @@
 
     <style name="SouvenirTextStylle">
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/textsize</item>
-
+        <item name="android:layout_marginBottom">35dp</item>
     </style>
 
     <style name="FabStyle">
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
+
+    <style name="transparentFrameWindowStyle" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/photo_choose_bg</item>
+    </style>
+
+    <style name="main_menu_animstyle">
+        <item name="android:windowEnterAnimation">@anim/photo_dialog_in_anim</item>
+        <item name="android:windowExitAnimation">@anim/photo_dialog_out_anim</item>
+    </style>
+
+
 </resources>

@@ -52,8 +52,8 @@ public class MainPresenterImpl implements IMainPresenter {
 
     @Override
     public void replaceFragment(Fragment fragment) {
-        if (fragment == null) {
-            mActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).addToBackStack(null).commit();
+        if (fragment != null) {
+            mActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }
     }
 }

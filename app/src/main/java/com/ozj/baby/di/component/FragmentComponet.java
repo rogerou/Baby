@@ -5,6 +5,7 @@ import android.content.Context;
 import com.ozj.baby.di.module.FragmentModule;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.di.scope.FragmentScope;
+import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.model.rx.RxRealm;
 import com.ozj.baby.mvp.views.home.fragment.SouvenirFragment;
 import com.ozj.baby.util.PreferenceManager;
@@ -28,6 +29,9 @@ public interface FragmentComponet {
     PreferenceManager getPreferenceManager();
 
 
+    RxLeanCloud getRxLeanCloud();
+
     void inject(SouvenirFragment fragment);
+    
 }
 

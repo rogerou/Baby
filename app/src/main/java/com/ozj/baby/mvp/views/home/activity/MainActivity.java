@@ -1,59 +1,66 @@
 package com.ozj.baby.mvp.views.home.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.jaeger.library.StatusBarUtil;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
 import com.ozj.baby.mvp.presenter.home.impl.MainPresenterImpl;
+import com.ozj.baby.mvp.views.home.fragment.SouvenirFragment;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
     @Inject
     MainPresenterImpl mMainPersenter;
+    @Bind(R.id.iv_album)
+    ImageView ivAlbum;
+    @Bind(R.id.fade_cover)
+    View fadeCover;
+    @Bind(R.id.rl_loverbackground)
+    RelativeLayout rlLoverbackground;
+    @Bind(R.id.toolbar)
+    Toolbar toolbar;
+    @Bind(R.id.collaspingToolBarlayout)
+    CollapsingToolbarLayout collaspingToolBarlayout;
+    @Bind(R.id.app_bar)
+    AppBarLayout appBar;
     @Bind(R.id.fragment_container)
-    FrameLayout contentView;
+    FrameLayout fragmentContainer;
+    @Bind(R.id.nested_scroll)
+    NestedScrollView nestedScroll;
+    @Bind(R.id.fab)
+    FloatingActionButton fab;
     @Bind(R.id.nav_view)
     NavigationView navView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//
-////        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-////        fab.setOnClickListener(new View.OnClickListener() {
-////            @Override
-////            public void onClick(View view) {
-////                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-////                        .setAction("Action", null).show();
-////            }
-////        });
-//
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawer.setDrawerListener(toggle);
-//        toggle.syncState();
-//
-//        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-//        navigationView.setNavigationItemSelectedListener(this);
-//        StatusBarUtil.setColorForDrawerLayout(this, drawer, 0x4DD32F2F, 112);
+
     }
 
     @Override
@@ -69,15 +76,25 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void initViewsAndListener() {
-        StatusBarUtil.setColor(this, 0x4DD32F2F, 112);
+        setSupportActionBar(toolbar);
         navView.setNavigationItemSelectedListener(this);
         StatusBarUtil.setColorForDrawerLayout(this, drawerLayout, 0x4DD32F2F, 112);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.setDrawerListener(toggle);
+        toggle.syncState();
+        navView.setNavigationItemSelectedListener(this);
+        StatusBarUtil.setColorForDrawerLayout(this, drawerLayout, 0x4DD32F2F, 112);
+        mMainPersenter.replaceFragment(new SouvenirFragment());
+
     }
 
     @Override
     public void initPresenter() {
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -132,6 +149,17 @@ public class MainActivity extends BaseActivity
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    @OnClick({R.id.iv_album, R.id.fab})
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.iv_album:
+                break;
+            case R.id.fab:
+                break;
+        }
     }
 
 

@@ -2,7 +2,6 @@ package com.ozj.baby.mvp.views.login.activity;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,16 +13,10 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.LogInCallback;
-import com.avos.avoscloud.SignUpCallback;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
-import com.ozj.baby.mvp.model.dao.UserDao;
 import com.ozj.baby.mvp.presenter.login.impl.SplashPresenterImpl;
 import com.ozj.baby.mvp.views.home.activity.MainActivity;
 import com.ozj.baby.mvp.views.login.ISplashView;
@@ -61,8 +54,6 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     RelativeLayout rootview;
 
 
-    AnimatorSet mAnimatorSet;
-    String username, passwd, repeatPassWd;
     boolean isBlured = false;
 
     @Override
@@ -79,122 +70,35 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     @Override
     public void initContentView() {
         setContentView(R.layout.activity_splash);
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimaryDark),200);
 
     }
 
 
     @Override
     public void initViewsAndListener() {
-        mSplashPresenter.attachView(this);
-        mSplashPresenter.isLoginButtonVisable();
-        mAnimatorSet = new AnimatorSet();
-        mAnimatorSet.setDuration(2000);
-        mAnimatorSet.playTogether(
-                ObjectAnimator.ofFloat(tvSlogan, "alpha", 0f, 1f),
-                ObjectAnimator.ofFloat(tvSlogan, "translationY", 300, 0),
-                ObjectAnimator.ofFloat(splashBg, "scaleX", 1.5f, 1.05f),
-                ObjectAnimator.ofFloat(splashBg, "scaleY", 1.5f, 1.05f)
 
-        );
-        mAnimatorSet.start();
-        shimmerLayout.startShimmerAnimation();
+        mSplashPresenter.isLoginButtonVisable();
+        mSplashPresenter.beginAnimation(splashBg, tvSlogan, shimmerLayout);
         mSplashPresenter.doingSplash();
         login.setListener(new MaterialLoginViewListener() {
             @SuppressWarnings("ConstantConditions")
             @Override
             public void onRegister(TextInputLayout registerUser, TextInputLayout registerPass, TextInputLayout registerPassRep) {
-                registerByLeanCloud(registerUser, registerPass, registerPassRep);
+                mSplashPresenter.Register(registerUser, registerPass, registerPassRep);
 
             }
 
             @Override
             public void onLogin(TextInputLayout loginUser, TextInputLayout loginPass) {
-                loginByLeanCloud(loginUser, loginPass);
+                mSplashPresenter.Login(loginUser, loginPass);
             }
         });
 
-    }
-
-    private void loginByLeanCloud(TextInputLayout loginUser, TextInputLayout loginPass) {
-        username = loginUser.getEditText().getText().toString();
-        passwd = loginPass.getEditText().getText().toString();
-        if (username.isEmpty()) {
-            loginUser.setErrorEnabled(true);
-            loginUser.setError("用户名不能为空");
-            return;
-        }
-        if (passwd.isEmpty()) {
-            loginPass.setErrorEnabled(true);
-            loginPass.setError("密码不能为空");
-            return;
-        }
-        showProgress("登陆中...");
-        AVUser.logInInBackground(username, passwd, new LogInCallback<AVUser>() {
-            @Override
-            public void done(AVUser avUser, AVException e) {
-                hideProgress();
-                if (e == null && avUser != null) {
-                    mPreferenceManager.setIslogin(true);
-                    mPreferenceManager.saveCurrentUserId(avUser.getObjectId());
-                    toMainActivity();
-                    finish();
-                } else {
-                    showToast("登陆失败，请稍后再试");
-                }
-
-
-            }
-        });
-    }
-
-    private void registerByLeanCloud(TextInputLayout registerUser, TextInputLayout registerPass, TextInputLayout registerPassRep) {
-
-        username = registerUser.getEditText().getText().toString();
-        passwd = registerPass.getEditText().getText().toString();
-        repeatPassWd = registerPassRep.getEditText().getText().toString();
-        if (username.isEmpty()) {
-            registerUser.setErrorEnabled(true);
-            registerUser.setError("用户名不能为空");
-            return;
-        }
-        if (passwd.isEmpty()) {
-            registerPass.setErrorEnabled(true);
-            registerPass.setError("密码不能为空");
-            return;
-        }
-        if (repeatPassWd.isEmpty()) {
-            registerPassRep.setErrorEnabled(true);
-            registerPassRep.setError("重复密码不能为空");
-            return;
-        }
-        if (!passwd.equals(repeatPassWd)) {
-            registerPassRep.setErrorEnabled(true);
-            registerPassRep.setError("两段密码不一致");
-            return;
-        }
-        showProgress("注册中...");
-        AVUser user = new AVUser();
-        user.setUsername(username);
-        user.setPassword(passwd);
-        user.put(UserDao.NICK, username);
-        user.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(AVException e) {
-                hideProgress();
-                if (e == null) {
-                    showToast("注册成功");
-                } else {
-                    showToast("注册失败，请稍后再试");
-                }
-
-            }
-        });
     }
 
     @Override
     public void initPresenter() {
-        mIPresenter = mSplashPresenter;
+        mSplashPresenter.attachView(this);
     }
 
 
@@ -205,11 +109,6 @@ public class SplashActivity extends BaseActivity implements ISplashView {
 
     }
 
-    @Override
-    public boolean isAnimationRunning() {
-
-        return mAnimatorSet.isRunning();
-    }
 
     @Override
     public boolean isLoginViewisShowing() {

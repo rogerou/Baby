@@ -17,6 +17,7 @@ public class PreferenceManager {
     private static final String FIRST_TIME = "firsttime";
     private static final String ISLOGIN = "islogin";
     private static final boolean FIRST_TIME_DEFAULT = true;
+    private static final String LOVERID = "loverid";
 
     private static SharedPreferences mSharedPreferences;
 
@@ -69,6 +70,25 @@ public class PreferenceManager {
         editor.putBoolean(FIRST_TIME, isFirst);
         editor.apply();
 
+    }
+
+
+    public void SaveTheOtherUserId(String userid) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(LOVERID, userid);
+        editor.apply();
+
+    }
+
+
+    public String GetLoverID() {
+        return mSharedPreferences.getString(LOVERID, null);
+    }
+
+    public void SaveLoverId(String ID) {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        editor.putString(LOVERID, ID);
+        editor.apply();
     }
 
 }

@@ -23,6 +23,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     private BaseActivity mActivity;
     private View mLayoutView;
     public FragmentComponet mFragmentComponet;
+    protected BasePresenter mPresenter;
 
     /**
      * 初始化布局
@@ -36,6 +37,9 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     public abstract void initDagger();
 
+    public abstract void initData();
+
+    public abstract void initToolbar();
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,20 +57,27 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         return inflater.inflate(getLayoutRes(), container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        mFragmentComponet = DaggerFragmentComponet
+                .builder()
+                .fragmentModule(new FragmentModule(this))
+                .applicationComponet(((BabyApplication) getActivity()
+                        .getApplication())
+                        .getAppComponet())
+                .build();
+        initDagger();
+        initViews();
+        initToolbar();
+        initData();
+        super.onViewCreated(view, savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mFragmentComponet = DaggerFragmentComponet
-                .builder()
-                .applicationComponet(((BabyApplication) getBaseActivity()
-                        .getApplication())
-                        .getAppComponet())
-                .fragmentModule(new FragmentModule(BaseFragment.this)).build();
-
         mLayoutView = getCreateView(inflater, container);
         ButterKnife.bind(this, mLayoutView);
-        initViews();
-
         return mLayoutView;
     }
 
@@ -83,6 +94,13 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     public void showProgress(String message) {
         if (getStatus() && getBaseActivity() != null) {
             getBaseActivity().showProgress(message);
+        }
+    }
+
+    @Override
+    public void showProgress(String message, int progress) {
+        if (getStatus() && getBaseActivity() != null) {
+            getBaseActivity().showProgress(message, progress);
         }
     }
 
@@ -120,4 +138,18 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         return mActivity;
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null) {
+            mPresenter.detachView();
+
+        }
+    }
 }

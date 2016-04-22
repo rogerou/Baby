@@ -1,6 +1,7 @@
-package com.ozj.baby.mvp.views.home.adapter;
+package com.ozj.baby.adapter;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -22,9 +23,10 @@ import com.ozj.baby.R;
 import com.ozj.baby.mvp.model.bean.Souvenir;
 import com.ozj.baby.mvp.model.dao.SouvenirDao;
 
+import java.util.List;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import io.realm.RealmResults;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
@@ -33,11 +35,11 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHolder> {
 
 
-    RealmResults<Souvenir> mList;
+    List<Souvenir> mList;
     Context mContext;
 
 
-    public SouvenirAdapter(RealmResults<Souvenir> List, Context context) {
+    public SouvenirAdapter(@NonNull List<Souvenir> List, Context context) {
         this.mList = List;
         this.mContext = context;
         com.orhanobut.logger.Logger.init(this.getClass().getSimpleName());

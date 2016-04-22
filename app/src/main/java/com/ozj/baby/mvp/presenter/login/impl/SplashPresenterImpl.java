@@ -1,15 +1,25 @@
 package com.ozj.baby.mvp.presenter.login.impl;
 
 import android.Manifest;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TextInputLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.LogInCallback;
+import com.avos.avoscloud.SignUpCallback;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
+import com.ozj.baby.mvp.model.dao.UserDao;
 import com.ozj.baby.mvp.presenter.login.ISplashPresenter;
 import com.ozj.baby.mvp.views.login.ISplashView;
 import com.ozj.baby.util.PreferenceManager;
@@ -30,6 +40,7 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
     private PreferenceManager mPreferenceManager;
     private Handler mHandler;
     private static final int MESSAGE_WHAT = 1;
+    AnimatorSet mAnimatorSet;
 
     @Inject
     public SplashPresenterImpl(@ContextLife("Activity") Context context, Activity activity, PreferenceManager preferenceManager) {
@@ -52,6 +63,103 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
             mHandler.removeMessages(MESSAGE_WHAT);
         }
     }
+
+    @Override
+    public void beginAnimation(ImageView imageView, TextView slogan, ShimmerFrameLayout shimmerFrameLayout) {
+
+        mAnimatorSet = new AnimatorSet();
+        mAnimatorSet.setDuration(2000);
+        mAnimatorSet.playTogether(
+                ObjectAnimator.ofFloat(slogan, "alpha", 0f, 1f),
+                ObjectAnimator.ofFloat(slogan, "translationY", 300, 0),
+                ObjectAnimator.ofFloat(imageView, "scaleX", 1.5f, 1.05f),
+                ObjectAnimator.ofFloat(imageView, "scaleY", 1.5f, 1.05f)
+
+        );
+        mAnimatorSet.start();
+        shimmerFrameLayout.startShimmerAnimation();
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    @Override
+    public void Register(TextInputLayout registerUser, TextInputLayout registerPass, TextInputLayout registerRepeatPasswd) {
+
+        String username = registerUser.getEditText().getText().toString();
+        String passwd = registerPass.getEditText().getText().toString();
+        String repeatPassWd = registerRepeatPasswd.getEditText().getText().toString();
+        if (username.isEmpty()) {
+            registerUser.setErrorEnabled(true);
+            registerUser.setError("用户名不能为空");
+            return;
+        }
+        if (passwd.isEmpty()) {
+            registerPass.setErrorEnabled(true);
+            registerPass.setError("密码不能为空");
+            return;
+        }
+        if (repeatPassWd.isEmpty()) {
+            registerRepeatPasswd.setErrorEnabled(true);
+            registerRepeatPasswd.setError("重复密码不能为空");
+            return;
+        }
+        if (!passwd.equals(repeatPassWd)) {
+            registerRepeatPasswd.setErrorEnabled(true);
+            registerRepeatPasswd.setError("两段密码不一致");
+            return;
+        }
+        mSplashView.showProgress("注册中...");
+        AVUser user = new AVUser();
+        user.setUsername(username);
+        user.setPassword(passwd);
+        user.put(UserDao.NICK, username);
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(AVException e) {
+                mSplashView.hideProgress();
+                if (e == null) {
+                    mSplashView.showToast("注册成功");
+                } else {
+                    mSplashView.showToast("注册失败，请稍后再试");
+                }
+
+            }
+        });
+
+    }
+
+    @Override
+    public void Login(TextInputLayout usernameLogin, TextInputLayout passwdLogin) {
+        String username = usernameLogin.getEditText().getText().toString();
+        String passwd = passwdLogin.getEditText().getText().toString();
+        if (username.isEmpty()) {
+            usernameLogin.setErrorEnabled(true);
+            usernameLogin.setError("用户名不能为空");
+            return;
+        }
+        if (passwd.isEmpty()) {
+            passwdLogin.setErrorEnabled(true);
+            passwdLogin.setError("密码不能为空");
+            return;
+        }
+        mSplashView.showProgress("登陆中...");
+        AVUser.logInInBackground(username, passwd, new LogInCallback<AVUser>() {
+            @Override
+            public void done(AVUser avUser, AVException e) {
+                mSplashView.hideProgress();
+                if (e == null && avUser != null) {
+                    mPreferenceManager.setIslogin(true);
+                    mPreferenceManager.saveCurrentUserId(avUser.getObjectId());
+                    mSplashView.toMainActivity();
+                    mSplashView.close();
+                } else {
+                    mSplashView.showToast("登陆失败，请稍后再试");
+                }
+
+
+            }
+        });
+    }
+
 
     @Override
     public void isLoginButtonVisable() {
@@ -86,6 +194,14 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
     }
 
     @Override
+    public boolean isAnimationRunning() {
+        if (mAnimatorSet != null) {
+            return mAnimatorSet.isRunning();
+        }
+        return true;
+    }
+
+    @Override
     public void attachView(@NonNull BaseView view) {
         mSplashView = (ISplashView) view;
 
@@ -99,7 +215,7 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
     @Override
     public boolean handleMessage(Message msg) {
         if (msg.what == MESSAGE_WHAT) {
-            if (mSplashView.isAnimationRunning()) {
+            if (isAnimationRunning()) {
                 mHandler.sendEmptyMessageDelayed(MESSAGE_WHAT, 300);
                 return false;
             }

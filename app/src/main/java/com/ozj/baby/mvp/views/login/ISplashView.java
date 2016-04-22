@@ -9,7 +9,6 @@ public interface ISplashView extends BaseView {
 
     void toMainActivity();
 
-    boolean isAnimationRunning();
 
     boolean isLoginViewisShowing();
 

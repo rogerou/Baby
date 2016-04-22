@@ -11,4 +11,8 @@ public interface ISouvenirVIew extends BaseView {
 
     void hideRefreshingLoading();
 
+    void toAddNewSouvenirActivity();
+
+    void ToProFileActivity();
+
 }

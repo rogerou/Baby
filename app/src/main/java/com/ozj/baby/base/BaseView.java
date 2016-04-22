@@ -7,6 +7,8 @@ public interface BaseView {
 
     void showProgress(String message);
 
+    void showProgress(String message, int progress);
+
     void hideProgress();
 
     void showToast(String msg);

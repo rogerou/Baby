@@ -1,101 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeFreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        app:elevation="@dimen/elevation">
+        android:layout_height="match_parent">
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collaspingToolBarlayout"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/ry_souvenir"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
-            android:fitsSystemWindows="true"
-            app:expandedTitleMarginBottom="@dimen/spacing_large"
-            app:expandedTitleMarginEnd="64dp"
-            app:expandedTitleMarginStart="48dp"
-            app:expandedTitleTextAppearance="@style/SouvenirTextStylle"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed"
-            app:title="@string/souvenir">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/souvenir_height">
-
-                <ImageView
-                    android:id="@+id/iv_album"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/img_default_cover_auto_mirrored"
-                    app:layout_collapseMode="parallax" />
-
-                <View
-                    android:id="@+id/fade_cover"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/iv_album"
-                    android:layout_alignEnd="@id/iv_album"
-                    android:layout_alignLeft="@id/iv_album"
-                    android:layout_alignRight="@id/iv_album"
-                    android:layout_alignStart="@id/iv_album"
-                    android:layout_alignTop="@id/iv_album"
-                    android:background="@color/amber500_alpha_54"
-                    android:fitsSystemWindows="true" />
-
-            </RelativeLayout>
+            android:scrollbarStyle="insideOverlay"
+            android:scrollbars="vertical" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="?attr/selectableItemBackground"
-                app:layout_collapseMode="pin" />
-
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-    </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
-        android:id="@+id/nested_scroll"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <android.support.v4.widget.SwipeRefreshLayout
-            android:id="@+id/swipeFreshLayout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/ry_souvenir"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbarStyle="insideOverlay"
-                android:scrollbars="vertical" />
-        </android.support.v4.widget.SwipeRefreshLayout>
-
-    </android.support.v4.widget.NestedScrollView>
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/activity_horizontal_margin"
-        android:clickable="true"
-        android:src="@drawable/ic_action_add"
-        app:fabSize="mini"
-        app:layout_anchor="@+id/app_bar"
-        app:layout_anchorGravity="bottom|right|end"
-        app:theme="@style/FabStyle" />
-</android.support.design.widget.CoordinatorLayout>
+</FrameLayout>

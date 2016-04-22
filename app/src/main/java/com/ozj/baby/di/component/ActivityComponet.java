@@ -6,8 +6,11 @@ import android.content.Context;
 import com.ozj.baby.di.module.ActivityModule;
 import com.ozj.baby.di.scope.ActivityScope;
 import com.ozj.baby.di.scope.ContextLife;
+import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.model.rx.RxRealm;
+import com.ozj.baby.mvp.views.home.activity.AddSouvenirActivity;
 import com.ozj.baby.mvp.views.home.activity.MainActivity;
+import com.ozj.baby.mvp.views.home.activity.ProfileActivity;
 import com.ozj.baby.mvp.views.login.activity.SplashActivity;
 import com.ozj.baby.util.PreferenceManager;
 
@@ -32,8 +35,15 @@ public interface ActivityComponet {
 
     Activity getActivity();
 
+    RxLeanCloud getRxLeanCLoud();
+    
+
     void inject(SplashActivity activity);
 
     void inject(MainActivity activity);
+
+    void inject(ProfileActivity activity);
+
+    void inject(AddSouvenirActivity activity);
 
 }

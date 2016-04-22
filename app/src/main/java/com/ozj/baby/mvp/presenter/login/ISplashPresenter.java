@@ -1,5 +1,10 @@
 package com.ozj.baby.mvp.presenter.login;
 
+import android.support.design.widget.TextInputLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.ozj.baby.base.BasePresenter;
 
 /**
@@ -10,8 +15,15 @@ public interface ISplashPresenter extends BasePresenter {
 
     void onActivityPause();
 
+    void beginAnimation(ImageView imageView, TextView slogan, ShimmerFrameLayout shimmerFrameLayout);
+
+    void Register(TextInputLayout registerUser, TextInputLayout registerPass, TextInputLayout registerRepeatPasswd);
+
+    void Login(TextInputLayout usernameLogin, TextInputLayout passwdLogin);
+
     void isLoginButtonVisable();
 
     void doingSplash();
 
+    boolean isAnimationRunning();
 }

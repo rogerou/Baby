@@ -50,4 +50,10 @@ public class ApplicationModule {
         return mRxRealm;
 
     }
+
+    @Provides
+    @Singleton
+    public RxLeanCloud provideRxLeanCloud() {
+        return mRxLeanCloud;
+    }
 }
