@@ -152,7 +152,7 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
                     mSplashView.toMainActivity();
                     mSplashView.close();
                 } else {
-                    mSplashView.showToast("登陆失败，请稍后再试");
+                    mSplashView.showToast("登陆失败，检查一下账号密码和网络");
                 }
 
 
@@ -175,7 +175,7 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
     public void doingSplash() {
         if (mPreferenceManager.isFirstTime()) {
             RxPermissions.getInstance(mContext)
-                    .request(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA)
                     .subscribe(new Action1<Boolean>() {
                         @Override
                         public void call(Boolean aBoolean) {

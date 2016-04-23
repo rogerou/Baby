@@ -1,7 +1,5 @@
 package com.ozj.baby.mvp.model.rx;
 
-import javax.inject.Singleton;
-
 import rx.Observable;
 import rx.subjects.PublishSubject;
 import rx.subjects.SerializedSubject;
@@ -16,7 +14,6 @@ public class RxBus {
     //主题
     private final SerializedSubject mSubject;
 
-    @Singleton
     public RxBus() {
         mSubject = new SerializedSubject<>(PublishSubject.create());
     }

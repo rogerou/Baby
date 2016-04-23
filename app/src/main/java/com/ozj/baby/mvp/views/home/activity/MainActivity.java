@@ -1,5 +1,6 @@
 package com.ozj.baby.mvp.views.home.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -21,7 +22,9 @@ import com.jaeger.library.StatusBarUtil;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
 import com.ozj.baby.mvp.presenter.home.impl.MainPresenterImpl;
+import com.ozj.baby.mvp.views.home.IMainView;
 import com.ozj.baby.mvp.views.home.fragment.SouvenirFragment;
+import com.ozj.baby.widget.ChoosePicDialog;
 
 import javax.inject.Inject;
 
@@ -29,7 +32,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, IMainView {
     @Inject
     MainPresenterImpl mMainPersenter;
     @Bind(R.id.iv_album)
@@ -55,6 +58,8 @@ public class MainActivity extends BaseActivity
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
+    @Inject
+    ChoosePicDialog mPicDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,20 +83,24 @@ public class MainActivity extends BaseActivity
     public void initViewsAndListener() {
         setSupportActionBar(toolbar);
         navView.setNavigationItemSelectedListener(this);
-        StatusBarUtil.setColorForDrawerLayout(this, drawerLayout, 0x4DD32F2F, 112);
+        //noinspection ConstantConditions
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         navView.setNavigationItemSelectedListener(this);
-        StatusBarUtil.setColorForDrawerLayout(this, drawerLayout, 0x4DD32F2F, 112);
         mMainPersenter.replaceFragment(new SouvenirFragment());
-
+        StatusBarUtil.setTransparent(this);
     }
 
     @Override
     public void initPresenter() {
+        mMainPersenter.attachView(this);
+    }
+
+    @Override
+    public void initToolbar() {
 
     }
 
@@ -156,11 +165,36 @@ public class MainActivity extends BaseActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_album:
+                showPicDialog();
                 break;
             case R.id.fab:
+                mMainPersenter.fabOnclick();
+                break;
+            default:
                 break;
         }
     }
 
 
+    @Override
+    public void showPicDialog() {
+        mPicDialog.show();
+
+    }
+
+    @Override
+    public void toProfileActivity() {
+
+
+        Intent intent = new Intent(this, ProfileActivity.class);
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void toAddSouvenirActivity() {
+        Intent intent = new Intent(this, AddSouvenirActivity.class);
+        startActivity(intent);
+
+    }
 }

@@ -4,8 +4,9 @@ import android.content.Context;
 
 import com.ozj.baby.BabyApplication;
 import com.ozj.baby.di.scope.ContextLife;
+import com.ozj.baby.mvp.model.realm.BabyRealm;
+import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
-import com.ozj.baby.mvp.model.rx.RxRealm;
 import com.ozj.baby.util.PreferenceManager;
 
 import javax.inject.Singleton;
@@ -20,14 +21,16 @@ import dagger.Provides;
 public class ApplicationModule {
     private BabyApplication mApplication;
     private PreferenceManager mPreferenceManager;
-    private RxRealm mRxRealm;
+    private BabyRealm mBabyRealm;
     private RxLeanCloud mRxLeanCloud;
+    private RxBus mRxBus;
 
     public ApplicationModule(BabyApplication application) {
         mApplication = application;
         mPreferenceManager = new PreferenceManager(mApplication.getApplicationContext());
-        mRxRealm = new RxRealm(mApplication.getApplicationContext());
+        mBabyRealm = new BabyRealm(mApplication.getApplicationContext());
         mRxLeanCloud = new RxLeanCloud(mApplication.getApplicationContext());
+        mRxBus = RxBus.getDefaultInstance();
     }
 
     @Provides
@@ -46,8 +49,8 @@ public class ApplicationModule {
 
     @Provides
     @Singleton
-    public RxRealm provideRxRealm() {
-        return mRxRealm;
+    public BabyRealm provideBabyRealm() {
+        return mBabyRealm;
 
     }
 
@@ -55,5 +58,11 @@ public class ApplicationModule {
     @Singleton
     public RxLeanCloud provideRxLeanCloud() {
         return mRxLeanCloud;
+    }
+
+    @Provides
+    @Singleton
+    public RxBus provideRxBus() {
+        return mRxBus;
     }
 }

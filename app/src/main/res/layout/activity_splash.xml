@@ -4,7 +4,8 @@
     android:id="@+id/rootview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_alpha_12">
+    android:background="@color/black_alpha_12"
+    android:fitsSystemWindows="true">
 
     <ImageView
         android:id="@+id/splash_bg"

@@ -4,8 +4,9 @@ import android.content.Context;
 
 import com.ozj.baby.di.module.ApplicationModule;
 import com.ozj.baby.di.scope.ContextLife;
+import com.ozj.baby.mvp.model.realm.BabyRealm;
+import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
-import com.ozj.baby.mvp.model.rx.RxRealm;
 import com.ozj.baby.util.PreferenceManager;
 
 import javax.inject.Singleton;
@@ -23,8 +24,10 @@ public interface ApplicationComponet {
 
     PreferenceManager getPreferenceManager();
 
-    RxRealm getRxRealm();
+    BabyRealm getBabyRealm();
 
     RxLeanCloud getRxLeanCLoud();
-    
+
+    RxBus getRxBus();
+
 }

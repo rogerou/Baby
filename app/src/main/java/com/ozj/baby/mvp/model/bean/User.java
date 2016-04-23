@@ -1,6 +1,5 @@
 package com.ozj.baby.mvp.model.bean;
 
-import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVUser;
 import com.ozj.baby.mvp.model.dao.UserDao;
 
@@ -21,22 +20,35 @@ public class User extends RealmObject {
     private long createTime;
     private String sex;
     private String anotherUserID;
-    private User anotheruser;
+
 
     public User(AVUser user) {
-        AVFile avatarFile = user.getAVFile(UserDao.AVATARFILE);
-        this.city = user.getString(UserDao.CITY);
-        this.loverusername = user.getString(UserDao.LOVERUSERNAME);
-        this.sex = user.getString(UserDao.SEX);
-        this.ID = user.getObjectId();
-        this.nick = user.getString(UserDao.NICK);
+        if (user.getString(UserDao.AVATARURL) != null) {
+            avatar = user.getString(UserDao.AVATARURL);
+        }
+        if (user.getString(UserDao.CITY) != null) {
+            this.city = user.getString(UserDao.CITY);
+        }
+        if (user.getString(UserDao.LOVERUSERNAME) != null) {
+            this.loverusername = user.getString(UserDao.LOVERUSERNAME);
+        }
+        if (user.getString(UserDao.SEX) != null) {
+            this.sex = user.getString(UserDao.SEX);
+        }
+        if (user.getObjectId() != null) {
+            this.ID = user.getObjectId();
+        }
+        if (user.getString(UserDao.NICK) != null) {
+            this.nick = user.getString(UserDao.NICK);
+        }
         this.createTime = user.getCreatedAt().getTime();
-        this.avatar = avatarFile.getUrl();
-
+        if (user.getString(UserDao.LOVER) != null) {
+            this.anotherUserID = user.getString(UserDao.LOVER);
+        }
     }
 
     public User() {
-        
+
     }
 
     public long getCreateTime() {
@@ -103,13 +115,5 @@ public class User extends RealmObject {
 
     public void setAnotherUserID(String anotherUserID) {
         this.anotherUserID = anotherUserID;
-    }
-
-    public User getAnotheruser() {
-        return anotheruser;
-    }
-
-    public void setAnotheruser(User anotheruser) {
-        this.anotheruser = anotheruser;
     }
 }

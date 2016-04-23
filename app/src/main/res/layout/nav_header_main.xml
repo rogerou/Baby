@@ -10,7 +10,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/nav_color" />
+        android:background="@color/amber500_alpha_54" />
 
     <ImageView
         android:id="@+id/iv_avatar"

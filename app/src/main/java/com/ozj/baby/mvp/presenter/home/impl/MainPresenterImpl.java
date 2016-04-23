@@ -3,6 +3,7 @@ package com.ozj.baby.mvp.presenter.home.impl;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseView;
@@ -55,5 +56,22 @@ public class MainPresenterImpl implements IMainPresenter {
         if (fragment != null) {
             mActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
         }
+    }
+
+    @Override
+    public void fabOnclick() {
+
+        if (isHavedLover()) {
+            mMainView.toAddSouvenirActivity();
+        } else {
+            mMainView.toProfileActivity();
+            mMainView.showToast("请先设置另一半才能发日记哦");
+        }
+
+    }
+
+    @Override
+    public boolean isHavedLover() {
+        return !TextUtils.isEmpty(mPreferenceManager.GetLoverID());
     }
 }

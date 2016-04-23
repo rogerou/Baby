@@ -14,9 +14,9 @@ public interface ISouvenirPresenter extends BasePresenter {
 
     void RefreshingData();
 
-    List<Souvenir> GetDataFromLoad();
+    List<Souvenir> getDataFromLocal();
 
-    void LoadingData();
+    void LoadingDataFromNet();
 
     boolean isHavedLover();
 

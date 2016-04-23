@@ -12,34 +12,31 @@ import com.ozj.baby.R;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
 /**
  * Created by Administrator on 2016/4/21.
  */
-public class ChoosePicDialog extends Dialog implements View.OnClickListener {
-
-    @Bind(R.id.btn_picture)
+public class ChoosePicDialog implements View.OnClickListener {
     Button btnPicture;
-    @Bind(R.id.btn_takephoto)
     Button btnTakephoto;
-    @Bind(R.id.btn_cancel)
     Button btnCancel;
-    private ChoosePicDialog mDialog;
+    private Dialog mDialog;
     Activity mContext;
 
     @Inject
     public ChoosePicDialog(Activity context) {
-        super(context);
         mContext = context;
-        mDialog = (ChoosePicDialog) new Dialog(mContext, R.style.transparentFrameWindowStyle);
+        mDialog = new Dialog(mContext, R.style.transparentFrameWindowStyle);
         initDialog();
         initDialogViews();
     }
 
     private void initDialog() {
-        View view = getLayoutInflater().inflate(R.layout.photo_choose_dialog, null);
+        View view = mContext.getLayoutInflater().inflate(R.layout.photo_choose_dialog, null);
+        btnPicture = (Button) view.findViewById(R.id.btn_picture);
+        btnTakephoto = (Button) view.findViewById(R.id.btn_takephoto);
+        btnCancel = (Button) view.findViewById(R.id.btn_cancel);
         mDialog.setContentView(view, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         Window window = mDialog.getWindow();
@@ -66,7 +63,11 @@ public class ChoosePicDialog extends Dialog implements View.OnClickListener {
     }
 
     public void show() {
-        mDialog.show();
+        if (!mDialog.isShowing()) {
+            mDialog.show();
+        } else {
+            dismiss();
+        }
     }
 
     public void dismiss() {
@@ -80,10 +81,12 @@ public class ChoosePicDialog extends Dialog implements View.OnClickListener {
                 dismiss();
                 break;
             case R.id.btn_picture:
-                EasyImage.openCamera(mContext, 0);
+                EasyImage.openGallery(mContext, 0);
+                dismiss();
                 break;
             case R.id.btn_takephoto:
-                EasyImage.openGallery(mContext, 0);
+                EasyImage.openCamera(mContext, 0);
+                dismiss();
                 break;
             default:
                 break;

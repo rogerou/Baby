@@ -13,5 +13,8 @@ public interface IMainPresenter extends BasePresenter {
 
     void replaceFragment(Fragment fragment);
 
+    void fabOnclick();
+
+    boolean isHavedLover();
 
 }

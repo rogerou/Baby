@@ -10,33 +10,36 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by Administrator on 2016/4/20.
  */
-public class Souvenir extends RealmObject {
+public class Souvenir extends RealmObject implements Comparable {
     private String Content;
-    private long timeStamp;
+    private Long timeStamp;
     private String Picture;
     private User Author;
     private boolean IsLikedMine;
     @PrimaryKey
     private String objectId;
     private boolean IsLikedOther;
-    private String theOtherUserID;
     private String AuthorId;
+    private String ohterUserId;
 
     public Souvenir(AVObject object) {
         AVUser user = (AVUser) object.get(SouvenirDao.SOUVENIR_AUTHOR);
         this.Content = object.getString(SouvenirDao.SOUVENIR_CONTENT);
-        this.timeStamp = object.getCreatedAt().getTime();
+        if (object.getCreatedAt() != null) {
+            this.timeStamp = object.getCreatedAt().getTime();
+        }
+     
         this.Picture = object.getAVFile(SouvenirDao.SOUVENIR_PICTUREURL).getUrl();
         this.Author = new User(user);
         this.IsLikedMine = object.getBoolean(SouvenirDao.SOUVENIR_ISLIKEME);
         this.objectId = object.getObjectId();
-        this.theOtherUserID = object.getString(SouvenirDao.SOUVENIR_THEOTHERID);
         this.IsLikedOther = object.getBoolean(SouvenirDao.SOUVENIR_ISLIKEOTHER);
         this.AuthorId = user.getObjectId();
+        this.ohterUserId = user.getString(SouvenirDao.SOUVENIR_OTHERUSERID);
     }
 
     public Souvenir() {
-        
+
     }
 
     public String getContent() {
@@ -47,11 +50,11 @@ public class Souvenir extends RealmObject {
         Content = content;
     }
 
-    public long getTimeStamp() {
+    public Long getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(long timeStamp) {
+    public void setTimeStamp(Long timeStamp) {
         this.timeStamp = timeStamp;
     }
 
@@ -97,14 +100,6 @@ public class Souvenir extends RealmObject {
     }
 
 
-    public String getTheOtherUserID() {
-        return theOtherUserID;
-    }
-
-    public void setTheOtherUserID(String theOtherUserID) {
-        this.theOtherUserID = theOtherUserID;
-    }
-
     public String getAuthorId() {
         return AuthorId;
     }
@@ -127,5 +122,18 @@ public class Souvenir extends RealmObject {
     @Override
     public int hashCode() {
         return objectId.hashCode();
+    }
+
+    @Override
+    public int compareTo(Object another) {
+        return this.timeStamp.compareTo(((Souvenir) another).getTimeStamp());
+    }
+
+    public String getOhterUserId() {
+        return ohterUserId;
+    }
+
+    public void setOhterUserId(String ohterUserId) {
+        this.ohterUserId = ohterUserId;
     }
 }

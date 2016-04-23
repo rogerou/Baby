@@ -11,32 +11,39 @@ import com.ozj.baby.R;
 import com.ozj.baby.adapter.SouvenirAdapter;
 import com.ozj.baby.base.BaseFragment;
 import com.ozj.baby.mvp.model.bean.Souvenir;
-import com.ozj.baby.mvp.model.rx.RxRealm;
+import com.ozj.baby.mvp.model.realm.BabyRealm;
+import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.SouvenirPresenterImpl;
 import com.ozj.baby.mvp.views.home.ISouvenirVIew;
 import com.ozj.baby.mvp.views.home.activity.AddSouvenirActivity;
 import com.ozj.baby.mvp.views.home.activity.ProfileActivity;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import rx.Subscription;
 
 /**
  * Created by Administrator on 2016/4/19.
  */
-public class SouvenirFragment extends BaseFragment implements ISouvenirVIew {
+public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, SwipeRefreshLayout.OnRefreshListener {
     @Inject
     SouvenirPresenterImpl mSouvenirPresenterImpl;
     @Inject
-    RxRealm mRxRealm;
+    BabyRealm mBabyRealm;
+    @Inject
+    RxBus mRxbus;
     SouvenirAdapter mAdapter;
     @Bind(R.id.ry_souvenir)
     RecyclerView rySouvenir;
     @Bind(R.id.swipeFreshLayout)
     SwipeRefreshLayout swipeFreshLayout;
+    List<Souvenir> mlist;
+    Subscription mSubscription;
 
     @Override
     public int getLayoutRes() {
@@ -46,7 +53,9 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew {
     @Override
     public void initViews() {
         mSouvenirPresenterImpl.attachView(this);
-        rySouvenir.setLayoutManager(new LinearLayoutManager(getActivity()));
+        swipeFreshLayout.setOnRefreshListener(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        rySouvenir.setLayoutManager(linearLayoutManager);
         rySouvenir.setItemAnimator(new DefaultItemAnimator());
         rySouvenir.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
                 .colorResId(R.color.DividerColor)
@@ -63,10 +72,35 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew {
 
     @Override
     public void initData() {
-        List<Souvenir> list = mRxRealm.getALLSouvenir();
-        mAdapter = new SouvenirAdapter(list, getActivity());
-        rySouvenir.setAdapter(mAdapter);
 
+        mlist = new ArrayList<>();
+//        if (mlist.size() == 0) {
+//            showToast("这里之间什么记录都没有哦，赶紧去增加几个吧");
+//        }
+        Souvenir souvenir = new Souvenir();
+        souvenir.setContent("qweqdasdasdasdsa");
+        souvenir.setLikedMine(false);
+        souvenir.setLikedOther(false);
+        souvenir.setTimeStamp(System.currentTimeMillis());
+        mlist.add(souvenir);
+        mAdapter = new SouvenirAdapter(mlist, getActivity());
+        rySouvenir.setAdapter(mAdapter);
+//        mSubscription = mRxbus.toObservable(UpdateComPlete.class)
+//                .subscribe(new Action1<UpdateComPlete>() {
+//                    @SuppressWarnings("unchecked")
+//                    @Override
+//                    public void call(UpdateComPlete updateComPlete) {
+//                        if (updateComPlete.isComPlete()) {
+//                            for (Souvenir souvenir : mSouvenirPresenterImpl.getDataFromLocal()) {
+//                                if (!mlist.contains(souvenir)) {
+//                                    mlist.add(souvenir);
+//                                }
+//                            }
+//                            Collections.sort(mlist);
+//                            mAdapter.notifyDataSetChanged();
+//                        }
+//                    }
+//                });
     }
 
     @Override
@@ -106,5 +140,17 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew {
         startActivity(intent);
     }
 
+    @Override
+    public void onRefresh() {
+        mSouvenirPresenterImpl.LoadingDataFromNet();
+    }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mSubscription != null) {
+            mSubscription.isUnsubscribed();
+        }
+
+    }
 }

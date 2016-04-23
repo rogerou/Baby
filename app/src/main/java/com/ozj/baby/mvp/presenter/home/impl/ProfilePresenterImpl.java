@@ -17,8 +17,8 @@ import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.mvp.model.bean.User;
 import com.ozj.baby.mvp.model.dao.UserDao;
+import com.ozj.baby.mvp.model.realm.BabyRealm;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
-import com.ozj.baby.mvp.model.rx.RxRealm;
 import com.ozj.baby.mvp.presenter.home.IProfilePresenter;
 import com.ozj.baby.mvp.views.home.IProfileView;
 import com.ozj.baby.util.PreferenceManager;
@@ -33,9 +33,10 @@ import javax.inject.Inject;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import pl.aprilapps.easyphotopicker.EasyImage;
+import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Created by Administrator on 2016/4/21.
@@ -46,14 +47,14 @@ public class ProfilePresenterImpl implements IProfilePresenter {
     private Activity mActivity;
     IProfileView mProfileView;
     private RxLeanCloud mRxleanCloud;
-    private RxRealm mRxRealm;
+    private BabyRealm mBabyRealm;
     private PreferenceManager mPreferenceManager;
 
     @Inject
-    public ProfilePresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxLeanCloud rxLeanCloud, RxRealm rxRealm, PreferenceManager preferenmanager) {
+    public ProfilePresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxLeanCloud rxLeanCloud, BabyRealm babyRealm, PreferenceManager preferenmanager) {
         mContext = context;
         mActivity = activity;
-        mRxRealm = rxRealm;
+        mBabyRealm = babyRealm;
         mRxleanCloud = rxLeanCloud;
         mPreferenceManager = preferenmanager;
         Logger.init(this.getClass().getSimpleName());
@@ -73,27 +74,6 @@ public class ProfilePresenterImpl implements IProfilePresenter {
         }
         if (lover != null) {
             avUser.put(UserDao.LOVERUSERNAME, lover);
-            mRxleanCloud.GetUserByUsername(lover).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<AVUser>() {
-                        @Override
-                        public void onCompleted() {
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            mProfileView.showToast("和另一半确定情侣关系失败，请检查网络和用户名是否输错");
-                        }
-
-                        @Override
-                        public void onNext(AVUser user) {
-                            avUser.put(UserDao.LOVER, user);
-                            avUser.put(UserDao.LOVETIMESTAMP, System.currentTimeMillis());
-                            mPreferenceManager.SaveLoverId(user.getObjectId());
-                            
-                        }
-                    });
-
-
         }
         if (city != null) {
             avUser.put(UserDao.CITY, city);
@@ -101,62 +81,42 @@ public class ProfilePresenterImpl implements IProfilePresenter {
         if (sex != null) {
             avUser.put(UserDao.SEX, sex);
         }
-        mRxleanCloud.SaveUserByLeanCloud(avUser).subscribe(new Action1<Boolean>() {
-            @Override
-            public void call(Boolean aBoolean) {
-                if (aBoolean) {
-                    Logger.d("保存用户资料到LeanCloud成功");
-                } else {
-                    Logger.e("保存用户资料到LeanCloud失败");
-                }
-            }
-        });
+        
         User realmuser = new User(avUser);
-        realmuser.setAnotheruser(new User((AVUser) avUser.get(UserDao.LOVER)));
-        realmuser.setAnotherUserID(realmuser.getAnotheruser().getID());
-        mRxRealm.SaveUser(realmuser).subscribe(new Action1<Boolean>() {
-            @Override
-            public void call(Boolean aBoolean) {
-                if (aBoolean) {
-                    Logger.d("保存用户资料到本地成功");
-                } else {
-                    Logger.e("保存用户资料到本地失败");
-                }
-            }
-        });
+        mBabyRealm.saveUser(realmuser);
         mProfileView.hideProgress();
     }
 
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void initData(final ImageView avatar, final TextInputLayout nick, final TextInputLayout loverid, final TextInputLayout city, final TextInputLayout sex) {
         mProfileView.showProgress("加载中...");
-        mRxleanCloud.GetUserByLeanCloud(mPreferenceManager.getCurrentUserId())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AVUser>() {
-                    @Override
-                    public void onCompleted() {
-                        mProfileView.hideProgress();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        Logger.e(e.getMessage());
-
-                    }
-
-                    @Override
-                    public void onNext(AVUser user) {
-                        HandlerData(user, avatar, city, sex, loverid, nick);
-                    }
-                });
+        User user = new User(AVUser.getCurrentUser());
+        if (user.getAvatar() != null) {
+            Glide.with(mContext).load(user.getAvatar()).crossFade().bitmapTransform(new CropCircleTransformation(mContext)).diskCacheStrategy(DiskCacheStrategy.ALL).into(avatar);
+        }
+        if (user.getCity() != null) {
+            city.getEditText().setText(user.getCity());
+        }
+        if (user.getSex() != null) {
+            sex.getEditText().setText(user.getSex());
+        }
+        if (user.getLoverusername() != null) {
+            loverid.getEditText().setEnabled(false);
+            loverid.getEditText().setText(user.getLoverusername());
+        }
+        if (user.getNick() != null) {
+            nick.getEditText().setText(user.getNick());
+        }
+        mProfileView.hideProgress();
 
 
     }
 
     @Override
     public void HandleReturnPic(File imageFile) {
-        UCrop.of(Uri.fromFile(imageFile), Uri.fromFile(imageFile.getParentFile()))
+        UCrop.of(Uri.fromFile(imageFile), Uri.fromFile(imageFile))
                 .withMaxResultSize(320, 480)
                 .start(mActivity);
     }
@@ -186,81 +146,42 @@ public class ProfilePresenterImpl implements IProfilePresenter {
         try {
             if (uri != null) {
                 AVFile file = AVFile.withFile(name, new File(new URI(uri.toString())));
-                mRxleanCloud.UploadFile(file, AVUser.getCurrentUser()).subscribe(new Observer<Integer>() {
-                    @Override
-                    public void onCompleted() {
-                        mProfileView.hideProgress();
-                    }
+                mRxleanCloud.UploadPicture(file)
+                        .flatMap(new Func1<String, Observable<Boolean>>() {
+                            @Override
+                            public Observable<Boolean> call(String s) {
+                                AVUser user = AVUser.getCurrentUser();
+                                user.put(UserDao.AVATARURL, s);
+                                return mRxleanCloud.SaveUserByLeanCloud(user);
+                            }
+                        }).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Observer<Boolean>() {
+                            @Override
+                            public void onCompleted() {
+                                mProfileView.hideProgress();
+                            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        mProfileView.showToast("出错啦，请稍后再试");
-                        Logger.e(e.getMessage());
-                        mProfileView.hideProgress();
-                    }
+                            @Override
+                            public void onError(Throwable e) {
+                                mProfileView.showToast("出错啦，请稍后再试");
+                                Logger.e(e.getMessage());
+                            }
 
-                    @Override
-                    public void onNext(Integer integer) {
-                        mProfileView.showProgress("上传中...", integer);
-                    }
-                });
+                            @Override
+                            public void onNext(Boolean aBoolean) {
+                                if (aBoolean) {
+                                    Logger.d("更换头像成功");
+                                }
+                            }
+                        });
             }
         } catch (FileNotFoundException | URISyntaxException e) {
             e.printStackTrace();
+            Logger.e(e.getMessage());
         }
 
         Glide.with(mContext).load(uri).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).bitmapTransform(new CropCircleTransformation(mContext)).into(avatar);
 
-    }
-
-
-    @SuppressWarnings("ConstantConditions")
-    private void HandlerData(AVUser user, ImageView avatar, TextInputLayout
-            city, TextInputLayout sex, TextInputLayout loverid, TextInputLayout nick) {
-        final User realmUser = new User(user);
-        realmUser.setAnotheruser(new User((AVUser) user.get(UserDao.LOVER)));
-        String avatarUrl = user.getAVFile(UserDao.AVATARFILE).getUrl();
-        String citylocation = user.getString(UserDao.CITY);
-        String loverusername = user.getString(UserDao.LOVERUSERNAME);
-        String sexs = user.getString(UserDao.SEX);
-        String nickname = user.getString(UserDao.NICK);
-        if (avatarUrl != null) {
-            Glide.with(mContext).load(avatarUrl).crossFade().bitmapTransform(new CropCircleTransformation(mContext)).diskCacheStrategy(DiskCacheStrategy.ALL).into(avatar);
-        }
-        if (citylocation != null) {
-            city.getEditText().setText(citylocation);
-        }
-        if (sexs != null) {
-            sex.getEditText().setText(sexs);
-        }
-        if (loverusername != null) {
-            loverid.getEditText().setEnabled(false);
-            loverid.getEditText().setText(loverusername);
-            mRxleanCloud.GetUserByUsername(loverusername)
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Action1<AVUser>() {
-                        @Override
-                        public void call(AVUser user) {
-                            realmUser.setAnotheruser(new User(user));
-                            realmUser.setAnotherUserID(user.getObjectId());
-                        }
-                    });
-        }
-        if (user.get(UserDao.NICK) != null) {
-            nick.getEditText().setText(nickname);
-        }
-        mRxRealm.SaveUser(realmUser).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<Boolean>() {
-                    @Override
-                    public void call(Boolean aBoolean) {
-                        if (aBoolean) {
-                            Logger.d("更新当前用户资料成功");
-
-                        } else {
-                            Logger.e("更新当前用户资料失败");
-                        }
-                    }
-                });
     }
 
 

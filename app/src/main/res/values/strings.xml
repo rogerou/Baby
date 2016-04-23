@@ -21,5 +21,7 @@
     <string name="sex">性别</string>
     <string name="tips">另一半的用户名（不是昵称哦）</string>
     <string name="commit">提交</string>
+    <string name="idea">这一刻的想法...</string>
+    <string name="fetchPic">获取相片</string>
 
 </resources>

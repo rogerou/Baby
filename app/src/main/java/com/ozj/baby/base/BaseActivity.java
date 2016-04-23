@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
-import com.jaeger.library.StatusBarUtil;
 import com.ozj.baby.BabyApplication;
 import com.ozj.baby.R;
 import com.ozj.baby.di.component.ActivityComponet;
@@ -30,10 +29,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         super.onCreate(savedInstanceState);
         mActivityComponet = DaggerActivityComponet.builder().activityModule(new ActivityModule(this)).applicationComponet(((BabyApplication) getApplication()).getAppComponet()).build();
         initContentView();
-        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimaryDark), 200);
         ButterKnife.bind(this);
         initDagger();
         initPresenter();
+        initToolbar();
         initViewsAndListener();
     }
 
@@ -44,6 +43,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     public abstract void initViewsAndListener();
 
     public abstract void initPresenter();
+
+    public abstract void initToolbar();
 
 
     @Override

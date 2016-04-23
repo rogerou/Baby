@@ -60,6 +60,7 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.init(this.getClass().getSimpleName());
+//        StatusBarUtil.setTransparent(this);
     }
 
     @Override
@@ -70,7 +71,6 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     @Override
     public void initContentView() {
         setContentView(R.layout.activity_splash);
-
     }
 
 
@@ -99,6 +99,11 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     @Override
     public void initPresenter() {
         mSplashPresenter.attachView(this);
+    }
+
+    @Override
+    public void initToolbar() {
+        
     }
 
 
