@@ -73,14 +73,6 @@ public class PreferenceManager {
     }
 
 
-    public void SaveTheOtherUserId(String userid) {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(LOVERID, userid);
-        editor.apply();
-
-    }
-
-
     public String GetLoverID() {
         return mSharedPreferences.getString(LOVERID, null);
     }

@@ -30,7 +30,7 @@
                 app:expandedTitleMarginStart="48dp"
                 app:layout_collapseParallaxMultiplier="0.7"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                app:title="恋恋日记">
+                app:title="Moment">
 
                 <RelativeLayout
                     android:id="@+id/rl_loverbackground"
@@ -89,6 +89,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@color/grey200"
+            android:fitsSystemWindows="true"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
         <android.support.design.widget.FloatingActionButton

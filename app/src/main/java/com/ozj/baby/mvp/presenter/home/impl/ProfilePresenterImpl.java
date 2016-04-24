@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.avos.avoscloud.AVFile;
@@ -17,7 +18,7 @@ import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.mvp.model.bean.User;
 import com.ozj.baby.mvp.model.dao.UserDao;
-import com.ozj.baby.mvp.model.realm.BabyRealm;
+import com.ozj.baby.mvp.model.rx.RxBabyRealm;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.home.IProfilePresenter;
 import com.ozj.baby.mvp.views.home.IProfileView;
@@ -47,14 +48,14 @@ public class ProfilePresenterImpl implements IProfilePresenter {
     private Activity mActivity;
     IProfileView mProfileView;
     private RxLeanCloud mRxleanCloud;
-    private BabyRealm mBabyRealm;
+    private RxBabyRealm mRxBabyRealm;
     private PreferenceManager mPreferenceManager;
 
     @Inject
-    public ProfilePresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxLeanCloud rxLeanCloud, BabyRealm babyRealm, PreferenceManager preferenmanager) {
+    public ProfilePresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxLeanCloud rxLeanCloud, RxBabyRealm rxBabyRealm, PreferenceManager preferenmanager) {
         mContext = context;
         mActivity = activity;
-        mBabyRealm = babyRealm;
+        mRxBabyRealm = rxBabyRealm;
         mRxleanCloud = rxLeanCloud;
         mPreferenceManager = preferenmanager;
         Logger.init(this.getClass().getSimpleName());
@@ -62,29 +63,79 @@ public class ProfilePresenterImpl implements IProfilePresenter {
 
 
     @Override
-    public void commit(String nick, String lover, String city, String sex) {
+    public void commit(String nick, final String lover, String city, String sex) {
         mProfileView.showProgress("更新中...");
         final AVUser avUser = AVUser.getCurrentUser();
         if (nick == null && lover == null && city == null && sex == null) {
             mProfileView.showToast("你全部都是空的你改什么呀");
             return;
         }
-        if (nick != null) {
+        if (!TextUtils.isEmpty(nick)) {
             avUser.put(UserDao.NICK, nick);
         }
-        if (lover != null) {
-            avUser.put(UserDao.LOVERUSERNAME, lover);
-        }
-        if (city != null) {
+
+        if (!TextUtils.isEmpty(city)) {
             avUser.put(UserDao.CITY, city);
         }
-        if (sex != null) {
+        if (!TextUtils.isEmpty(sex)) {
             avUser.put(UserDao.SEX, sex);
         }
-        
+        if (!TextUtils.isEmpty(lover)) {
+            mRxleanCloud.GetUserByUsername(lover).flatMap(new Func1<AVUser, Observable<Boolean>>() {
+                @Override
+                public Observable<Boolean> call(AVUser user) {
+                    avUser.put(UserDao.LOVERUSERNAME, lover);
+                    avUser.put(UserDao.LOVERID, user.getObjectId());
+                    avUser.put(UserDao.LOVETIMESTAMP, System.currentTimeMillis());
+                    mPreferenceManager.SaveLoverId(user.getObjectId());
+                    return mRxleanCloud.SaveUserByLeanCloud(avUser);
+                }
+            }).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Boolean>() {
+                        @Override
+                        public void onCompleted() {
+                            mProfileView.hideProgress();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            mProfileView.hideProgress();
+                            mProfileView.showToast("出错啦，可能是另一般用户名输错了");
+                        }
+
+                        @Override
+                        public void onNext(Boolean aBoolean) {
+                            if (aBoolean) {
+                                mProfileView.showToast("保存资料成功");
+                                mProfileView.setResultCode();
+                            }
+                        }
+                    });
+        } else {
+            mRxleanCloud.SaveUserByLeanCloud(avUser)
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Boolean>() {
+                        @Override
+                        public void onCompleted() {
+                            mProfileView.hideProgress();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            mProfileView.showToast("出错啦，请稍后再试");
+                        }
+
+                        @Override
+                        public void onNext(Boolean aBoolean) {
+                            if (aBoolean) {
+                                mProfileView.showToast("保存资料成功");
+                                mProfileView.setResultCode();
+                            }
+                        }
+                    });
+        }
         User realmuser = new User(avUser);
-        mBabyRealm.saveUser(realmuser);
-        mProfileView.hideProgress();
+        mRxBabyRealm.saveUser(realmuser);
     }
 
 
@@ -170,7 +221,9 @@ public class ProfilePresenterImpl implements IProfilePresenter {
                             @Override
                             public void onNext(Boolean aBoolean) {
                                 if (aBoolean) {
+                                    mProfileView.showToast("保存头像成功");
                                     Logger.d("更换头像成功");
+                                    mProfileView.setResultCode();
                                 }
                             }
                         });

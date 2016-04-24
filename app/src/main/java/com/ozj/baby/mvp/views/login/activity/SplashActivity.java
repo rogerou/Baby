@@ -14,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
@@ -32,7 +33,7 @@ import shem.com.materiallogin.MaterialLoginViewListener;
 
 /**
  * Created by Rpger ou on 2016/4/13.
- * <p/>
+ * <p>
  * 开屏页
  */
 public class SplashActivity extends BaseActivity implements ISplashView {
@@ -60,7 +61,7 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Logger.init(this.getClass().getSimpleName());
-//        StatusBarUtil.setTransparent(this);
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary));
     }
 
     @Override
@@ -103,7 +104,7 @@ public class SplashActivity extends BaseActivity implements ISplashView {
 
     @Override
     public void initToolbar() {
-        
+
     }
 
 

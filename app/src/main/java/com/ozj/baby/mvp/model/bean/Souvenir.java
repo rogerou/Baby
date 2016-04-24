@@ -1,16 +1,18 @@
 package com.ozj.baby.mvp.model.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.ozj.baby.mvp.model.dao.SouvenirDao;
 
-import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Administrator on 2016/4/20.
  */
-public class Souvenir extends RealmObject implements Comparable {
+public class Souvenir implements Comparable, Parcelable {
     private String Content;
     private Long timeStamp;
     private String Picture;
@@ -22,20 +24,18 @@ public class Souvenir extends RealmObject implements Comparable {
     private String AuthorId;
     private String ohterUserId;
 
-    public Souvenir(AVObject object) {
-        AVUser user = (AVUser) object.get(SouvenirDao.SOUVENIR_AUTHOR);
+    public Souvenir(AVObject object, AVUser avUser) {
         this.Content = object.getString(SouvenirDao.SOUVENIR_CONTENT);
         if (object.getCreatedAt() != null) {
             this.timeStamp = object.getCreatedAt().getTime();
         }
-     
-        this.Picture = object.getAVFile(SouvenirDao.SOUVENIR_PICTUREURL).getUrl();
-        this.Author = new User(user);
+        this.Picture = object.getString(SouvenirDao.SOUVENIR_PICTUREURL);
+        this.Author = new User(avUser);
         this.IsLikedMine = object.getBoolean(SouvenirDao.SOUVENIR_ISLIKEME);
         this.objectId = object.getObjectId();
         this.IsLikedOther = object.getBoolean(SouvenirDao.SOUVENIR_ISLIKEOTHER);
-        this.AuthorId = user.getObjectId();
-        this.ohterUserId = user.getString(SouvenirDao.SOUVENIR_OTHERUSERID);
+        this.AuthorId = avUser.getObjectId();
+        this.ohterUserId = avUser.getString(SouvenirDao.SOUVENIR_OTHERUSERID);
     }
 
     public Souvenir() {
@@ -136,4 +136,46 @@ public class Souvenir extends RealmObject implements Comparable {
     public void setOhterUserId(String ohterUserId) {
         this.ohterUserId = ohterUserId;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.Content);
+        dest.writeValue(this.timeStamp);
+        dest.writeString(this.Picture);
+        dest.writeParcelable(this.Author, flags);
+        dest.writeByte(IsLikedMine ? (byte) 1 : (byte) 0);
+        dest.writeString(this.objectId);
+        dest.writeByte(IsLikedOther ? (byte) 1 : (byte) 0);
+        dest.writeString(this.AuthorId);
+        dest.writeString(this.ohterUserId);
+    }
+
+    public Souvenir(Parcel in) {
+        this.Content = in.readString();
+        this.timeStamp = (Long) in.readValue(Long.class.getClassLoader());
+        this.Picture = in.readString();
+        this.Author = in.readParcelable(User.class.getClassLoader());
+        this.IsLikedMine = in.readByte() != 0;
+        this.objectId = in.readString();
+        this.IsLikedOther = in.readByte() != 0;
+        this.AuthorId = in.readString();
+        this.ohterUserId = in.readString();
+    }
+
+    public static final Parcelable.Creator<Souvenir> CREATOR = new Parcelable.Creator<Souvenir>() {
+        @Override
+        public Souvenir createFromParcel(Parcel source) {
+            return new Souvenir(source);
+        }
+
+        @Override
+        public Souvenir[] newArray(int size) {
+            return new Souvenir[size];
+        }
+    };
 }

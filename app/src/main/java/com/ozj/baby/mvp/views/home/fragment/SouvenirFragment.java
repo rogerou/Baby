@@ -7,24 +7,25 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.adapter.SouvenirAdapter;
 import com.ozj.baby.base.BaseFragment;
+import com.ozj.baby.event.AddSouvenirEvent;
 import com.ozj.baby.mvp.model.bean.Souvenir;
-import com.ozj.baby.mvp.model.realm.BabyRealm;
+import com.ozj.baby.mvp.model.rx.RxBabyRealm;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.SouvenirPresenterImpl;
 import com.ozj.baby.mvp.views.home.ISouvenirVIew;
 import com.ozj.baby.mvp.views.home.activity.AddSouvenirActivity;
 import com.ozj.baby.mvp.views.home.activity.ProfileActivity;
-import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import rx.Observer;
 import rx.Subscription;
 
 /**
@@ -34,7 +35,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     @Inject
     SouvenirPresenterImpl mSouvenirPresenterImpl;
     @Inject
-    BabyRealm mBabyRealm;
+    RxBabyRealm mRxBabyRealm;
     @Inject
     RxBus mRxbus;
     SouvenirAdapter mAdapter;
@@ -42,8 +43,13 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     RecyclerView rySouvenir;
     @Bind(R.id.swipeFreshLayout)
     SwipeRefreshLayout swipeFreshLayout;
-    List<Souvenir> mlist;
     Subscription mSubscription;
+
+    int page = 0;
+    int size = 2;
+    LinearLayoutManager layout;
+    List<Souvenir> mList;
+    boolean isFirst = true;
 
     @Override
     public int getLayoutRes() {
@@ -53,14 +59,13 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     @Override
     public void initViews() {
         mSouvenirPresenterImpl.attachView(this);
+        layout = new LinearLayoutManager(getActivity());
         swipeFreshLayout.setOnRefreshListener(this);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        rySouvenir.setLayoutManager(linearLayoutManager);
+        rySouvenir.setLayoutManager(layout);
         rySouvenir.setItemAnimator(new DefaultItemAnimator());
-        rySouvenir.addItemDecoration(new HorizontalDividerItemDecoration.Builder(getActivity())
-                .colorResId(R.color.DividerColor)
-                .size(1)
-                .build());
+        swipeFreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        Logger.init(this.getClass().getSimpleName());
+
 
     }
 
@@ -72,36 +77,104 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
 
     @Override
     public void initData() {
+        mSouvenirPresenterImpl.LoadingDataFromNet(size, 0);
+        mSubscription = mRxbus.toObservable(AddSouvenirEvent.class)
+                .subscribe(new Observer<AddSouvenirEvent>() {
+                    @Override
+                    public void onCompleted() {
+                    }
 
-        mlist = new ArrayList<>();
-//        if (mlist.size() == 0) {
-//            showToast("这里之间什么记录都没有哦，赶紧去增加几个吧");
-//        }
-        Souvenir souvenir = new Souvenir();
-        souvenir.setContent("qweqdasdasdasdsa");
-        souvenir.setLikedMine(false);
-        souvenir.setLikedOther(false);
-        souvenir.setTimeStamp(System.currentTimeMillis());
-        mlist.add(souvenir);
-        mAdapter = new SouvenirAdapter(mlist, getActivity());
-        rySouvenir.setAdapter(mAdapter);
-//        mSubscription = mRxbus.toObservable(UpdateComPlete.class)
-//                .subscribe(new Action1<UpdateComPlete>() {
-//                    @SuppressWarnings("unchecked")
-//                    @Override
-//                    public void call(UpdateComPlete updateComPlete) {
-//                        if (updateComPlete.isComPlete()) {
-//                            for (Souvenir souvenir : mSouvenirPresenterImpl.getDataFromLocal()) {
-//                                if (!mlist.contains(souvenir)) {
-//                                    mlist.add(souvenir);
-//                                }
+                    @Override
+                    public void onError(Throwable e) {
+                        showToast("出错啦，请稍后再试");
+                        Logger.e(e.getMessage());
+
+                    }
+
+                    @SuppressWarnings("unchecked")
+                    @Override
+                    public void onNext(AddSouvenirEvent addSouvenirEvent) {
+                        if (isFirst) {
+                            isFirst = false;
+                            mList = addSouvenirEvent.getMlist();
+                            mAdapter = new SouvenirAdapter(mList, getActivity());
+                            rySouvenir.setAdapter(mAdapter);
+                            rySouvenir.addOnScrollListener(new RecyclerView.OnScrollListener() {
+                                @Override
+                                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                                    super.onScrollStateChanged(recyclerView, newState);
+                                    if (newState == RecyclerView.SCROLL_STATE_DRAGGING && layout.findLastVisibleItemPosition() + 1 == mAdapter.getItemCount()) {
+                                        swipeFreshLayout.setRefreshing(true);
+                                        page++;
+                                        mSouvenirPresenterImpl.LoadingDataFromNet(size, page);
+                                    }
+                                }
+                            });
+
+                        } else {
+                            if (addSouvenirEvent.isList()) {
+                                if (addSouvenirEvent.isRefresh()) {
+                                    for (Souvenir s : addSouvenirEvent.getMlist()) {
+                                        if (!mList.contains(s)) {
+                                            mList.add(0, s);
+                                        }
+                                    }
+                                    mAdapter.notifyItemRangeInserted(0, addSouvenirEvent.getMlist().size());
+                                } else {
+                                    for (Souvenir s : addSouvenirEvent.getMlist()) {
+                                        if (!mList.contains(s)) {
+                                            mList.add(s);
+                                            mAdapter.notifyItemInserted(mList.size());
+                                        }
+                                    }
+
+                                }
+                            } else {
+                                if (!mList.contains(addSouvenirEvent.getSouvenir())) {
+                                    mList.add(0, addSouvenirEvent.getSouvenir());
+                                    mAdapter.notifyItemInserted(0);
+
+                                }
+                            }
+
+
+                        }
+
+                    }
+                });
+
+//                    .flatMap(new Func1<UpdateComPlete, Observable<RealmResults<Souvenir>>>() {
+//                        @Override
+//                        public Observable<RealmResults<Souvenir>> call(UpdateComPlete updateComPlete) {
+//                            if (updateComPlete.isComPlete()) {
+//                                return mRxBabyRealm.getSouvenirALl();
+//                            } else {
+//                                return Observable.empty();
 //                            }
-//                            Collections.sort(mlist);
-//                            mAdapter.notifyDataSetChanged();
+//
+//
 //                        }
-//                    }
-//                });
+//                    }).observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new Observer<RealmResults<Souvenir>>() {
+//                        @Override
+//                        public void onCompleted() {
+//
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable e) {
+//                            showToast("可能出了点小问题");
+//                            Logger.e(e.getMessage());
+//                        }
+//
+//                        @Override
+//                        public void onNext(RealmResults<Souvenir> souvenirs) {
+//                            mAdapter = new SouvenirAdapter(souvenirs, getActivity());
+//                            rySouvenir.setAdapter(mAdapter);
+//                        }
+//                    });
     }
+
 
     @Override
     public void initToolbar() {
@@ -118,14 +191,16 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
         swipeFreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                swipeFreshLayout.setRefreshing(true);
+                if (swipeFreshLayout != null)
+                    swipeFreshLayout.setRefreshing(true);
             }
         });
     }
 
     @Override
     public void hideRefreshingLoading() {
-        swipeFreshLayout.setRefreshing(false);
+        if (swipeFreshLayout != null)
+            swipeFreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -142,7 +217,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
 
     @Override
     public void onRefresh() {
-        mSouvenirPresenterImpl.LoadingDataFromNet();
+        mSouvenirPresenterImpl.LoadingDataFromNet(size, 0);
     }
 
     @Override

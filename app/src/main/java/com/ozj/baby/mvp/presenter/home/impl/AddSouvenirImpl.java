@@ -9,9 +9,10 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
+import com.ozj.baby.event.AddSouvenirEvent;
 import com.ozj.baby.mvp.model.bean.Souvenir;
 import com.ozj.baby.mvp.model.dao.SouvenirDao;
-import com.ozj.baby.mvp.model.realm.BabyRealm;
+import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.home.IAddSouvenirPresenter;
 import com.ozj.baby.mvp.views.home.IAddSouvenirView;
@@ -32,18 +33,18 @@ import rx.functions.Func1;
  */
 public class AddSouvenirImpl implements IAddSouvenirPresenter {
 
-    private BabyRealm mBabyRealm;
     private RxLeanCloud mRxLeanCloud;
     private Activity mActivity;
     private PreferenceManager manager;
+    private RxBus mRxbus;
     IAddSouvenirView mView;
 
     @Inject
-    public AddSouvenirImpl(Activity activity, BabyRealm babyRealm, RxLeanCloud rxLeanCloud, PreferenceManager preferenceManager) {
+    public AddSouvenirImpl(Activity activity, RxBus mRxbus, RxLeanCloud rxLeanCloud, PreferenceManager preferenceManager) {
         this.mActivity = activity;
-        this.mBabyRealm = babyRealm;
         this.mRxLeanCloud = rxLeanCloud;
         this.manager = preferenceManager;
+        this.mRxbus = mRxbus;
     }
 
     @Override
@@ -61,9 +62,9 @@ public class AddSouvenirImpl implements IAddSouvenirPresenter {
         try {
             avFile = AVFile.withFile(manager.getCurrentUserId(), file);
             mRxLeanCloud.UploadPicture(avFile)
-                    .flatMap(new Func1<String, Observable<Boolean>>() {
+                    .flatMap(new Func1<String, Observable<AVObject>>() {
                         @Override
-                        public Observable<Boolean> call(String s) {
+                        public Observable<AVObject> call(String s) {
                             AVObject object = new AVObject(SouvenirDao.TABLENAME);
                             object.put(SouvenirDao.SOUVENIR_AUTHOR, AVUser.getCurrentUser());
                             object.put(SouvenirDao.SOUVENIR_AUTHORID, AVUser.getCurrentUser().getObjectId());
@@ -72,29 +73,28 @@ public class AddSouvenirImpl implements IAddSouvenirPresenter {
                             object.put(SouvenirDao.SOUVENIR_ISLIKEOTHER, false);
                             object.put(SouvenirDao.SOUVENIR_OTHERUSERID, manager.GetLoverID());
                             object.put(SouvenirDao.SOUVENIR_PICTUREURL, s);
-                            Souvenir souvenir = new Souvenir(object);
-                            souvenir.setTimeStamp(System.currentTimeMillis());
-                            mBabyRealm.saveSouvenir(souvenir);
                             return mRxLeanCloud.SaveByLeanCloud(object);
 
                         }
                     }).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<Boolean>() {
+                    .subscribe(new Observer<AVObject>() {
                         @Override
                         public void onCompleted() {
+                            mView.showToast("上传成功");
                             mView.hideProgress();
+                            mView.close();
                         }
 
                         @Override
                         public void onError(Throwable e) {
-                            mView.showToast("出错啦，请检查一下网络是否有问题？");
+                            Logger.e(e.getMessage());
+                            mView.hideProgress();
                         }
 
                         @Override
-                        public void onNext(Boolean aBoolean) {
-                            if (aBoolean) {
-                                Logger.d("保存纪念册成功");
-                            }
+                        public void onNext(AVObject object) {
+                            Souvenir souvenir = new Souvenir(object, AVUser.getCurrentUser());
+                            mRxbus.post(new AddSouvenirEvent(false, false, souvenir));
                         }
                     });
 

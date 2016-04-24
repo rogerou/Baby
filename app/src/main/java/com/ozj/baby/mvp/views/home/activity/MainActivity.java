@@ -8,19 +8,21 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import com.jaeger.library.StatusBarUtil;
+import com.avos.avoscloud.AVUser;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
+import com.ozj.baby.mvp.model.dao.UserDao;
 import com.ozj.baby.mvp.presenter.home.impl.MainPresenterImpl;
 import com.ozj.baby.mvp.views.home.IMainView;
 import com.ozj.baby.mvp.views.home.fragment.SouvenirFragment;
@@ -30,6 +32,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, IMainView {
@@ -47,19 +50,20 @@ public class MainActivity extends BaseActivity
     CollapsingToolbarLayout collaspingToolBarlayout;
     @Bind(R.id.app_bar)
     AppBarLayout appBar;
-    @Bind(R.id.fragment_container)
-    FrameLayout fragmentContainer;
-    @Bind(R.id.nested_scroll)
-    NestedScrollView nestedScroll;
     @Bind(R.id.fab)
     FloatingActionButton fab;
     @Bind(R.id.nav_view)
     NavigationView navView;
     @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-
     @Inject
     ChoosePicDialog mPicDialog;
+
+    ImageView iv_avatar;
+    TextView tv_nick;
+    SouvenirFragment souvenirFragment;
+    static final int ChangeProfile = 8;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,8 +94,20 @@ public class MainActivity extends BaseActivity
         drawerLayout.setDrawerListener(toggle);
         toggle.syncState();
         navView.setNavigationItemSelectedListener(this);
-        mMainPersenter.replaceFragment(new SouvenirFragment());
-        StatusBarUtil.setTransparent(this);
+        View headerview = navView.getHeaderView(0);
+        iv_avatar = (ImageView) headerview.findViewById(R.id.iv_avatar);
+        tv_nick = (TextView) headerview.findViewById(R.id.tv_nick);
+        iv_avatar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toProfileActivity();
+            }
+        });
+        mMainPersenter.initData(iv_avatar, tv_nick);
+        souvenirFragment = new SouvenirFragment();
+        mMainPersenter.replaceFragment(souvenirFragment);
+        navView.getMenu().getItem(0).setChecked(true);
+
     }
 
     @Override
@@ -142,7 +158,7 @@ public class MainActivity extends BaseActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_moment) {
             // Handle the camera action
         } else if (id == R.id.nav_gallery) {
 
@@ -184,10 +200,8 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void toProfileActivity() {
-
-
         Intent intent = new Intent(this, ProfileActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, ChangeProfile);
 
     }
 
@@ -195,6 +209,16 @@ public class MainActivity extends BaseActivity
     public void toAddSouvenirActivity() {
         Intent intent = new Intent(this, AddSouvenirActivity.class);
         startActivity(intent);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ChangeProfile && resultCode == RESULT_OK) {
+            tv_nick.setText(AVUser.getCurrentUser().getString(UserDao.NICK));
+            Glide.with(this).load(AVUser.getCurrentUser().getString(UserDao.AVATARURL)).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).bitmapTransform(new CropCircleTransformation(this)).into(iv_avatar);
+        }
 
     }
 }

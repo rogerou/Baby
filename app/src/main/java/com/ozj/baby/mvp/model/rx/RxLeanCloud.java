@@ -7,6 +7,7 @@ import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.di.scope.ContextLife;
@@ -50,30 +51,31 @@ public class RxLeanCloud {
         return mRxLeanCloud;
     }
 
-    public Observable<Boolean> SaveByLeanCloud(final AVObject object) {
-        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+    public Observable<AVObject> SaveByLeanCloud(final AVObject object) {
+        return Observable.create(new Observable.OnSubscribe<AVObject>() {
             @Override
-            public void call(final Subscriber<? super Boolean> subscriber) {
+            public void call(final Subscriber<? super AVObject> subscriber) {
+                object.setFetchWhenSave(true);
                 object.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(AVException e) {
                         if (e == null) {
-                            subscriber.onNext(true);
+                            subscriber.onNext(object);
                         } else {
-                            subscriber.onNext(false);
                             subscriber.onError(e);
                         }
                         subscriber.onCompleted();
                     }
                 });
             }
-        });
+        }).subscribeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<Boolean> SaveUserByLeanCloud(final AVUser user) {
         return Observable.create(new Observable.OnSubscribe<Boolean>() {
             @Override
             public void call(final Subscriber<? super Boolean> subscriber) {
+
                 user.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(AVException e) {
@@ -88,7 +90,7 @@ public class RxLeanCloud {
                 });
 
             }
-        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+        }).subscribeOn(AndroidSchedulers.mainThread()).observeOn(AndroidSchedulers.mainThread());
 
     }
 
@@ -136,70 +138,42 @@ public class RxLeanCloud {
 
     }
 
-    public Observable<List<AVObject>> GetALlSouvenirByLeanCloud(final String authorId, final String theOtherID, final int size, final int page) {
+    public Observable<List<AVObject>> GetALlSouvenirByLeanCloud(final String authorId, final String loverid, final int size, final int page) {
 
         return Observable.create(new Observable.OnSubscribe<List<AVObject>>() {
             @Override
-            public void call(Subscriber<? super List<AVObject>> subscriber) {
+            public void call(final Subscriber<? super List<AVObject>> subscriber) {
 
                 AVQuery<AVObject> query = AVQuery.getQuery(SouvenirDao.TABLENAME);
                 query.whereEqualTo(SouvenirDao.SOUVENIR_AUTHORID, authorId);
                 AVQuery<AVObject> query1 = AVQuery.getQuery(SouvenirDao.TABLENAME);
-                query1.whereEqualTo(SouvenirDao.SOUVENIR_AUTHORID, theOtherID);
+                query1.whereEqualTo(SouvenirDao.SOUVENIR_AUTHORID, loverid);
                 List<AVQuery<AVObject>> queries = new ArrayList<>();
                 queries.add(query);
                 queries.add(query1);
-                AVQuery<AVObject> mainQuery = AVQuery.or(queries);
-                mainQuery.setLimit(size);
-                mainQuery.setSkip(size * page);
-                try {
-                    List<AVObject> list = mainQuery.find();
-                    subscriber.onNext(list);
-                } catch (AVException e) {
-                    e.printStackTrace();
-                    subscriber.onError(e);
-
-                }
-                subscriber.onCompleted();
-
+                AVQuery<AVObject> mainquery = AVQuery.or(queries);
+                mainquery.setLimit(size);
+                mainquery.setSkip(size * page);
+                mainquery.include(SouvenirDao.SOUVENIR_AUTHOR);
+                mainquery.orderByDescending("createdAt");
+                mainquery.setCachePolicy(AVQuery.CachePolicy.CACHE_ELSE_NETWORK);
+                mainquery.findInBackground(new FindCallback<AVObject>() {
+                    @Override
+                    public void done(List<AVObject> list, AVException e) {
+                        if (e == null) {
+                            subscriber.onNext(list);
+                        } else {
+                            subscriber.onError(e);
+                            Logger.e(e.getMessage());
+                        }
+                        subscriber.onCompleted();
+                    }
+                });
             }
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(AndroidSchedulers.mainThread());
 
     }
 
-//    public Observable<Integer> UploadAvatar(final AVFile file, final AVUser user) {
-//        return Observable.create(new Observable.OnSubscribe<Integer>() {
-//            @Override
-//            public void call(final Subscriber<? super Integer> subscriber) {
-//                file.saveInBackground(new SaveCallback() {
-//                    @Override
-//                    public void done(AVException e) {
-//                        if (e == null) {
-//                            Logger.d("上传头像成功");
-//                        } else {
-//                            subscriber.onError(e);
-//                        }
-//                    }
-//                }, new ProgressCallback() {
-//                    @Override
-//                    public void done(Integer integer) {
-//                        subscriber.onNext(integer);
-//                    }
-//                });
-//                user.put(UserDao.AVATARURL, file);
-//                user.saveInBackground(new SaveCallback() {
-//                    @Override
-//                    public void done(AVException e) {
-//                        if (e == null) {
-//                            subscriber.onCompleted();
-//                        } else {
-//                            subscriber.onError(e);
-//                        }
-//                    }
-//                });
-//            }
-//        }).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
-//    }
 
     public Observable<String> UploadPicture(final AVFile avFile) {
         return Observable.create(new Observable.OnSubscribe<String>() {
@@ -210,14 +184,14 @@ public class RxLeanCloud {
                     public void done(AVException e) {
                         if (e == null) {
                             subscriber.onNext(avFile.getUrl());
-                            subscriber.onCompleted();
                         } else {
                             subscriber.onError(e);
                         }
+                        subscriber.onCompleted();
                     }
                 });
             }
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(AndroidSchedulers.mainThread());
 
     }
 

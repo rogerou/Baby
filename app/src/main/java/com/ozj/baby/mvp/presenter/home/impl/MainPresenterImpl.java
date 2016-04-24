@@ -4,15 +4,23 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
 import android.text.TextUtils;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.avos.avoscloud.AVUser;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
+import com.ozj.baby.mvp.model.dao.UserDao;
 import com.ozj.baby.mvp.presenter.home.IMainPresenter;
 import com.ozj.baby.mvp.views.home.IMainView;
 import com.ozj.baby.util.PreferenceManager;
 
 import javax.inject.Inject;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by Administrator on 2016/4/20.
@@ -62,6 +70,7 @@ public class MainPresenterImpl implements IMainPresenter {
     public void fabOnclick() {
 
         if (isHavedLover()) {
+            
             mMainView.toAddSouvenirActivity();
         } else {
             mMainView.toProfileActivity();
@@ -73,5 +82,16 @@ public class MainPresenterImpl implements IMainPresenter {
     @Override
     public boolean isHavedLover() {
         return !TextUtils.isEmpty(mPreferenceManager.GetLoverID());
+    }
+
+    @Override
+    public void initData(ImageView avatar, TextView nick) {
+        AVUser user = AVUser.getCurrentUser();
+        String avatarurl = user.getString(UserDao.AVATARURL);
+        if (avatarurl != null) {
+            Glide.with(mContext).load(user.getString(UserDao.AVATARURL)).bitmapTransform(new CropCircleTransformation(mContext)).diskCacheStrategy(DiskCacheStrategy.ALL).into(avatar);
+        }
+        nick.setText(user.getString(UserDao.NICK));
+
     }
 }

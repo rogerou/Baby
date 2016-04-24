@@ -1,5 +1,7 @@
 package com.ozj.baby.mvp.views.home;
 
+import android.content.Intent;
+
 import com.ozj.baby.base.BaseView;
 
 /**
@@ -10,4 +12,6 @@ public interface IAddSouvenirView extends BaseView {
     void showDialog();
 
     void hideDialog();
+
+    void setResultCode(Intent intent);
 }

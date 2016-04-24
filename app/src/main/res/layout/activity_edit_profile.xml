@@ -29,11 +29,11 @@
 
         <ImageView
             android:id="@+id/iv_avatar"
-            android:layout_width="64dp"
-            android:layout_height="64dp"
+            android:layout_width="@dimen/drawer_header_icon"
+            android:layout_height="@dimen/drawer_header_icon"
             android:layout_marginLeft="@dimen/activity_horizontal_margin"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
-            android:src="@mipmap/gakki" />
+            android:src="@android:drawable/sym_def_app_icon" />
 
         <Button
             android:id="@+id/btn_change_avatar"

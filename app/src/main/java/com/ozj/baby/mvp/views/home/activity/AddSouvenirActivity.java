@@ -6,10 +6,12 @@ import android.net.Uri;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
@@ -46,6 +48,7 @@ public class AddSouvenirActivity extends BaseActivity implements Toolbar.OnMenuI
 
     File imgfile;
 
+
     @Override
     public void initDagger() {
         mActivityComponet.inject(this);
@@ -55,6 +58,7 @@ public class AddSouvenirActivity extends BaseActivity implements Toolbar.OnMenuI
     @Override
     public void initContentView() {
         setContentView(R.layout.activity_addsouvenir);
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary));
     }
 
     @Override
@@ -72,6 +76,12 @@ public class AddSouvenirActivity extends BaseActivity implements Toolbar.OnMenuI
         setSupportActionBar(toolbar);
         toolbar.setTitleTextColor(Color.WHITE);
         toolbar.setOnMenuItemClickListener(this);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                close();
+            }
+        });
     }
 
     @Override
@@ -109,6 +119,11 @@ public class AddSouvenirActivity extends BaseActivity implements Toolbar.OnMenuI
     }
 
     @Override
+    public void setResultCode(Intent intent) {
+        setResult(RESULT_OK, intent);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         EasyImage.handleActivityResult(requestCode, resultCode, data, this, new EasyImage.Callbacks() {
@@ -119,7 +134,8 @@ public class AddSouvenirActivity extends BaseActivity implements Toolbar.OnMenuI
 
             @Override
             public void onImagePicked(File file, EasyImage.ImageSource imageSource, int i) {
-                UCrop.of(Uri.fromFile(file), Uri.fromFile(file)).start(AddSouvenirActivity.this);
+                UCrop.of(Uri.fromFile(file), Uri.fromFile(file))
+                        .withMaxResultSize(800, 800).start(AddSouvenirActivity.this);
             }
 
             @Override

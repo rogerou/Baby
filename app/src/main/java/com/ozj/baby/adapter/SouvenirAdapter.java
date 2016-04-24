@@ -13,7 +13,10 @@ import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.like.LikeButton;
+import com.like.OnLikeListener;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.mvp.model.bean.Souvenir;
@@ -26,21 +29,21 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by Administrator on 2016/4/20.
  */
 public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHolder> {
 
-
     List<Souvenir> mList;
     Context mContext;
-
 
     public SouvenirAdapter(@NonNull List<Souvenir> List, Context context) {
         this.mList = List;
         this.mContext = context;
         com.orhanobut.logger.Logger.init(this.getClass().getSimpleName());
+
     }
 
 
@@ -52,50 +55,56 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.tvContent.setText(mList.get(position).getContent());
-//        holder.tvAuthor.setText(mList.get(position).getAuthor().getNick());
+        holder.tvAuthor.setText(mList.get(position).getAuthor().getNick());
         holder.txtTime.setText(getTime(mList.get(position).getTimeStamp()));
-//        Glide.with(mContext).load(mList.get(position).getPicture()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivSouvenirPic);
-//        Glide.with(mContext).load(mList.get(position).getAuthor().getAvatar()).bitmapTransform(new CropCircleTransformation(mContext)).into(holder.ivSpeaker);
-//        if (isMySouvenir(position)) {
-//            if (mList.get(position).isLikedMine()) {
-//                holder.likeButton.setLiked(true);
-//            } else {
-//                holder.likeButton.setLiked(false);
-//            }
-//
-//        } else {
-//            if (mList.get(position).isLikedOther()) {
-//                holder.likeButton.setLiked(true);
-//            } else {
-//                holder.likeButton.setLiked(false);
-//            }
-//        }
-//        holder.likeButton.setOnLikeListener(new OnLikeListener() {
-//            @Override
-//            public void liked(LikeButton likeButton) {
-//                likeButton.setLiked(true);
-//                if (isMySouvenir(holder.getAdapterPosition())) {
-//                    isLikeSouvenir(SouvenirDao.SOUVENIR_ISLIKEME, true);
-//                } else {
-//                    isLikeSouvenir(SouvenirDao.SOUVENIR_ISLIKEOTHER, true);
-//                }
-//            }
-//
-//            @Override
-//            public void unLiked(LikeButton likeButton) {
-//                likeButton.setLiked(false);
-//                if (isMySouvenir(holder.getAdapterPosition())) {
-//                    isLikeSouvenir(SouvenirDao.SOUVENIR_ISLIKEME, false);
-//
-//                } else {
-//                    isLikeSouvenir(SouvenirDao.SOUVENIR_ISLIKEOTHER, false);
-//                }
-//            }
-//        });
+        Glide.with(mContext).load(mList.get(position).getPicture()).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivSouvenirPic);
+        Glide.with(mContext).load(mList.get(position).getAuthor().getAvatar()).bitmapTransform(new CropCircleTransformation(mContext)).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivSpeaker);
+        if (isMySouvenir(position)) {
+            if (mList.get(position).isLikedMine()) {
+                holder.likeButton.setLiked(true);
+            } else {
+                holder.likeButton.setLiked(false);
+            }
+
+        } else {
+            if (mList.get(position).isLikedOther()) {
+                holder.likeButton.setLiked(true);
+            } else {
+                holder.likeButton.setLiked(false);
+            }
+        }
+        holder.likeButton.setOnLikeListener(new OnLikeListener() {
+            @Override
+            public void liked(LikeButton likeButton) {
+                if (isMySouvenir(holder.getAdapterPosition())) {
+                    isLikeSouvenir(holder, true, SouvenirDao.SOUVENIR_ISLIKEME, true);
+                } else {
+                    isLikeSouvenir(holder, false, SouvenirDao.SOUVENIR_ISLIKEOTHER, true);
+                }
+            }
+
+            @Override
+            public void unLiked(LikeButton likeButton) {
+                likeButton.setLiked(false);
+                if (isMySouvenir(holder.getAdapterPosition())) {
+                    isLikeSouvenir(holder,true,SouvenirDao.SOUVENIR_ISLIKEME, false);
+
+                } else {
+                    isLikeSouvenir(holder,false,SouvenirDao.SOUVENIR_ISLIKEOTHER, false);
+                }
+            }
+        });
 
     }
 
-    private void isLikeSouvenir(String like, boolean islike) {
+    private void isLikeSouvenir(ViewHolder holder, boolean isMine, String like, boolean islike) {
+        if (isMine) {
+            mList.get(holder.getAdapterPosition()).setLikedMine(islike);
+        } else {
+            mList.get(holder.getAdapterPosition()).setLikedOther(islike);
+            
+            
+        }
         AVObject mySouvenir = new AVObject(SouvenirDao.TABLENAME);
         mySouvenir.put(like, islike);
         mySouvenir.saveInBackground(new SaveCallback() {

@@ -20,9 +20,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <!--<meta-data-->
-        <!--android:name="com.ozj.baby.util.MyGlideMoudle"-->
-        <!--android:value="GlideModule" />-->
+
 
         <activity
             android:name=".mvp.views.login.activity.SplashActivity"

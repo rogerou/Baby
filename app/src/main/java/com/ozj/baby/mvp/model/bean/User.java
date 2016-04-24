@@ -1,5 +1,8 @@
 package com.ozj.baby.mvp.model.bean;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.avos.avoscloud.AVUser;
 import com.ozj.baby.mvp.model.dao.UserDao;
 
@@ -9,7 +12,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by Administrator on 2016/4/17.
  */
-public class User extends RealmObject {
+public class User extends RealmObject implements Parcelable {
 
     private String nick;
     private String avatar;
@@ -42,8 +45,8 @@ public class User extends RealmObject {
             this.nick = user.getString(UserDao.NICK);
         }
         this.createTime = user.getCreatedAt().getTime();
-        if (user.getString(UserDao.LOVER) != null) {
-            this.anotherUserID = user.getString(UserDao.LOVER);
+        if (user.getString(UserDao.LOVERID) != null) {
+            this.anotherUserID = user.getString(UserDao.LOVERID);
         }
     }
 
@@ -116,4 +119,44 @@ public class User extends RealmObject {
     public void setAnotherUserID(String anotherUserID) {
         this.anotherUserID = anotherUserID;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.nick);
+        dest.writeString(this.avatar);
+        dest.writeString(this.city);
+        dest.writeString(this.loverusername);
+        dest.writeString(this.ID);
+        dest.writeLong(this.createTime);
+        dest.writeString(this.sex);
+        dest.writeString(this.anotherUserID);
+    }
+
+    protected User(Parcel in) {
+        this.nick = in.readString();
+        this.avatar = in.readString();
+        this.city = in.readString();
+        this.loverusername = in.readString();
+        this.ID = in.readString();
+        this.createTime = in.readLong();
+        this.sex = in.readString();
+        this.anotherUserID = in.readString();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

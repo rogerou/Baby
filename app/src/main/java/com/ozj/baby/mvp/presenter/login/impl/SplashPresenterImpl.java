@@ -149,6 +149,7 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
                 if (e == null && avUser != null) {
                     mPreferenceManager.setIslogin(true);
                     mPreferenceManager.saveCurrentUserId(avUser.getObjectId());
+                    mPreferenceManager.SaveLoverId(avUser.getString(UserDao.LOVERID));
                     mSplashView.toMainActivity();
                     mSplashView.close();
                 } else {

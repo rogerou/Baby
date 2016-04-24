@@ -96,7 +96,7 @@ dependencies {
     //添加android缺失的部分javax注解
 
     //other
-    compile 'com.github.jd-alexander:LikeButton:0.1.8'
+    compile 'com.github.jd-alexander:LikeButton:0.2.0'
     compile 'com.facebook.shimmer:shimmer:0.1.0@aar'
     compile 'hanks.xyz:htextview-library:0.1.3'
     compile 'com.github.orhanobut:logger:1.12'

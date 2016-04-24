@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
@@ -56,7 +57,8 @@ public class ProfileActivity extends BaseActivity implements IProfileView {
 
     @Override
     public void initContentView() {
-        setContentView(R.layout.activity_edit_info);
+        setContentView(R.layout.activity_edit_profile);
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary));
     }
 
     @Override
@@ -94,7 +96,7 @@ public class ProfileActivity extends BaseActivity implements IProfileView {
                 String sex = sexInput.getEditText().getText().toString();
                 mProfilePresenterImpl.commit(nick, loverusername, city, sex);
                 break;
-            
+
             default:
                 break;
         }
@@ -118,6 +120,11 @@ public class ProfileActivity extends BaseActivity implements IProfileView {
     @Override
     public void HidePicChoiceDialog() {
         mDialog.dismiss();
+    }
+
+    @Override
+    public void setResultCode() {
+        setResult(RESULT_OK);
     }
 
 

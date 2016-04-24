@@ -11,4 +11,6 @@ public interface IProfileView extends BaseView {
 
     void HidePicChoiceDialog();
 
+
+    void setResultCode();
 }

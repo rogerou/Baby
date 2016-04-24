@@ -3,21 +3,23 @@ package com.ozj.baby.mvp.presenter.home.impl;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
-import com.ozj.baby.event.UpdateComPlete;
+import com.ozj.baby.event.AddSouvenirEvent;
 import com.ozj.baby.mvp.model.bean.Souvenir;
-import com.ozj.baby.mvp.model.realm.BabyRealm;
+import com.ozj.baby.mvp.model.dao.SouvenirDao;
+import com.ozj.baby.mvp.model.rx.RxBabyRealm;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.home.ISouvenirPresenter;
 import com.ozj.baby.mvp.views.home.ISouvenirVIew;
 import com.ozj.baby.util.PreferenceManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -32,20 +34,18 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
 
     private Context mContext;
     private Activity mActivity;
-    private BabyRealm mBabyRealm;
+    private RxBabyRealm mRxBabyRealm;
     private RxLeanCloud mRxleanCloud;
     private RxBus mRxBus;
 
     private PreferenceManager mPreferencepManager;
     ISouvenirVIew mSouvenirView;
-    int size = 20;
-    int page = 0;
 
     @Inject
-    public SouvenirPresenterImpl(@ContextLife("Activity") Context context, Activity activity, BabyRealm babyRealm, RxLeanCloud rxLeanCloud, PreferenceManager preferenceManager, RxBus rxbus) {
+    public SouvenirPresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxBabyRealm rxBabyRealm, RxLeanCloud rxLeanCloud, PreferenceManager preferenceManager, RxBus rxbus) {
         mContext = context;
         mActivity = activity;
-        mBabyRealm = babyRealm;
+        mRxBabyRealm = rxBabyRealm;
         mRxBus = rxbus;
         mRxleanCloud = rxLeanCloud;
         mPreferencepManager = preferenceManager;
@@ -58,65 +58,41 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
         mSouvenirView.showRefreshingLoading();
     }
 
-    @Override
-    public void RefreshingData() {
-        mSouvenirView.showRefreshingLoading();
-
-
-    }
 
     @Override
-    public List<Souvenir> getDataFromLocal() {
+    public void LoadingDataFromNet(final int size, final int page) {
         mSouvenirView.showRefreshingLoading();
-        return mBabyRealm.getSouvenirALl();
-    }
-
-
-    @Override
-    public void LoadingDataFromNet() {
-        mSouvenirView.showRefreshingLoading();
-        mRxleanCloud.GetALlSouvenirByLeanCloud(mPreferencepManager.getCurrentUserId(), mPreferencepManager.GetLoverID(), size, page++)
+        mRxleanCloud.GetALlSouvenirByLeanCloud(mPreferencepManager.getCurrentUserId(), mPreferencepManager.GetLoverID(), size, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<AVObject>>() {
                     @Override
                     public void onCompleted() {
                         mSouvenirView.hideRefreshingLoading();
-                        mRxBus.post(new UpdateComPlete(true));
+
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        Logger.e(e.getMessage());
-                        mSouvenirView.showToast("先检查网络有没有问题，没有就是我的问题（坏笑脸）");
+                        mSouvenirView.hideRefreshingLoading();
+                        mSouvenirView.showToast("可能出了点错误哦");
                     }
 
                     @Override
                     public void onNext(List<AVObject> avObjects) {
-                        if (avObjects.size() == 0) {
-                            return;
-                        }
-                        for (int i = 0; i < avObjects.size(); i++) {
-                            mBabyRealm.saveSouvenir(new Souvenir(avObjects.get(i)));
-                        }
+                        if (avObjects.size() != 0) {
+                            List<Souvenir> list = new ArrayList<>();
+                            for (AVObject object : avObjects) {
+                                list.add(new Souvenir(object, (AVUser) object.get(SouvenirDao.SOUVENIR_AUTHOR)));
+                            }
+                            if (page == 0) {
+                                mRxBus.post(new AddSouvenirEvent(true, true, list));
+                            } else {
+                                mRxBus.post(new AddSouvenirEvent(false, true, list));
+                            }
 
+                        }
                     }
                 });
-    }
-
-
-    @Override
-    public boolean isHavedLover() {
-        return !TextUtils.isEmpty(mPreferencepManager.GetLoverID());
-    }
-
-    @Override
-    public void addNewSouvenir() {
-        if (isHavedLover()) {
-            mSouvenirView.toAddNewSouvenirActivity();
-        } else {
-            mSouvenirView.ToProFileActivity();
-            mSouvenirView.showToast("请先设置您的另一半才能使用哦");
-        }
 
 
     }

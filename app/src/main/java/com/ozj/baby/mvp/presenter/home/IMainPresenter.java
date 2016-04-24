@@ -1,6 +1,8 @@
 package com.ozj.baby.mvp.presenter.home;
 
 import android.app.Fragment;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.ozj.baby.base.BasePresenter;
 
@@ -16,5 +18,8 @@ public interface IMainPresenter extends BasePresenter {
     void fabOnclick();
 
     boolean isHavedLover();
+
+    void initData(ImageView avatar, TextView nick);
+
 
 }
