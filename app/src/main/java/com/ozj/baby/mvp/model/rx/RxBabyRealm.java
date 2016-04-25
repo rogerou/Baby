@@ -3,13 +3,17 @@ package com.ozj.baby.mvp.model.rx;
 import android.content.Context;
 
 import com.ozj.baby.di.scope.ContextLife;
+import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.bean.User;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import io.realm.RealmResults;
 import rx.Observable;
 
 /**
@@ -74,6 +78,27 @@ public class RxBabyRealm {
 
     public Observable<User> getUser(String id) {
         return mRealm.where(User.class).equalTo("ID", id).findFirst().asObservable();
+
+    }
+
+    public RealmResults<Gallery> getAllGallery() {
+        return mRealm.where(Gallery.class).findAll();
+    }
+
+    public void saveGalleryList(final List<Gallery> list) {
+        mRealm.executeTransactionAsync(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                realm.copyToRealmOrUpdate(list);
+            }
+        });
+
+    }
+
+    public void saveGallery(Gallery gallery) {
+        mRealm.beginTransaction();
+        mRealm.copyToRealmOrUpdate(gallery);
+        mRealm.commitTransaction();
 
     }
 

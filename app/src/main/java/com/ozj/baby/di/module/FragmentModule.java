@@ -1,7 +1,6 @@
 package com.ozj.baby.di.module;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 
 import com.ozj.baby.di.scope.ContextLife;
@@ -16,9 +15,9 @@ import dagger.Provides;
 @Module
 public class FragmentModule {
 
-    private Fragment mFragment;
+    private android.app.Fragment mFragment;
 
-    public FragmentModule(Fragment fragment) {
+    public FragmentModule(android.app.Fragment fragment) {
         this.mFragment = fragment;
     }
 
@@ -37,7 +36,7 @@ public class FragmentModule {
 
     @Provides
     @FragmentScope
-    public Fragment provideFragment() {
+    public android.app.Fragment provideFragment() {
         return mFragment;
     }
 

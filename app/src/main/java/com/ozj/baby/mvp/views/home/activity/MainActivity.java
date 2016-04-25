@@ -27,6 +27,7 @@ import com.ozj.baby.mvp.model.dao.UserDao;
 import com.ozj.baby.mvp.presenter.home.impl.MainPresenterImpl;
 import com.ozj.baby.mvp.views.home.IMainView;
 import com.ozj.baby.mvp.views.home.fragment.SouvenirFragment;
+import com.ozj.baby.mvp.views.navigation.fragment.GalleryFragment;
 import com.ozj.baby.widget.ChoosePicDialog;
 
 import javax.inject.Inject;
@@ -60,13 +61,15 @@ public class MainActivity extends BaseActivity
     @Inject
     ChoosePicDialog mPicDialog;
 
-    ImageView iv_avatar;
-    TextView tv_nick;
-    SouvenirFragment souvenirFragment;
-    static final int ChangeProfile = 8;
+
     @Bind(R.id.coordinatorlayout)
     CoordinatorLayout coordinatorlayout;
 
+    ImageView iv_avatar;
+    TextView tv_nick;
+    SouvenirFragment souvenirFragment;
+    GalleryFragment galleryFragment;
+    static final int ChangeProfile = 8;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +111,7 @@ public class MainActivity extends BaseActivity
         });
         mMainPersenter.initData(iv_avatar, tv_nick);
         souvenirFragment = SouvenirFragment.newInsatance();
-        mMainPersenter.replaceFragment(souvenirFragment);
+        getFragmentManager().beginTransaction().add(R.id.fragment_container, souvenirFragment).commit();
         navView.getMenu().getItem(0).setChecked(true);
 
     }
@@ -134,6 +137,13 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
@@ -155,16 +165,25 @@ public class MainActivity extends BaseActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    @SuppressWarnings({"StatementWithEmptyBody", "ConstantConditions"})
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
         if (id == R.id.nav_moment) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+            if (souvenirFragment == null) {
+                souvenirFragment = SouvenirFragment.newInsatance();
+            }
+            mMainPersenter.replaceFragment(souvenirFragment);
+            unlockAppBarOpen();
 
+        } else if (id == R.id.nav_gallery) {
+            if (galleryFragment == null) {
+                galleryFragment = GalleryFragment.newInstance();
+            }
+            mMainPersenter.replaceFragment(galleryFragment);
+            lockAppBarClosed();
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -176,6 +195,7 @@ public class MainActivity extends BaseActivity
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
+        invalidateOptionsMenu();
         return true;
     }
 
@@ -225,4 +245,16 @@ public class MainActivity extends BaseActivity
 
     }
 
+    public void lockAppBarClosed() {
+        appBar.setExpanded(false, false);
+        appBar.setActivated(false);
+    }
+
+    public void unlockAppBarOpen() {
+        appBar.setExpanded(true, true);
+        appBar.setActivated(true);
+
+    }
+
 }
+

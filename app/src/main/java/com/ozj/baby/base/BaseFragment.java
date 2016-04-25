@@ -19,7 +19,6 @@ import butterknife.ButterKnife;
  * Created by Administrator on 2016/3/25.
  */
 public abstract class BaseFragment extends Fragment implements BaseView {
-
     private BaseActivity mActivity;
     private View mLayoutView;
     public FragmentComponet mFragmentComponet;

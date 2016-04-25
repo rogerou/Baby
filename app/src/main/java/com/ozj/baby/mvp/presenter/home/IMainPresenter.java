@@ -11,9 +11,8 @@ import com.ozj.baby.base.BasePresenter;
  */
 public interface IMainPresenter extends BasePresenter {
 
-    void addFragment(Fragment fragment);
 
-    void replaceFragment(Fragment fragment);
+    void replaceFragment( Fragment to);
 
     void fabOnclick();
 

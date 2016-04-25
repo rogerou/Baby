@@ -46,7 +46,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     Subscription mSubscription;
 
     int page = 0;
-    int size = 2;
+    int size = 15;
     LinearLayoutManager layout;
     List<Souvenir> mList;
     boolean isFirst = true;
@@ -100,7 +100,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
                     @Override
                     public void onNext(AddSouvenirEvent addSouvenirEvent) {
                         if (isFirst) {
-                            isFirst = false;
+
                             mList = addSouvenirEvent.getMlist();
                             mAdapter = new SouvenirAdapter(mList, getActivity());
                             rySouvenir.setAdapter(mAdapter);
@@ -115,7 +115,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
                                     }
                                 }
                             });
-
+                            isFirst = false;
                         } else {
                             if (addSouvenirEvent.isList()) {
                                 if (addSouvenirEvent.isRefresh()) {

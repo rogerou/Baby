@@ -2,6 +2,7 @@ package com.ozj.baby.mvp.presenter.home.impl;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.ImageView;
@@ -30,6 +31,7 @@ public class MainPresenterImpl implements IMainPresenter {
     private Context mContext;
     private Activity mActivity;
     private PreferenceManager mPreferenceManager;
+    Fragment isFragment;
 
     @Inject
     public MainPresenterImpl(@ContextLife("Activity") Context context, Activity activity, PreferenceManager preferenceManager) {
@@ -51,18 +53,18 @@ public class MainPresenterImpl implements IMainPresenter {
 
     }
 
-    @Override
-    public void addFragment(Fragment fragment) {
-        if (fragment != null) {
-            mActivity.getFragmentManager().beginTransaction().add(R.id.fragment_container, fragment).commit();
-        }
-
-    }
 
     @Override
-    public void replaceFragment(Fragment fragment) {
-        if (fragment != null) {
-            mActivity.getFragmentManager().beginTransaction().replace(R.id.fragment_container, fragment).commit();
+    public void replaceFragment(Fragment to) {
+        if (isFragment != to) {
+            FragmentManager fragmentManager = mActivity.getFragmentManager();
+            if (!to.isAdded()) {
+                fragmentManager.beginTransaction().hide(isFragment).add(R.id.fragment_container, to).commit();
+
+            } else {
+                fragmentManager.beginTransaction().hide(isFragment).show(to).commit();
+            }
+            isFragment = to;
         }
     }
 
@@ -70,7 +72,7 @@ public class MainPresenterImpl implements IMainPresenter {
     public void fabOnclick() {
 
         if (isHavedLover()) {
-            
+
             mMainView.toAddSouvenirActivity();
         } else {
             mMainView.toProfileActivity();

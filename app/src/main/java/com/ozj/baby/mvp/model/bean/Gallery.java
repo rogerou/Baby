@@ -4,7 +4,11 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 
+import com.avos.avoscloud.AVObject;
+import com.ozj.baby.mvp.model.dao.GalleryDao;
+
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by YX201603-6 on 2016/4/25.
@@ -12,8 +16,17 @@ import io.realm.RealmObject;
 public class Gallery extends RealmObject implements Parcelable {
     private String imgUrl;
     private long timement;
+    @PrimaryKey
     private String objectId;
     private String authorId;
+
+    public Gallery(AVObject object) {
+        this.imgUrl = object.getString(GalleryDao.IMGURL);
+        this.timement = object.getCreatedAt().getTime();
+        this.objectId = object.getObjectId();
+        this.authorId = object.getString(GalleryDao.AUTHORID);
+    }
+
 
     public String getObjectId() {
         return objectId;

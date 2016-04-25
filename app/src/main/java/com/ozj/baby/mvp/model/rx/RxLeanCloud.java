@@ -11,7 +11,6 @@ import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.di.scope.ContextLife;
-import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.dao.GalleryDao;
 import com.ozj.baby.mvp.model.dao.SouvenirDao;
 import com.ozj.baby.mvp.model.dao.UserDao;
