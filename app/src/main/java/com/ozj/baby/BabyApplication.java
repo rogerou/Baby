@@ -4,12 +4,14 @@ import android.app.Application;
 
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVOSCloud;
+import com.avos.avoscloud.AVObject;
 import com.orhanobut.logger.AndroidLogTool;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.di.component.ApplicationComponet;
 import com.ozj.baby.di.component.DaggerApplicationComponet;
 import com.ozj.baby.di.module.ApplicationModule;
+import com.ozj.baby.mvp.model.bean.Gallery;
 import com.squareup.leakcanary.LeakCanary;
 
 /**

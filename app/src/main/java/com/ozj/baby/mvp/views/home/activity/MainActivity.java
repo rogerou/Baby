@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -63,6 +64,8 @@ public class MainActivity extends BaseActivity
     TextView tv_nick;
     SouvenirFragment souvenirFragment;
     static final int ChangeProfile = 8;
+    @Bind(R.id.coordinatorlayout)
+    CoordinatorLayout coordinatorlayout;
 
 
     @Override
@@ -104,7 +107,7 @@ public class MainActivity extends BaseActivity
             }
         });
         mMainPersenter.initData(iv_avatar, tv_nick);
-        souvenirFragment = new SouvenirFragment();
+        souvenirFragment = SouvenirFragment.newInsatance();
         mMainPersenter.replaceFragment(souvenirFragment);
         navView.getMenu().getItem(0).setChecked(true);
 
@@ -221,4 +224,5 @@ public class MainActivity extends BaseActivity
         }
 
     }
+
 }

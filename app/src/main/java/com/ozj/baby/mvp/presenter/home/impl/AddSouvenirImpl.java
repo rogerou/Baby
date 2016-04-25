@@ -34,14 +34,12 @@ import rx.functions.Func1;
 public class AddSouvenirImpl implements IAddSouvenirPresenter {
 
     private RxLeanCloud mRxLeanCloud;
-    private Activity mActivity;
     private PreferenceManager manager;
     private RxBus mRxbus;
     IAddSouvenirView mView;
 
     @Inject
-    public AddSouvenirImpl(Activity activity, RxBus mRxbus, RxLeanCloud rxLeanCloud, PreferenceManager preferenceManager) {
-        this.mActivity = activity;
+    public AddSouvenirImpl(RxBus mRxbus, RxLeanCloud rxLeanCloud, PreferenceManager preferenceManager) {
         this.mRxLeanCloud = rxLeanCloud;
         this.manager = preferenceManager;
         this.mRxbus = mRxbus;

@@ -2,7 +2,9 @@ package com.ozj.baby.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
@@ -92,6 +94,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
             Toast.makeText(BaseActivity.this, msg, Toast.LENGTH_SHORT).show();
     }
 
+
     @Override
     public void hideProgress() {
         if (mProgressdialog != null) {
@@ -112,4 +115,5 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         ButterKnife.unbind(this);
 
     }
+
 }

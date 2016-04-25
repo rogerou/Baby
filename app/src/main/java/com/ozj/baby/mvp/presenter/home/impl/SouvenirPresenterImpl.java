@@ -32,9 +32,6 @@ import rx.android.schedulers.AndroidSchedulers;
  */
 public class SouvenirPresenterImpl implements ISouvenirPresenter {
 
-    private Context mContext;
-    private Activity mActivity;
-    private RxBabyRealm mRxBabyRealm;
     private RxLeanCloud mRxleanCloud;
     private RxBus mRxBus;
 
@@ -42,10 +39,7 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
     ISouvenirVIew mSouvenirView;
 
     @Inject
-    public SouvenirPresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxBabyRealm rxBabyRealm, RxLeanCloud rxLeanCloud, PreferenceManager preferenceManager, RxBus rxbus) {
-        mContext = context;
-        mActivity = activity;
-        mRxBabyRealm = rxBabyRealm;
+    public SouvenirPresenterImpl(RxLeanCloud rxLeanCloud, PreferenceManager preferenceManager, RxBus rxbus) {
         mRxBus = rxbus;
         mRxleanCloud = rxLeanCloud;
         mPreferencepManager = preferenceManager;

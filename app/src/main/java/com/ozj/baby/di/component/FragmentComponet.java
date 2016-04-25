@@ -9,6 +9,7 @@ import com.ozj.baby.mvp.model.rx.RxBabyRealm;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.views.home.fragment.SouvenirFragment;
+import com.ozj.baby.mvp.views.navigation.fragment.GalleryFragment;
 import com.ozj.baby.util.PreferenceManager;
 
 import dagger.Component;
@@ -30,9 +31,12 @@ public interface FragmentComponet {
     PreferenceManager getPreferenceManager();
 
     RxBus getRxBus();
+
     RxLeanCloud getRxLeanCloud();
 
     void inject(SouvenirFragment fragment);
-    
+
+    void inject(GalleryFragment fragment);
+
 }
 

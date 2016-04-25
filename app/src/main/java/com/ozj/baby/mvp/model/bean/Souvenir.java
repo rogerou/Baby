@@ -3,6 +3,7 @@ package com.ozj.baby.mvp.model.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.avos.avoscloud.AVClassName;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.ozj.baby.mvp.model.dao.SouvenirDao;
@@ -12,7 +13,7 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by Administrator on 2016/4/20.
  */
-public class Souvenir implements Comparable, Parcelable {
+public class Souvenir  implements Comparable, Parcelable {
     private String Content;
     private Long timeStamp;
     private String Picture;

@@ -41,6 +41,9 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     public abstract void initToolbar();
 
+    public abstract void initPresenter();
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +72,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         initDagger();
         initViews();
         initToolbar();
+        initPresenter();
         initData();
         super.onViewCreated(view, savedInstanceState);
     }

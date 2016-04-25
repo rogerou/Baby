@@ -7,7 +7,8 @@
     android:layout_marginLeft="@dimen/spacing_small"
     android:layout_marginRight="@dimen/spacing_small"
     android:layout_marginStart="@dimen/spacing_small"
-    android:layout_marginTop="@dimen/spacing_small">
+    android:layout_marginTop="@dimen/spacing_small"
+    app:cardElevation="5dp">
 
     <RelativeLayout
         android:id="@+id/card_view"
@@ -80,7 +81,7 @@
             android:textColor="@color/grey600"
             android:textSize="14sp" />
 
-        
+
         <com.like.LikeButton
             android:id="@+id/like_button"
             android:layout_width="wrap_content"

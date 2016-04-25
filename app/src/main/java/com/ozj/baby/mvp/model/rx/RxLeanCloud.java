@@ -11,6 +11,8 @@ import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.di.scope.ContextLife;
+import com.ozj.baby.mvp.model.bean.Gallery;
+import com.ozj.baby.mvp.model.dao.GalleryDao;
 import com.ozj.baby.mvp.model.dao.SouvenirDao;
 import com.ozj.baby.mvp.model.dao.UserDao;
 
@@ -194,5 +196,36 @@ public class RxLeanCloud {
         }).subscribeOn(AndroidSchedulers.mainThread());
 
     }
+
+    public Observable<List<AVObject>> FetchAllPicture(final String authorId, final String theotherone) {
+        return Observable.create(new Observable.OnSubscribe<List<AVObject>>() {
+            @Override
+            public void call(final Subscriber<? super List<AVObject>> subscriber) {
+                AVQuery<AVObject> query = AVQuery.getQuery(GalleryDao.TABLENAME);
+                query.whereEqualTo(GalleryDao.AUTHORID, authorId);
+                AVQuery<AVObject> query1 = AVQuery.getQuery(GalleryDao.TABLENAME);
+                query1.whereEqualTo(GalleryDao.AUTHORID, theotherone);
+                List<AVQuery<AVObject>> queries = new ArrayList<>();
+                AVQuery<AVObject> mainquery = AVQuery.or(queries);
+                mainquery.orderByDescending("createdAt");
+                mainquery.findInBackground(new FindCallback<AVObject>() {
+                    @Override
+                    public void done(List<AVObject> list, AVException e) {
+                        if (e == null) {
+                            subscriber.onNext(list);
+                        } else {
+                            subscriber.onError(e);
+
+                        }
+                        subscriber.onCompleted();
+                    }
+                });
+
+            }
+        }).subscribeOn(AndroidSchedulers.mainThread());
+
+
+    }
+
 
 }

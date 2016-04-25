@@ -58,7 +58,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
 
     @Override
     public void initViews() {
-        mSouvenirPresenterImpl.attachView(this);
+
         layout = new LinearLayoutManager(getActivity());
         swipeFreshLayout.setOnRefreshListener(this);
         rySouvenir.setLayoutManager(layout);
@@ -66,6 +66,11 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
         swipeFreshLayout.setColorSchemeResources(R.color.colorPrimary);
         Logger.init(this.getClass().getSimpleName());
 
+
+    }
+
+    public static SouvenirFragment newInsatance() {
+        return new SouvenirFragment();
 
     }
 
@@ -183,6 +188,11 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
             toolbar.setDisplayHomeAsUpEnabled(true);
         }
 
+    }
+
+    @Override
+    public void initPresenter() {
+        mSouvenirPresenterImpl.attachView(this);
     }
 
 
