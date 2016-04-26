@@ -154,7 +154,7 @@ public class MainPresenterImpl implements IMainPresenter {
                         @Override
                         public void onNext(Gallery gallery) {
                             mMainView.showToast("保存成功");
-                            mRxbus.post(new AddGalleryEvent(gallery, false));
+                            mRxbus.post(new AddGalleryEvent(gallery, true));
                         }
                     });
         } catch (FileNotFoundException | URISyntaxException e) {

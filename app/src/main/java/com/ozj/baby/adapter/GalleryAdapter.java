@@ -21,6 +21,7 @@ import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by YX201603-6 on 2016/4/25.
@@ -45,6 +46,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.tvTime.setText(getTime(mList.get(position).getCreatedAt()));
+        Glide.with(mContext).load(mList.get(position).getUser().getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).bitmapTransform(new CropCircleTransformation(mContext)).crossFade().into(holder.ivAvatar);
         Glide.with(mContext).load(mList.get(position).getImgUrl()).thumbnail((float) 0.8).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivGallery);
         if (mlistener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -86,6 +88,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         ImageView ivGallery;
         @Bind(R.id.tv_time)
         TextView tvTime;
+        @Bind(R.id.iv_avatar)
+        ImageView ivAvatar;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -94,7 +98,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     }
 
     private String getTime(Date timestamp) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
         return simpleDateFormat.format(timestamp);
     }
 }

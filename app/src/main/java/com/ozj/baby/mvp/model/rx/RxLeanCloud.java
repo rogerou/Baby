@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
-import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
@@ -154,11 +153,12 @@ public class RxLeanCloud {
                 queries.add(query);
                 queries.add(query1);
                 AVQuery<Souvenir> mainquery = AVQuery.or(queries);
+                mainquery.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
                 mainquery.setLimit(size);
                 mainquery.setSkip(size * page);
                 mainquery.include(SouvenirDao.SOUVENIR_AUTHOR);
                 mainquery.orderByDescending("createdAt");
-                mainquery.setCachePolicy(AVQuery.CachePolicy.CACHE_ELSE_NETWORK);
+
                 mainquery.findInBackground(new FindCallback<Souvenir>() {
                     @Override
                     public void done(List<Souvenir> list, AVException e) {
@@ -219,7 +219,7 @@ public class RxLeanCloud {
 
     }
 
-    public Observable<List<Gallery>> FetchAllPicture(final String authorId, final String theotherone) {
+    public Observable<List<Gallery>> FetchAllPicture(final String authorId, final String theotherone, final boolean isFirst, final int size, final int page) {
         return Observable.create(new Observable.OnSubscribe<List<Gallery>>() {
             @Override
             public void call(final Subscriber<? super List<Gallery>> subscriber) {
@@ -232,6 +232,14 @@ public class RxLeanCloud {
                 queries.add(query1);
                 AVQuery<Gallery> mainquery = AVQuery.or(queries);
                 mainquery.orderByDescending("createdAt");
+                mainquery.include(GalleryDao.AUTHOR);
+                if (isFirst) {
+                    mainquery.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
+                } else {
+                    mainquery.setLimit(size);
+                    mainquery.skip(size * page);
+                    mainquery.setCachePolicy(AVQuery.CachePolicy.CACHE_ELSE_NETWORK);
+                }
                 mainquery.setCachePolicy(AVQuery.CachePolicy.NETWORK_ELSE_CACHE);
                 mainquery.findInBackground(new FindCallback<Gallery>() {
 

@@ -1,10 +1,8 @@
 package com.ozj.baby.mvp.views.home.fragment;
 
 import android.content.Intent;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -27,6 +25,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import rx.Observer;
 import rx.Subscription;
 
@@ -48,10 +47,10 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     Subscription mSubscription;
 
     int page = 0;
-    int size = 15;
+    int size = 2;
     LinearLayoutManager layout;
-    List<Souvenir> mList;
-    boolean isFirst = true;
+    List<Souvenir> mList = new ArrayList<>();
+    boolean isFirst;
 
     @Override
     public int getLayoutRes() {
@@ -63,9 +62,22 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
         layout = new LinearLayoutManager(getActivity());
         swipeFreshLayout.setOnRefreshListener(this);
         rySouvenir.setLayoutManager(layout);
-        rySouvenir.setItemAnimator(new DefaultItemAnimator());
+        rySouvenir.setItemAnimator(new FadeInUpAnimator());
         swipeFreshLayout.setColorSchemeResources(R.color.colorPrimary);
         Logger.init(this.getClass().getSimpleName());
+        mAdapter = new SouvenirAdapter(mList, getActivity());
+        rySouvenir.setAdapter(mAdapter);
+        rySouvenir.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING && layout.findLastVisibleItemPosition() + 1 == mAdapter.getItemCount()) {
+                    swipeFreshLayout.setRefreshing(true);
+                    page++;
+                    mSouvenirPresenterImpl.LoadingDataFromNet(false, size, page);
+                }
+            }
+        });
     }
 
     public static SouvenirFragment newInsatance() {
@@ -86,6 +98,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
                 .subscribe(new Observer<AddSouvenirEvent>() {
                     @Override
                     public void onCompleted() {
+
                     }
 
                     @Override
@@ -98,51 +111,28 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
                     @SuppressWarnings("unchecked")
                     @Override
                     public void onNext(AddSouvenirEvent addSouvenirEvent) {
-                        if (isFirst) {
-                            if (addSouvenirEvent.isList()) {
-                                mList = addSouvenirEvent.getMlist();
+                        if (addSouvenirEvent.isList()) {
+                            if (addSouvenirEvent.isRefresh()) {
+                                for (Souvenir s : addSouvenirEvent.getMlist()) {
+                                    if (!mList.contains(s)) {
+                                        mList.add(0, s);
+                                        mAdapter.notifyItemInserted(0);
+                                    }
+                                }
+
                             } else {
-                                mList = new ArrayList<>();
-                                mList.add(addSouvenirEvent.getSouvenir());
+                                for (Souvenir s : addSouvenirEvent.getMlist()) {
+                                    if (!mList.contains(s)) {
+                                        mList.add(s);
+                                        mAdapter.notifyItemInserted(mList.size() - 1);
+                                    }
+                                }
+
                             }
-                            mAdapter = new SouvenirAdapter(mList, getActivity());
-                            rySouvenir.setAdapter(mAdapter);
-                            rySouvenir.addOnScrollListener(new RecyclerView.OnScrollListener() {
-                                @Override
-                                public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                                    super.onScrollStateChanged(recyclerView, newState);
-                                    if (newState == RecyclerView.SCROLL_STATE_DRAGGING && layout.findLastVisibleItemPosition() + 1 == mAdapter.getItemCount()) {
-                                        swipeFreshLayout.setRefreshing(true);
-                                        page++;
-                                        mSouvenirPresenterImpl.LoadingDataFromNet(false, size, page);
-                                    }
-                                }
-                            });
-                            isFirst = false;
                         } else {
-                            if (addSouvenirEvent.isList()) {
-                                if (addSouvenirEvent.isRefresh()) {
-                                    for (Souvenir s : addSouvenirEvent.getMlist()) {
-                                        if (!mList.contains(s)) {
-                                            mList.add(0, s);
-                                            mAdapter.notifyItemInserted(0);
-                                        }
-                                    }
-
-                                } else {
-                                    for (Souvenir s : addSouvenirEvent.getMlist()) {
-                                        if (!mList.contains(s)) {
-                                            mList.add(s);
-                                            mAdapter.notifyItemInserted(mList.size());
-                                        }
-                                    }
-
-                                }
-                            } else {
-                                if (!mList.contains(addSouvenirEvent.getSouvenir())) {
-                                    mList.add(0, addSouvenirEvent.getSouvenir());
-                                    mAdapter.notifyItemInserted(0);
-                                }
+                            if (!mList.contains(addSouvenirEvent.getSouvenir())) {
+                                mList.add(0, addSouvenirEvent.getSouvenir());
+                                mAdapter.notifyItemInserted(0);
                             }
                         }
 
@@ -208,6 +198,10 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
         if (mSubscription != null) {
             mSubscription.isUnsubscribed();
         }
+        isFirst = true;
+        page = 0;
+        mList.clear();
+        
     }
 
 }

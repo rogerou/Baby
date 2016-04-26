@@ -107,6 +107,8 @@ dependencies {
     compile 'cn.pedant.sweetalert:library:1.3'
     compile 'com.github.jkwiecien:EasyImage:1.2.1'
     compile 'com.yalantis:ucrop:1.5.0'
+    compile 'jp.wasabeef:recyclerview-animators:2.2.3'
+    compile 'com.github.chrisbanes:PhotoView:1.2.6'
 //    compile 'cn.finalteam:galleryfinal:1.4.8.7'
 //    compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
 }

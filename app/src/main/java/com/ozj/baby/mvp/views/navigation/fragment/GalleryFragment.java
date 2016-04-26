@@ -1,7 +1,6 @@
 package com.ozj.baby.mvp.views.navigation.fragment;
 
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
@@ -20,6 +19,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -38,11 +38,14 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
 
     GalleryAdapter mAdapter;
 
-    List<Gallery> mList;
+    List<Gallery> mList = new ArrayList<>();
 
     Subscription mSubscription;
 
     boolean isFirst = true;
+    StaggeredGridLayoutManager layout;
+    int size = 20;
+    int page = 0;
 
     @Override
     public int getLayoutRes() {
@@ -51,11 +54,26 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
 
     @Override
     public void initViews() {
-        ryGallgery.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-        ryGallgery.setItemAnimator(new DefaultItemAnimator());
+        layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        ryGallgery.setLayoutManager(layout);
+        ryGallgery.setItemAnimator(new FadeInUpAnimator());
         swipeFreshLayout.setColorSchemeResources(R.color.colorPrimary);
         ryGallgery.setNestedScrollingEnabled(false);
         swipeFreshLayout.setOnRefreshListener(this);
+        mAdapter = new GalleryAdapter(mList, getActivity());
+        ryGallgery.setAdapter(mAdapter);
+        ryGallgery.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+
+                if (newState == RecyclerView.SCROLL_STATE_DRAGGING && getMaxElem(layout.findLastVisibleItemPositions(new int[layout.getSpanCount()])) == layout.getItemCount() - 1) {
+                    swipeFreshLayout.setRefreshing(true);
+                    page++;
+                    mGalleryPresenter.fetchDataFromNetwork(false, size, page);
+                }
+            }
+        });
     }
 
     @Override
@@ -65,30 +83,33 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
 
     @Override
     public void initData() {
-        mGalleryPresenter.fetchDataFromNetwork();
+        mGalleryPresenter.fetchDataFromNetwork(true, size, page);
         mSubscription = mRxbus.toObservable(AddGalleryEvent.class)
                 .subscribe(new Action1<AddGalleryEvent>() {
                     @Override
                     public void call(AddGalleryEvent addGalleryEvent) {
-                        if (isFirst) {
+                        if (addGalleryEvent.isFresh()) {
                             if (addGalleryEvent.isList()) {
-                                mList = addGalleryEvent.getList();
-                            } else {
-                                mList = new ArrayList<>();
-                                mList.add(addGalleryEvent.getGallery());
-                            }
-                            mAdapter = new GalleryAdapter(mList, getActivity());
-                            ryGallgery.setAdapter(mAdapter);
-                            isFirst = false;
-                        } else {
-                            if (addGalleryEvent.isList()) {
-                                mList.addAll(0, addGalleryEvent.getList());
-                                mAdapter.notifyItemRangeInserted(0, addGalleryEvent.getList().size());
+                                for (Gallery g : addGalleryEvent.getList()) {
+                                    if (!mList.contains(g)) {
+                                        mList.add(0, g);
+                                        mAdapter.notifyItemInserted(0);
+                                    }
+                                }
+
                             } else {
                                 mList.add(0, addGalleryEvent.getGallery());
                                 mAdapter.notifyItemInserted(0);
                             }
+                        } else {
+                            for (Gallery s : addGalleryEvent.getList()) {
+                                if (!mList.contains(s)) {
+                                    mList.add(s);
+                                    mAdapter.notifyItemInserted(mList.size() - 1);
+                                }
+                            }
                         }
+
                     }
                 });
     }
@@ -109,7 +130,8 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
         swipeFreshLayout.post(new Runnable() {
             @Override
             public void run() {
-                swipeFreshLayout.setRefreshing(true);
+                if (swipeFreshLayout != null)
+                    swipeFreshLayout.setRefreshing(true);
             }
         });
 
@@ -117,7 +139,8 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
 
     @Override
     public void hideRefreshing() {
-        swipeFreshLayout.setRefreshing(false);
+        if (swipeFreshLayout != null)
+            swipeFreshLayout.setRefreshing(false);
     }
 
     public static GalleryFragment newInstance() {
@@ -131,10 +154,24 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
         if (mSubscription != null) {
             mSubscription.isUnsubscribed();
         }
+        isFirst = true;
+        mList.clear();
+        size = 20;
+        page = 0;
     }
 
     @Override
     public void onRefresh() {
-        mGalleryPresenter.fetchDataFromNetwork();
+        mGalleryPresenter.fetchDataFromNetwork(true, size, page);
+    }
+
+    private int getMaxElem(int[] arr) {
+        int size = arr.length;
+        int maxVal = Integer.MIN_VALUE;
+        for (int i = 0; i < size; i++) {
+            if (arr[i] > maxVal)
+                maxVal = arr[i];
+        }
+        return maxVal;
     }
 }

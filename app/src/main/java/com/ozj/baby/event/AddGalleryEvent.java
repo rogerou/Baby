@@ -48,4 +48,14 @@ public class AddGalleryEvent {
     private Gallery gallery;
     boolean isList;
 
+    public boolean isFresh() {
+        return isFresh;
+    }
+
+    public void setFresh(boolean fresh) {
+        isFresh = fresh;
+    }
+
+    boolean isFresh;
+
 }

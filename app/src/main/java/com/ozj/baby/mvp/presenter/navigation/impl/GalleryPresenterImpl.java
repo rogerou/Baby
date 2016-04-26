@@ -2,14 +2,9 @@ package com.ozj.baby.mvp.presenter.navigation.impl;
 
 import android.support.annotation.NonNull;
 
-import com.avos.avoscloud.AVFile;
-import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.AVUser;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.event.AddGalleryEvent;
 import com.ozj.baby.mvp.model.bean.Gallery;
-import com.ozj.baby.mvp.model.bean.User;
-import com.ozj.baby.mvp.model.dao.GalleryDao;
 import com.ozj.baby.mvp.model.rx.RxBabyRealm;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
@@ -17,17 +12,11 @@ import com.ozj.baby.mvp.presenter.navigation.IGalleryPersenter;
 import com.ozj.baby.mvp.views.navigation.IGalleryView;
 import com.ozj.baby.util.PreferenceManager;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Observable;
 import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 
 /**
  * Created by YX201603-6 on 2016/4/25.
@@ -54,9 +43,9 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
 
 
     @Override
-    public void fetchDataFromNetwork() {
+    public void fetchDataFromNetwork(boolean isFirst, int size, int page) {
         mGalleryView.showRefreshing();
-        mRxleanCloud.FetchAllPicture(mPreferenceManager.getCurrentUserId(), mPreferenceManager.GetLoverID())
+        mRxleanCloud.FetchAllPicture(mPreferenceManager.getCurrentUserId(), mPreferenceManager.GetLoverID(),isFirst,size,page)
                 .subscribe(new Observer<List<Gallery>>() {
                     @Override
                     public void onCompleted() {
