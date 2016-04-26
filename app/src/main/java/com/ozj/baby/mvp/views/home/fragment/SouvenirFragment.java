@@ -1,6 +1,7 @@
 package com.ozj.baby.mvp.views.home.fragment;
 
 import android.content.Intent;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -20,6 +21,7 @@ import com.ozj.baby.mvp.views.home.ISouvenirVIew;
 import com.ozj.baby.mvp.views.home.activity.AddSouvenirActivity;
 import com.ozj.baby.mvp.views.home.activity.ProfileActivity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -58,15 +60,12 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
 
     @Override
     public void initViews() {
-
         layout = new LinearLayoutManager(getActivity());
         swipeFreshLayout.setOnRefreshListener(this);
         rySouvenir.setLayoutManager(layout);
         rySouvenir.setItemAnimator(new DefaultItemAnimator());
         swipeFreshLayout.setColorSchemeResources(R.color.colorPrimary);
         Logger.init(this.getClass().getSimpleName());
-
-
     }
 
     public static SouvenirFragment newInsatance() {
@@ -82,7 +81,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
 
     @Override
     public void initData() {
-        mSouvenirPresenterImpl.LoadingDataFromNet(size, 0);
+        mSouvenirPresenterImpl.LoadingDataFromNet(true, size, 0);
         mSubscription = mRxbus.toObservable(AddSouvenirEvent.class)
                 .subscribe(new Observer<AddSouvenirEvent>() {
                     @Override
@@ -100,8 +99,12 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
                     @Override
                     public void onNext(AddSouvenirEvent addSouvenirEvent) {
                         if (isFirst) {
-
-                            mList = addSouvenirEvent.getMlist();
+                            if (addSouvenirEvent.isList()) {
+                                mList = addSouvenirEvent.getMlist();
+                            } else {
+                                mList = new ArrayList<>();
+                                mList.add(addSouvenirEvent.getSouvenir());
+                            }
                             mAdapter = new SouvenirAdapter(mList, getActivity());
                             rySouvenir.setAdapter(mAdapter);
                             rySouvenir.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -111,7 +114,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
                                     if (newState == RecyclerView.SCROLL_STATE_DRAGGING && layout.findLastVisibleItemPosition() + 1 == mAdapter.getItemCount()) {
                                         swipeFreshLayout.setRefreshing(true);
                                         page++;
-                                        mSouvenirPresenterImpl.LoadingDataFromNet(size, page);
+                                        mSouvenirPresenterImpl.LoadingDataFromNet(false, size, page);
                                     }
                                 }
                             });
@@ -122,9 +125,10 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
                                     for (Souvenir s : addSouvenirEvent.getMlist()) {
                                         if (!mList.contains(s)) {
                                             mList.add(0, s);
+                                            mAdapter.notifyItemInserted(0);
                                         }
                                     }
-                                    mAdapter.notifyItemRangeInserted(0, addSouvenirEvent.getMlist().size());
+
                                 } else {
                                     for (Souvenir s : addSouvenirEvent.getMlist()) {
                                         if (!mList.contains(s)) {
@@ -138,46 +142,13 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
                                 if (!mList.contains(addSouvenirEvent.getSouvenir())) {
                                     mList.add(0, addSouvenirEvent.getSouvenir());
                                     mAdapter.notifyItemInserted(0);
-
                                 }
                             }
-
-
                         }
 
                     }
                 });
 
-//                    .flatMap(new Func1<UpdateComPlete, Observable<RealmResults<Souvenir>>>() {
-//                        @Override
-//                        public Observable<RealmResults<Souvenir>> call(UpdateComPlete updateComPlete) {
-//                            if (updateComPlete.isComPlete()) {
-//                                return mRxBabyRealm.getSouvenirALl();
-//                            } else {
-//                                return Observable.empty();
-//                            }
-//
-//
-//                        }
-//                    }).observeOn(AndroidSchedulers.mainThread())
-//                    .subscribe(new Observer<RealmResults<Souvenir>>() {
-//                        @Override
-//                        public void onCompleted() {
-//
-//                        }
-//
-//                        @Override
-//                        public void onError(Throwable e) {
-//                            showToast("可能出了点小问题");
-//                            Logger.e(e.getMessage());
-//                        }
-//
-//                        @Override
-//                        public void onNext(RealmResults<Souvenir> souvenirs) {
-//                            mAdapter = new SouvenirAdapter(souvenirs, getActivity());
-//                            rySouvenir.setAdapter(mAdapter);
-//                        }
-//                    });
     }
 
 
@@ -227,15 +198,16 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
 
     @Override
     public void onRefresh() {
-        mSouvenirPresenterImpl.LoadingDataFromNet(size, 0);
+        mSouvenirPresenterImpl.LoadingDataFromNet(true, size, 0);
     }
 
+
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         if (mSubscription != null) {
             mSubscription.isUnsubscribed();
         }
-
     }
+
 }

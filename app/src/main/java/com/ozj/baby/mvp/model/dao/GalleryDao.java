@@ -6,8 +6,8 @@ package com.ozj.baby.mvp.model.dao;
 public class GalleryDao {
     public static final String IMGURL = "imgurl";
     public static final String TABLENAME = "Gallery";
-    public static final String OBJECTID = "objectid";
     public static final String AUTHORID = "authorid";
+    public static final String AUTHOR = "author";
 
 
 }

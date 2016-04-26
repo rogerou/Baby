@@ -33,7 +33,7 @@ import shem.com.materiallogin.MaterialLoginViewListener;
 
 /**
  * Created by Rpger ou on 2016/4/13.
- * <p>
+ * <p/>
  * 开屏页
  */
 public class SplashActivity extends BaseActivity implements ISplashView {
@@ -112,7 +112,7 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     public void toMainActivity() {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
-
+        finish();
     }
 
 
@@ -179,4 +179,5 @@ public class SplashActivity extends BaseActivity implements ISplashView {
             dismissLoginView();
         }
     }
+
 }

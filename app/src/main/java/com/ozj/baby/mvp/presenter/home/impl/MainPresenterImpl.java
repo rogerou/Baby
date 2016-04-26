@@ -4,24 +4,40 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVUser;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
+import com.ozj.baby.event.AddGalleryEvent;
+import com.ozj.baby.mvp.model.bean.Gallery;
+import com.ozj.baby.mvp.model.bean.User;
 import com.ozj.baby.mvp.model.dao.UserDao;
+import com.ozj.baby.mvp.model.rx.RxBus;
+import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.home.IMainPresenter;
 import com.ozj.baby.mvp.views.home.IMainView;
 import com.ozj.baby.util.PreferenceManager;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.URI;
+import java.net.URISyntaxException;
+
 import javax.inject.Inject;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 
 /**
  * Created by Administrator on 2016/4/20.
@@ -31,13 +47,17 @@ public class MainPresenterImpl implements IMainPresenter {
     private Context mContext;
     private Activity mActivity;
     private PreferenceManager mPreferenceManager;
-    Fragment isFragment;
+    private RxLeanCloud mRxLeanCloud;
+    private RxBus mRxbus;
+    String currentFragmentTag;
 
     @Inject
-    public MainPresenterImpl(@ContextLife("Activity") Context context, Activity activity, PreferenceManager preferenceManager) {
+    public MainPresenterImpl(@ContextLife("Activity") Context context, Activity activity, PreferenceManager preferenceManager, RxLeanCloud rxLeanCloud, RxBus rxBus) {
+        mRxLeanCloud = rxLeanCloud;
         mContext = context;
         mActivity = activity;
         mPreferenceManager = preferenceManager;
+        mRxbus = rxBus;
     }
 
 
@@ -55,17 +75,23 @@ public class MainPresenterImpl implements IMainPresenter {
 
 
     @Override
-    public void replaceFragment(Fragment to) {
-        if (isFragment != to) {
-            FragmentManager fragmentManager = mActivity.getFragmentManager();
-            if (!to.isAdded()) {
-                fragmentManager.beginTransaction().hide(isFragment).add(R.id.fragment_container, to).commit();
+    public void replaceFragment(Fragment to, String tag, boolean isExpanded) {
+        FragmentManager fragmentManager = mActivity.getFragmentManager();
+        Fragment currentfragment = fragmentManager.findFragmentByTag(currentFragmentTag);
 
-            } else {
-                fragmentManager.beginTransaction().hide(isFragment).show(to).commit();
-            }
-            isFragment = to;
+        if (currentfragment == null || !TextUtils.equals(tag, currentFragmentTag)) {
+            currentFragmentTag = tag;
+            fragmentManager.beginTransaction().replace(R.id.fragment_container, to, currentFragmentTag).commit();
+
+
         }
+        if (isExpanded) {
+            mMainView.showScrollView();
+        } else {
+            mMainView.hideScrollView();
+        }
+
+
     }
 
     @Override
@@ -96,4 +122,45 @@ public class MainPresenterImpl implements IMainPresenter {
         nick.setText(user.getString(UserDao.NICK));
 
     }
+
+    @Override
+    public void UploadPicTure(Uri uri) {
+        mMainView.showProgress("上传中...");
+        try {
+            AVFile file = AVFile.withFile(mPreferenceManager.getCurrentUserId(), new File(new URI(uri.toString())));
+            mRxLeanCloud.UploadPicture(file)
+                    .flatMap(new Func1<String, Observable<Gallery>>() {
+                        @Override
+                        public Observable<Gallery> call(String s) {
+                            Gallery gallery = new Gallery();
+                            gallery.setImgUrl(s);
+                            gallery.setUser(User.getCurrentUser(User.class));
+                            gallery.setAuthorId(mPreferenceManager.getCurrentUserId());
+                            return mRxLeanCloud.saveGallery(gallery);
+                        }
+                    }).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Observer<Gallery>() {
+                        @Override
+                        public void onCompleted() {
+                            mMainView.hideProgress();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            mMainView.hideProgress();
+                            com.orhanobut.logger.Logger.e(e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(Gallery gallery) {
+                            mMainView.showToast("保存成功");
+                            mRxbus.post(new AddGalleryEvent(gallery, false));
+                        }
+                    });
+        } catch (FileNotFoundException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

@@ -44,8 +44,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.tvTime.setText(getTime(mList.get(position).getTimement()));
-        Glide.with(mContext).load(mList.get(position)).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivGallery);
+        holder.tvTime.setText(getTime(mList.get(position).getCreatedAt()));
+        Glide.with(mContext).load(mList.get(position).getImgUrl()).thumbnail((float) 0.8).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivGallery);
         if (mlistener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -93,8 +93,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         }
     }
 
-    private String getTime(long timestamp) {
+    private String getTime(Date timestamp) {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-        return simpleDateFormat.format(new Date(timestamp));
+        return simpleDateFormat.format(timestamp);
     }
 }

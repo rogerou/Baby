@@ -1,6 +1,8 @@
 package com.ozj.baby.mvp.views.home.activity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -8,6 +10,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 import com.avos.avoscloud.AVUser;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
 import com.ozj.baby.mvp.model.dao.UserDao;
@@ -29,12 +33,18 @@ import com.ozj.baby.mvp.views.home.IMainView;
 import com.ozj.baby.mvp.views.home.fragment.SouvenirFragment;
 import com.ozj.baby.mvp.views.navigation.fragment.GalleryFragment;
 import com.ozj.baby.widget.ChoosePicDialog;
+import com.squareup.haha.perflib.Main;
+import com.yalantis.ucrop.UCrop;
+
+import java.io.File;
+import java.net.URI;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import pl.aprilapps.easyphotopicker.EasyImage;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, IMainView {
@@ -70,6 +80,7 @@ public class MainActivity extends BaseActivity
     SouvenirFragment souvenirFragment;
     GalleryFragment galleryFragment;
     static final int ChangeProfile = 8;
+    boolean isShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,10 +121,10 @@ public class MainActivity extends BaseActivity
             }
         });
         mMainPersenter.initData(iv_avatar, tv_nick);
-        souvenirFragment = SouvenirFragment.newInsatance();
-        getFragmentManager().beginTransaction().add(R.id.fragment_container, souvenirFragment).commit();
-        navView.getMenu().getItem(0).setChecked(true);
 
+        navView.getMenu().getItem(0).setChecked(true);
+        souvenirFragment = SouvenirFragment.newInsatance();
+        mMainPersenter.replaceFragment(souvenirFragment, "Moment", true);
     }
 
     @Override
@@ -138,9 +149,12 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-
-
-        return super.onPrepareOptionsMenu(menu);
+        if (isShown) {
+            menu.getItem(0).setVisible(true);
+        } else {
+            menu.getItem(0).setVisible(false);
+        }
+        return true;
     }
 
     @Override
@@ -156,13 +170,14 @@ public class MainActivity extends BaseActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+
+        } else if (id == R.id.action_picture) {
+            showPicDialog();
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 
     @SuppressWarnings({"StatementWithEmptyBody", "ConstantConditions"})
@@ -175,15 +190,16 @@ public class MainActivity extends BaseActivity
             if (souvenirFragment == null) {
                 souvenirFragment = SouvenirFragment.newInsatance();
             }
-            mMainPersenter.replaceFragment(souvenirFragment);
-            unlockAppBarOpen();
-
+            collaspingToolBarlayout.setTitle("Moment");
+            mMainPersenter.replaceFragment(souvenirFragment, "Moment", true);
+            isShown = false;
         } else if (id == R.id.nav_gallery) {
             if (galleryFragment == null) {
                 galleryFragment = GalleryFragment.newInstance();
             }
-            mMainPersenter.replaceFragment(galleryFragment);
-            lockAppBarClosed();
+            collaspingToolBarlayout.setTitle("相册");
+            mMainPersenter.replaceFragment(galleryFragment, "Gallery", false);
+            isShown = true;
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -234,6 +250,16 @@ public class MainActivity extends BaseActivity
         startActivity(intent);
     }
 
+    @Override
+    public void showScrollView() {
+        appBar.setExpanded(true, true);
+    }
+
+    @Override
+    public void hideScrollView() {
+        appBar.setExpanded(false, true);
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -242,19 +268,44 @@ public class MainActivity extends BaseActivity
             tv_nick.setText(AVUser.getCurrentUser().getString(UserDao.NICK));
             Glide.with(this).load(AVUser.getCurrentUser().getString(UserDao.AVATARURL)).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).bitmapTransform(new CropCircleTransformation(this)).into(iv_avatar);
         }
+        EasyImage.handleActivityResult(requestCode, resultCode, data, this, new EasyImage.Callbacks() {
+            @Override
+            public void onImagePickerError(Exception e, EasyImage.ImageSource imageSource, int i) {
+                showToast("出错啦，请稍后再试");
+            }
+
+            @Override
+            public void onImagePicked(File file, EasyImage.ImageSource imageSource, int i) {
+                UCrop.Options options = new UCrop.Options();
+                options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
+                options.setCompressionQuality(80);
+                UCrop.of(Uri.fromFile(file), Uri.fromFile(file))
+                        .withOptions(options)
+                        .start(MainActivity.this);
+            }
+
+            @Override
+            public void onCanceled(EasyImage.ImageSource imageSource, int i) {
+                if (imageSource == EasyImage.ImageSource.CAMERA) {
+                    File photoFile = EasyImage.lastlyTakenButCanceledPhoto(MainActivity.this);
+                    if (photoFile != null) {
+                        photoFile.delete();
+                    }
+
+                }
+            }
+        });
+
+        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+            mMainPersenter.UploadPicTure(UCrop.getOutput(data));
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            //noinspection ConstantConditions
+            Logger.e(UCrop.getError(data).getMessage());
+            showToast("出错啦，重新试试吧");
+        }
 
     }
 
-    public void lockAppBarClosed() {
-        appBar.setExpanded(false, false);
-        appBar.setActivated(false);
-    }
-
-    public void unlockAppBarOpen() {
-        appBar.setExpanded(true, true);
-        appBar.setActivated(true);
-
-    }
 
 }
 

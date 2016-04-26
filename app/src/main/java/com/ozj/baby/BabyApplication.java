@@ -5,6 +5,7 @@ import android.app.Application;
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
 import com.orhanobut.logger.AndroidLogTool;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
@@ -12,6 +13,8 @@ import com.ozj.baby.di.component.ApplicationComponet;
 import com.ozj.baby.di.component.DaggerApplicationComponet;
 import com.ozj.baby.di.module.ApplicationModule;
 import com.ozj.baby.mvp.model.bean.Gallery;
+import com.ozj.baby.mvp.model.bean.Souvenir;
+import com.ozj.baby.mvp.model.bean.User;
 import com.squareup.leakcanary.LeakCanary;
 
 /**
@@ -25,6 +28,9 @@ public class BabyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        AVUser.alwaysUseSubUserClass(User.class);
+        AVObject.registerSubclass(Gallery.class);
+        AVObject.registerSubclass(Souvenir.class);
         AVOSCloud.initialize(this, "GpLTBKYub2ekB1GG2UUDdpmu-gzGzoHsz", "IjkswTLu60dF1rnnAHNoLM98");
         AVAnalytics.enableCrashReport(this, true);
         initComponet();

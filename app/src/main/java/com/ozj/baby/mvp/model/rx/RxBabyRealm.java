@@ -63,11 +63,11 @@ public class RxBabyRealm {
 //    }
 
 
-    public void saveUser(User user) {
-        mRealm.beginTransaction();
-        mRealm.copyToRealmOrUpdate(user);
-        mRealm.commitTransaction();
-    }
+//    public void saveUser(User user) {
+//        mRealm.beginTransaction();
+//        mRealm.copyToRealmOrUpdate(user);
+//        mRealm.commitTransaction();
+//    }
 
 //    public void saveSouvenir(Souvenir souvenir) {
 //        mRealm.beginTransaction();
@@ -76,33 +76,34 @@ public class RxBabyRealm {
 //
 //    }
 
-    public Observable<User> getUser(String id) {
-        return mRealm.where(User.class).equalTo("ID", id).findFirst().asObservable();
+//    public Observable<User> getUser(String id) {
+//        return mRealm.where(User.class).equalTo("ID", id).findFirst().asObservable();
+//
+//    }
 
-    }
+//    public RealmResults<Gallery> getAllGallery() {
+//        return mRealm.where(Gallery.class).findAll();
+//    }
+//
+//    public void saveGalleryList(final List<Gallery> list) {
+//        mRealm.executeTransactionAsync(new Realm.Transaction() {
+//            @Override
+//            public void execute(Realm realm) {
+//                realm.copyToRealmOrUpdate(list);
+//            }
+//        });
+//
+//    }
+//
+//    public void saveGallery(Gallery gallery) {
+//        mRealm.beginTransaction();
+//        mRealm.copyToRealmOrUpdate(gallery);
+//        mRealm.commitTransaction();
+//
+//    }
 
-    public RealmResults<Gallery> getAllGallery() {
-        return mRealm.where(Gallery.class).findAll();
-    }
-
-    public void saveGalleryList(final List<Gallery> list) {
-        mRealm.executeTransactionAsync(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.copyToRealmOrUpdate(list);
-            }
-        });
-
-    }
-
-    public void saveGallery(Gallery gallery) {
-        mRealm.beginTransaction();
-        mRealm.copyToRealmOrUpdate(gallery);
-        mRealm.commitTransaction();
-
-    }
-
-    public void closeRealm() {
+    public void Close() {
         mRealm.close();
     }
+
 }

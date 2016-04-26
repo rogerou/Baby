@@ -11,10 +11,5 @@ import java.util.List;
  */
 public interface IGalleryPersenter extends BasePresenter {
 
-    void UploadPhoto(File imgfile);
-
     void fetchDataFromNetwork();
-
-    List<Gallery> fetchDataFromLocal();
-
 }

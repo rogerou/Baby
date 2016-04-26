@@ -34,11 +34,11 @@
 
         <ImageView
             android:id="@+id/iv_souvenir_pic"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="270dp"
+            android:layout_height="210dp"
             android:layout_below="@id/tv_content"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:scaleType="centerInside" />
+            android:scaleType="fitStart" />
 
         <TextView
             android:id="@+id/txt_time"

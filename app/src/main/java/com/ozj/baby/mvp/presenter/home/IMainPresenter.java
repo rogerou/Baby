@@ -1,10 +1,13 @@
 package com.ozj.baby.mvp.presenter.home;
 
 import android.app.Fragment;
+import android.net.Uri;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ozj.baby.base.BasePresenter;
+
+import java.io.File;
 
 /**
  * Created by Administrator on 2016/4/20.
@@ -12,7 +15,7 @@ import com.ozj.baby.base.BasePresenter;
 public interface IMainPresenter extends BasePresenter {
 
 
-    void replaceFragment( Fragment to);
+    void replaceFragment(Fragment to, String tag, boolean isExpanded);
 
     void fabOnclick();
 
@@ -20,5 +23,6 @@ public interface IMainPresenter extends BasePresenter {
 
     void initData(ImageView avatar, TextView nick);
 
+    void UploadPicTure(Uri uri);
 
 }

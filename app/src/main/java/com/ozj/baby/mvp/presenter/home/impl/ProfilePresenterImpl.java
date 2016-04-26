@@ -134,8 +134,6 @@ public class ProfilePresenterImpl implements IProfilePresenter {
                         }
                     });
         }
-        User realmuser = new User(avUser);
-        mRxBabyRealm.saveUser(realmuser);
     }
 
 
@@ -143,7 +141,7 @@ public class ProfilePresenterImpl implements IProfilePresenter {
     @Override
     public void initData(final ImageView avatar, final TextInputLayout nick, final TextInputLayout loverid, final TextInputLayout city, final TextInputLayout sex) {
         mProfileView.showProgress("加载中...");
-        User user = new User(AVUser.getCurrentUser());
+        User user = User.getCurrentUser(User.class);
         if (user.getAvatar() != null) {
             Glide.with(mContext).load(user.getAvatar()).crossFade().bitmapTransform(new CropCircleTransformation(mContext)).diskCacheStrategy(DiskCacheStrategy.ALL).into(avatar);
         }

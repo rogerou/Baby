@@ -23,5 +23,6 @@
     <string name="commit">提交</string>
     <string name="idea">这一刻的想法...</string>
     <string name="fetchPic">获取相片</string>
+    <string name="upload">上传</string>
 
 </resources>

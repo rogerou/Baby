@@ -54,11 +54,11 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
 
 
     @Override
-    public void LoadingDataFromNet(final int size, final int page) {
+    public void LoadingDataFromNet(final boolean isFresh, final int size, final int page) {
         mSouvenirView.showRefreshingLoading();
         mRxleanCloud.GetALlSouvenirByLeanCloud(mPreferencepManager.getCurrentUserId(), mPreferencepManager.GetLoverID(), size, page)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<AVObject>>() {
+                .subscribe(new Observer<List<Souvenir>>() {
                     @Override
                     public void onCompleted() {
                         mSouvenirView.hideRefreshingLoading();
@@ -72,18 +72,9 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
                     }
 
                     @Override
-                    public void onNext(List<AVObject> avObjects) {
-                        if (avObjects.size() != 0) {
-                            List<Souvenir> list = new ArrayList<>();
-                            for (AVObject object : avObjects) {
-                                list.add(new Souvenir(object, (AVUser) object.get(SouvenirDao.SOUVENIR_AUTHOR)));
-                            }
-                            if (page == 0) {
-                                mRxBus.post(new AddSouvenirEvent(true, true, list));
-                            } else {
-                                mRxBus.post(new AddSouvenirEvent(false, true, list));
-                            }
-
+                    public void onNext(List<Souvenir> list) {
+                        if (list.size() != 0) {
+                            mRxBus.post(new AddSouvenirEvent(isFresh, true, list));
                         }
                     }
                 });

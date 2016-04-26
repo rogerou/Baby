@@ -1,6 +1,5 @@
 package com.ozj.baby.mvp.presenter.home.impl;
 
-import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
@@ -11,6 +10,7 @@ import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.event.AddSouvenirEvent;
 import com.ozj.baby.mvp.model.bean.Souvenir;
+import com.ozj.baby.mvp.model.bean.User;
 import com.ozj.baby.mvp.model.dao.SouvenirDao;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
@@ -60,22 +60,29 @@ public class AddSouvenirImpl implements IAddSouvenirPresenter {
         try {
             avFile = AVFile.withFile(manager.getCurrentUserId(), file);
             mRxLeanCloud.UploadPicture(avFile)
-                    .flatMap(new Func1<String, Observable<AVObject>>() {
+                    .flatMap(new Func1<String, Observable<Souvenir>>() {
                         @Override
-                        public Observable<AVObject> call(String s) {
-                            AVObject object = new AVObject(SouvenirDao.TABLENAME);
-                            object.put(SouvenirDao.SOUVENIR_AUTHOR, AVUser.getCurrentUser());
-                            object.put(SouvenirDao.SOUVENIR_AUTHORID, AVUser.getCurrentUser().getObjectId());
-                            object.put(SouvenirDao.SOUVENIR_CONTENT, content);
-                            object.put(SouvenirDao.SOUVENIR_ISLIKEME, false);
-                            object.put(SouvenirDao.SOUVENIR_ISLIKEOTHER, false);
-                            object.put(SouvenirDao.SOUVENIR_OTHERUSERID, manager.GetLoverID());
-                            object.put(SouvenirDao.SOUVENIR_PICTUREURL, s);
-                            return mRxLeanCloud.SaveByLeanCloud(object);
+                        public Observable<Souvenir> call(String s) {
+                            Souvenir object = new Souvenir();
+                            object.setAuthorId(AVUser.getCurrentUser().getObjectId());
+                            object.setAuthor(User.getCurrentUser(User.class));
+                            object.setContent(content);
+                            object.setLikedMine(false);
+                            object.setLikedOther(false);
+                            object.setOhterUserId(manager.GetLoverID());
+                            object.setPicture(s);
+//                            object.put(SouvenirDao.SOUVENIR_AUTHOR, AVUser.getCurrentUser());
+//                            object.put(SouvenirDao.SOUVENIR_AUTHORID, AVUser.getCurrentUser().getObjectId());
+//                            object.put(SouvenirDao.SOUVENIR_CONTENT, content);
+//                            object.put(SouvenirDao.SOUVENIR_ISLIKEME, false);
+//                            object.put(SouvenirDao.SOUVENIR_ISLIKEOTHER, false);
+//                            object.put(SouvenirDao.SOUVENIR_OTHERUSERID, manager.GetLoverID());
+//                            object.put(SouvenirDao.SOUVENIR_PICTUREURL, s);
+                            return mRxLeanCloud.SaveSouvenirByLeanCloud(object);
 
                         }
                     }).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<AVObject>() {
+                    .subscribe(new Observer<Souvenir>() {
                         @Override
                         public void onCompleted() {
                             mView.showToast("上传成功");
@@ -87,11 +94,11 @@ public class AddSouvenirImpl implements IAddSouvenirPresenter {
                         public void onError(Throwable e) {
                             Logger.e(e.getMessage());
                             mView.hideProgress();
+                            mView.showToast("上传失败了，请稍后再试吧");
                         }
 
                         @Override
-                        public void onNext(AVObject object) {
-                            Souvenir souvenir = new Souvenir(object, AVUser.getCurrentUser());
+                        public void onNext(Souvenir souvenir) {
                             mRxbus.post(new AddSouvenirEvent(false, false, souvenir));
                         }
                     });

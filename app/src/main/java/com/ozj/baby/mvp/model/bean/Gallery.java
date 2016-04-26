@@ -4,7 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 
+import com.avos.avoscloud.AVClassName;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
 import com.ozj.baby.mvp.model.dao.GalleryDao;
 
 import io.realm.RealmObject;
@@ -13,44 +15,31 @@ import io.realm.annotations.PrimaryKey;
 /**
  * Created by YX201603-6 on 2016/4/25.
  */
-public class Gallery extends RealmObject implements Parcelable {
+
+@AVClassName(GalleryDao.TABLENAME)
+public class Gallery extends AVObject implements Parcelable {
     private String imgUrl;
-    private long timement;
-    @PrimaryKey
-    private String objectId;
     private String authorId;
+    private User user;
 
-    public Gallery(AVObject object) {
-        this.imgUrl = object.getString(GalleryDao.IMGURL);
-        this.timement = object.getCreatedAt().getTime();
-        this.objectId = object.getObjectId();
-        this.authorId = object.getString(GalleryDao.AUTHORID);
+    public User getUser() {
+        return (User) get(GalleryDao.AUTHOR);
     }
 
-
-    public String getObjectId() {
-        return objectId;
+    public void setUser(User user) {
+        put(GalleryDao.AUTHOR, user);
     }
 
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
-    }
 
     public String getImgUrl() {
-        return imgUrl;
+        return getString(GalleryDao.IMGURL);
     }
 
     public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+        put(GalleryDao.IMGURL, imgUrl);
+
     }
 
-    public long getTimement() {
-        return timement;
-    }
-
-    public void setTimement(long timement) {
-        this.timement = timement;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -73,39 +62,16 @@ public class Gallery extends RealmObject implements Parcelable {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(this.imgUrl);
-        dest.writeLong(this.timement);
-        dest.writeString(this.objectId);
-    }
 
     public Gallery() {
     }
 
-    protected Gallery(Parcel in) {
-        this.imgUrl = in.readString();
-        this.timement = in.readLong();
-        this.objectId = in.readString();
-    }
-
-    public static final Creator<Gallery> CREATOR = new Creator<Gallery>() {
-        @Override
-        public Gallery createFromParcel(Parcel source) {
-            return new Gallery(source);
-        }
-
-        @Override
-        public Gallery[] newArray(int size) {
-            return new Gallery[size];
-        }
-    };
 
     public String getAuthorId() {
-        return authorId;
+        return getString(GalleryDao.AUTHORID);
     }
 
     public void setAuthorId(String authorId) {
-        this.authorId = authorId;
+        put(GalleryDao.AUTHORID, authorId);
     }
 }

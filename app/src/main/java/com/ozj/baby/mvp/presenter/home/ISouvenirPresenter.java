@@ -10,7 +10,7 @@ public interface ISouvenirPresenter extends BasePresenter {
     void AutoLoadingMore();
 
 
-    void LoadingDataFromNet(int size, int page);
+    void LoadingDataFromNet(boolean isReFresh, int size, int page);
 
 
 }

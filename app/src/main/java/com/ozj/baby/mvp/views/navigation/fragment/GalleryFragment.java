@@ -14,6 +14,7 @@ import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.navigation.impl.GalleryPresenterImpl;
 import com.ozj.baby.mvp.views.navigation.IGalleryView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -25,7 +26,7 @@ import rx.functions.Action1;
 /**
  * Created by Roger on 2016/4/24.
  */
-public class GalleryFragment extends BaseFragment implements IGalleryView {
+public class GalleryFragment extends BaseFragment implements IGalleryView, SwipeRefreshLayout.OnRefreshListener {
     @Bind(R.id.ry_gallgery)
     RecyclerView ryGallgery;
     @Bind(R.id.swipeFreshLayout)
@@ -53,6 +54,8 @@ public class GalleryFragment extends BaseFragment implements IGalleryView {
         ryGallgery.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         ryGallgery.setItemAnimator(new DefaultItemAnimator());
         swipeFreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        ryGallgery.setNestedScrollingEnabled(false);
+        swipeFreshLayout.setOnRefreshListener(this);
     }
 
     @Override
@@ -62,22 +65,21 @@ public class GalleryFragment extends BaseFragment implements IGalleryView {
 
     @Override
     public void initData() {
-        mList = mGalleryPresenter.fetchDataFromLocal();
-        if (mList.size() == 0) {
-            mGalleryPresenter.fetchDataFromNetwork();
-        } else {
-            mAdapter = new GalleryAdapter(mList, getActivity());
-            ryGallgery.setAdapter(mAdapter);
-        }
-
+        mGalleryPresenter.fetchDataFromNetwork();
         mSubscription = mRxbus.toObservable(AddGalleryEvent.class)
                 .subscribe(new Action1<AddGalleryEvent>() {
                     @Override
                     public void call(AddGalleryEvent addGalleryEvent) {
                         if (isFirst) {
-                            mList = mGalleryPresenter.fetchDataFromLocal();
+                            if (addGalleryEvent.isList()) {
+                                mList = addGalleryEvent.getList();
+                            } else {
+                                mList = new ArrayList<>();
+                                mList.add(addGalleryEvent.getGallery());
+                            }
                             mAdapter = new GalleryAdapter(mList, getActivity());
                             ryGallgery.setAdapter(mAdapter);
+                            isFirst = false;
                         } else {
                             if (addGalleryEvent.isList()) {
                                 mList.addAll(0, addGalleryEvent.getList());
@@ -87,13 +89,13 @@ public class GalleryFragment extends BaseFragment implements IGalleryView {
                                 mAdapter.notifyItemInserted(0);
                             }
                         }
-
                     }
                 });
     }
 
     @Override
     public void initToolbar() {
+
     }
 
     @Override
@@ -104,7 +106,6 @@ public class GalleryFragment extends BaseFragment implements IGalleryView {
 
     @Override
     public void showRefreshing() {
-        swipeFreshLayout.setEnabled(true);
         swipeFreshLayout.post(new Runnable() {
             @Override
             public void run() {
@@ -117,7 +118,6 @@ public class GalleryFragment extends BaseFragment implements IGalleryView {
     @Override
     public void hideRefreshing() {
         swipeFreshLayout.setRefreshing(false);
-        swipeFreshLayout.setEnabled(false);
     }
 
     public static GalleryFragment newInstance() {
@@ -126,10 +126,15 @@ public class GalleryFragment extends BaseFragment implements IGalleryView {
 
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDestroyView() {
+        super.onDestroyView();
         if (mSubscription != null) {
             mSubscription.isUnsubscribed();
         }
+    }
+
+    @Override
+    public void onRefresh() {
+        mGalleryPresenter.fetchDataFromNetwork();
     }
 }

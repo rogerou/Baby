@@ -151,7 +151,6 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
                     mPreferenceManager.saveCurrentUserId(avUser.getObjectId());
                     mPreferenceManager.SaveLoverId(avUser.getString(UserDao.LOVERID));
                     mSplashView.toMainActivity();
-                    mSplashView.close();
                 } else {
                     mSplashView.showToast("登陆失败，检查一下账号密码和网络");
                 }

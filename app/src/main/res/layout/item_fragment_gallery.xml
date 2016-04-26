@@ -16,10 +16,8 @@
         <ImageView
             android:id="@+id/iv_gallery"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            android:scaleType="fitCenter"
-            android:src="@drawable/img_default_cover" />
+            android:layout_height="210dp"
+            android:scaleType="fitXY" />
 
         <TextView
             android:id="@+id/tv_time"

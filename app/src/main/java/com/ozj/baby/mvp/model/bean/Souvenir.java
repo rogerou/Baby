@@ -5,108 +5,89 @@ import android.os.Parcelable;
 
 import com.avos.avoscloud.AVClassName;
 import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.AVUser;
 import com.ozj.baby.mvp.model.dao.SouvenirDao;
 
-import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Administrator on 2016/4/20.
  */
-public class Souvenir  implements Comparable, Parcelable {
+@AVClassName(SouvenirDao.TABLENAME)
+public class Souvenir extends AVObject implements Parcelable {
     private String Content;
-    private Long timeStamp;
     private String Picture;
     private User Author;
     private boolean IsLikedMine;
-    @PrimaryKey
-    private String objectId;
     private boolean IsLikedOther;
     private String AuthorId;
     private String ohterUserId;
 
-    public Souvenir(AVObject object, AVUser avUser) {
-        this.Content = object.getString(SouvenirDao.SOUVENIR_CONTENT);
-        if (object.getCreatedAt() != null) {
-            this.timeStamp = object.getCreatedAt().getTime();
-        }
-        this.Picture = object.getString(SouvenirDao.SOUVENIR_PICTUREURL);
-        this.Author = new User(avUser);
-        this.IsLikedMine = object.getBoolean(SouvenirDao.SOUVENIR_ISLIKEME);
-        this.objectId = object.getObjectId();
-        this.IsLikedOther = object.getBoolean(SouvenirDao.SOUVENIR_ISLIKEOTHER);
-        this.AuthorId = avUser.getObjectId();
-        this.ohterUserId = avUser.getString(SouvenirDao.SOUVENIR_OTHERUSERID);
-    }
+//    public Souvenir(AVObject object, User avUser) {
+//        this.Content = object.getString(SouvenirDao.SOUVENIR_CONTENT);
+//        if (object.getCreatedAt() != null) {
+//            this.timeStamp = object.getCreatedAt().getTime();
+//        }
+//        this.Picture = object.getString(SouvenirDao.SOUVENIR_PICTUREURL);
+//        this.Author = new User(avUser);
+//        this.IsLikedMine = object.getBoolean(SouvenirDao.SOUVENIR_ISLIKEME);
+//        this.objectId = object.getObjectId();
+//        this.IsLikedOther = object.getBoolean(SouvenirDao.SOUVENIR_ISLIKEOTHER);
+//        this.AuthorId = avUser.getObjectId();
+//        this.ohterUserId = avUser.getString(SouvenirDao.SOUVENIR_OTHERUSERID);
+//    }
 
     public Souvenir() {
 
     }
 
     public String getContent() {
-        return Content;
+        return getString(SouvenirDao.SOUVENIR_CONTENT);
     }
 
     public void setContent(String content) {
-        Content = content;
+        put(SouvenirDao.SOUVENIR_CONTENT, content);
     }
 
-    public Long getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(Long timeStamp) {
-        this.timeStamp = timeStamp;
-    }
 
     public String getPicture() {
-        return Picture;
+        return getString(SouvenirDao.SOUVENIR_PICTUREURL);
     }
 
     public void setPicture(String picture) {
-        Picture = picture;
+        put(SouvenirDao.SOUVENIR_PICTUREURL, picture);
     }
 
     public User getAuthor() {
-        return Author;
+        return (User) get(SouvenirDao.SOUVENIR_AUTHOR);
     }
 
     public void setAuthor(User author) {
-        Author = author;
-    }
-
-    public String getObjectId() {
-        return objectId;
-    }
-
-    public void setObjectId(String objectId) {
-        this.objectId = objectId;
+        put(SouvenirDao.SOUVENIR_AUTHOR, author);
     }
 
 
     public boolean isLikedOther() {
-        return IsLikedOther;
+        return getBoolean(SouvenirDao.SOUVENIR_ISLIKEOTHER);
     }
 
     public void setLikedOther(boolean likedOther) {
-        IsLikedOther = likedOther;
+        put(SouvenirDao.SOUVENIR_ISLIKEOTHER, likedOther);
     }
 
     public boolean isLikedMine() {
-        return IsLikedMine;
+        return getBoolean(SouvenirDao.SOUVENIR_ISLIKEME);
     }
 
     public void setLikedMine(boolean likedMine) {
-        IsLikedMine = likedMine;
+        put(SouvenirDao.SOUVENIR_ISLIKEME, likedMine);
     }
 
 
     public String getAuthorId() {
-        return AuthorId;
+        return getString(SouvenirDao.SOUVENIR_AUTHORID);
     }
 
     public void setAuthorId(String authorId) {
-        AuthorId = authorId;
+        put(SouvenirDao.SOUVENIR_AUTHORID, authorId);
     }
 
     @Override
@@ -125,17 +106,13 @@ public class Souvenir  implements Comparable, Parcelable {
         return objectId.hashCode();
     }
 
-    @Override
-    public int compareTo(Object another) {
-        return this.timeStamp.compareTo(((Souvenir) another).getTimeStamp());
-    }
 
     public String getOhterUserId() {
-        return ohterUserId;
+        return getString(SouvenirDao.SOUVENIR_OTHERUSERID);
     }
 
     public void setOhterUserId(String ohterUserId) {
-        this.ohterUserId = ohterUserId;
+        put(SouvenirDao.SOUVENIR_OTHERUSERID, ohterUserId);
     }
 
     @Override
@@ -146,7 +123,6 @@ public class Souvenir  implements Comparable, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.Content);
-        dest.writeValue(this.timeStamp);
         dest.writeString(this.Picture);
         dest.writeParcelable(this.Author, flags);
         dest.writeByte(IsLikedMine ? (byte) 1 : (byte) 0);
@@ -158,7 +134,6 @@ public class Souvenir  implements Comparable, Parcelable {
 
     public Souvenir(Parcel in) {
         this.Content = in.readString();
-        this.timeStamp = (Long) in.readValue(Long.class.getClassLoader());
         this.Picture = in.readString();
         this.Author = in.readParcelable(User.class.getClassLoader());
         this.IsLikedMine = in.readByte() != 0;

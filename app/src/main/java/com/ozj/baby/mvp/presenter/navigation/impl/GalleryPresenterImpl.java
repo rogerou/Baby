@@ -4,10 +4,14 @@ import android.support.annotation.NonNull;
 
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVObject;
+import com.avos.avoscloud.AVUser;
 import com.ozj.baby.base.BaseView;
+import com.ozj.baby.event.AddGalleryEvent;
 import com.ozj.baby.mvp.model.bean.Gallery;
+import com.ozj.baby.mvp.model.bean.User;
 import com.ozj.baby.mvp.model.dao.GalleryDao;
 import com.ozj.baby.mvp.model.rx.RxBabyRealm;
+import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.navigation.IGalleryPersenter;
 import com.ozj.baby.mvp.views.navigation.IGalleryView;
@@ -36,65 +40,24 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
     private RxBabyRealm mRealm;
 
     private PreferenceManager mPreferenceManager;
-    private
-    IGalleryView mGalleryView;
+    private RxBus mRxbus;
+    private IGalleryView mGalleryView;
 
     @Inject
-    public GalleryPresenterImpl(RxLeanCloud rxLeanCloud, RxBabyRealm babyRealm, PreferenceManager PreferenceManager) {
+    public GalleryPresenterImpl(RxLeanCloud rxLeanCloud, RxBabyRealm babyRealm, PreferenceManager PreferenceManager, RxBus rxBus) {
         this.mRxleanCloud = rxLeanCloud;
         this.mRealm = babyRealm;
         mPreferenceManager = PreferenceManager;
+        mRxbus = rxBus;
         com.orhanobut.logger.Logger.init(this.getClass().getSimpleName());
     }
 
-    @Override
-
-    public void UploadPhoto(File imgfile) {
-        mGalleryView.showProgress("上传中...");
-        try {
-            AVFile file = AVFile.withFile(mPreferenceManager.getCurrentUserId(), imgfile);
-            mRxleanCloud.UploadPicture(file)
-                    .flatMap(new Func1<String, Observable<AVObject>>() {
-                        @Override
-                        public Observable<AVObject> call(String s) {
-                            AVObject avObject = new AVObject(GalleryDao.TABLENAME);
-                            avObject.put(GalleryDao.AUTHORID, mPreferenceManager.getCurrentUserId());
-                            avObject.put(GalleryDao.IMGURL, s);
-                            return mRxleanCloud.SaveByLeanCloud(avObject);
-                        }
-                    }).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<AVObject>() {
-                        @Override
-                        public void onCompleted() {
-                            mGalleryView.hideProgress();
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            mGalleryView.hideProgress();
-                            com.orhanobut.logger.Logger.e(e.getMessage());
-                        }
-
-                        @Override
-                        public void onNext(AVObject avObject) {
-                            Gallery gallery = new Gallery(avObject);
-                            mRealm.saveGallery(gallery);
-                            mGalleryView.showToast("保存成功");
-
-                        }
-                    });
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-
-    }
 
     @Override
     public void fetchDataFromNetwork() {
         mGalleryView.showRefreshing();
         mRxleanCloud.FetchAllPicture(mPreferenceManager.getCurrentUserId(), mPreferenceManager.GetLoverID())
-                .subscribe(new Observer<List<AVObject>>() {
+                .subscribe(new Observer<List<Gallery>>() {
                     @Override
                     public void onCompleted() {
                         mGalleryView.hideRefreshing();
@@ -107,23 +70,16 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
                     }
 
                     @Override
-                    public void onNext(List<AVObject> list) {
-                        List<Gallery> mlist = new ArrayList<>();
-                        for (AVObject o : list) {
-                            mlist.add(new Gallery(o));
+                    public void onNext(List<Gallery> list) {
+                        if (list.size() != 0) {
+                            mRxbus.post(new AddGalleryEvent(list, true));
                         }
-                        mRealm.saveGalleryList(mlist);
                     }
                 });
 
 
     }
 
-    @Override
-    public List<Gallery> fetchDataFromLocal() {
-        return mRealm.getAllGallery();
-
-    }
 
     @Override
     public void attachView(@NonNull BaseView view) {
