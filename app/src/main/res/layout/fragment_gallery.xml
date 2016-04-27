@@ -1,12 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/swipeFreshLayout"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/frame_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/ry_gallgery"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipeFreshLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-</android.support.v4.widget.SwipeRefreshLayout>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/ry_gallgery"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </android.support.v4.widget.SwipeRefreshLayout>
+
+    <com.github.jorgecastilloprz.FABProgressCircle
+        android:id="@+id/fab_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        app:arcColor="@color/fab_orange_light"
+        app:circleSize="normal"
+        app:finalIcon="@drawable/ic_done_white_24dp"
+        app:layout_behavior="com.ozj.baby.util.FloatingActionButtonBehaviour"
+        app:paddingEnd="@dimen/line_spacing"
+        app:paddingStart="@dimen/line_spacing"
+        app:reusable="true">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:padding="@dimen/spacing_small"
+            android:src="@drawable/ic_cloud_upload_white_24dp"
+            app:borderWidth="0dp"
+            app:elevation="4dp"
+            app:fabSize="normal"
+            app:rippleColor="@color/red500_alpha_54"
+            app:theme="@style/FabStyle" />
+    </com.github.jorgecastilloprz.FABProgressCircle>
+</RelativeLayout>

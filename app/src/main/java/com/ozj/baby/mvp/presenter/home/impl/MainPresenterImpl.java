@@ -125,41 +125,41 @@ public class MainPresenterImpl implements IMainPresenter {
 
     @Override
     public void UploadPicTure(Uri uri) {
-        mMainView.showProgress("上传中...");
-        try {
-            AVFile file = AVFile.withFile(mPreferenceManager.getCurrentUserId(), new File(new URI(uri.toString())));
-            mRxLeanCloud.UploadPicture(file)
-                    .flatMap(new Func1<String, Observable<Gallery>>() {
-                        @Override
-                        public Observable<Gallery> call(String s) {
-                            Gallery gallery = new Gallery();
-                            gallery.setImgUrl(s);
-                            gallery.setUser(User.getCurrentUser(User.class));
-                            gallery.setAuthorId(mPreferenceManager.getCurrentUserId());
-                            return mRxLeanCloud.saveGallery(gallery);
-                        }
-                    }).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<Gallery>() {
-                        @Override
-                        public void onCompleted() {
-                            mMainView.hideProgress();
-                        }
-
-                        @Override
-                        public void onError(Throwable e) {
-                            mMainView.hideProgress();
-                            com.orhanobut.logger.Logger.e(e.getMessage());
-                        }
-
-                        @Override
-                        public void onNext(Gallery gallery) {
-                            mMainView.showToast("保存成功");
-                            mRxbus.post(new AddGalleryEvent(gallery, true));
-                        }
-                    });
-        } catch (FileNotFoundException | URISyntaxException e) {
-            e.printStackTrace();
-        }
+//        mMainView.showProgress("上传中...");
+//        try {
+//            AVFile file = AVFile.withFile(mPreferenceManager.getCurrentUserId(), new File(new URI(uri.toString())));
+//            mRxLeanCloud.UploadPicture(file)
+//                    .flatMap(new Func1<String, Observable<Gallery>>() {
+//                        @Override
+//                        public Observable<Gallery> call(String s) {
+//                            Gallery gallery = new Gallery();
+//                            gallery.setImgUrl(s);
+//                            gallery.setUser(User.getCurrentUser(User.class));
+//                            gallery.setAuthorId(mPreferenceManager.getCurrentUserId());
+//                            return mRxLeanCloud.saveGallery(gallery);
+//                        }
+//                    }).observeOn(AndroidSchedulers.mainThread())
+//                    .subscribe(new Observer<Gallery>() {
+//                        @Override
+//                        public void onCompleted() {
+//                            mMainView.hideProgress();
+//                        }
+//
+//                        @Override
+//                        public void onError(Throwable e) {
+//                            mMainView.hideProgress();
+//                            com.orhanobut.logger.Logger.e(e.getMessage());
+//                        }
+//
+//                        @Override
+//                        public void onNext(Gallery gallery) {
+//                            mMainView.showToast("保存成功");
+//                            mRxbus.post(new AddGalleryEvent(gallery, true));
+//                        }
+//                    });
+//        } catch (FileNotFoundException | URISyntaxException e) {
+//            e.printStackTrace();
+//        }
     }
 
 

@@ -13,6 +13,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ozj.baby.R;
 import com.ozj.baby.mvp.model.bean.Gallery;
+import com.ozj.baby.util.OnItemClickListener;
+import com.ozj.baby.widget.RatioImageView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,7 +33,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     private List<Gallery> mList;
     private Context mContext;
 
-    private OnItemActionListener mlistener;
+    private OnItemClickListener mlistener;
 
     public GalleryAdapter(List<Gallery> list, Activity activity) {
         mList = list;
@@ -45,35 +47,17 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.tvTime.setText(getTime(mList.get(position).getCreatedAt()));
-        Glide.with(mContext).load(mList.get(position).getUser().getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).bitmapTransform(new CropCircleTransformation(mContext)).crossFade().into(holder.ivAvatar);
-        Glide.with(mContext).load(mList.get(position).getImgUrl()).thumbnail((float) 0.8).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivGallery);
-        if (mlistener != null) {
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mlistener.OnItemClickListener(v, holder.getAdapterPosition());
-                }
-            });
-            holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    return mlistener.OnItemLongClick(v, holder.getAdapterPosition());
-                }
-            });
-
+        Gallery gallery = mList.get(position);
+//        holder.tvTime.setText(getTime(mList.get(position).getCreatedAt()));
+//        Glide.with(mContext).load(mList.get(position).getUser().getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).bitmapTransform(new CropCircleTransformation(mContext)).crossFade().into(holder.ivAvatar);
+        Glide.with(mContext).load(gallery.getImgUrl()).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivGallery);
+        if (gallery.getHeight() != 0 && gallery.getWidth() != 0) {
+            holder.ivGallery.setOriginalSize(gallery.getWidth(), gallery.getHeight());
         }
     }
 
-    public interface OnItemActionListener {
-        void OnItemClickListener(View view, int position);
 
-        boolean OnItemLongClick(View view, int position);
-
-    }
-
-
-    public void setOnItemActionListener(OnItemActionListener listener) {
+    public void setOnItemActionListener(OnItemClickListener listener) {
         this.mlistener = listener;
 
     }
@@ -83,22 +67,29 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         return mList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_gallery)
-        ImageView ivGallery;
-        @Bind(R.id.tv_time)
-        TextView tvTime;
-        @Bind(R.id.iv_avatar)
-        ImageView ivAvatar;
+        RatioImageView ivGallery;
+//        @Bind(R.id.tv_time)
+//        TextView tvTime;
+//        @Bind(R.id.iv_avatar)
+//        RatioImageView ivAvatar;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mlistener.onClick(v, getAdapterPosition());
+                }
+            });
+
         }
     }
 
-    private String getTime(Date timestamp) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
-        return simpleDateFormat.format(timestamp);
-    }
+//    private String getTime(Date timestamp) {
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
+//        return simpleDateFormat.format(timestamp);
+//    }
 }

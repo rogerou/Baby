@@ -3,17 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <uk.co.senab.photoview.PhotoView
-        android:id="@+id/iv_photo"
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView
-        android:id="@+id/tv_detail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:background="#60000000"
-        android:textColor="@color/white" />
 
 </FrameLayout>

@@ -1,13 +1,18 @@
 package com.ozj.baby.mvp.views.home.activity;
 
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 
 import com.jaeger.library.StatusBarUtil;
 import com.ozj.baby.R;
+import com.ozj.baby.adapter.DetailPageAdapter;
 import com.ozj.baby.base.BaseActivity;
 
+import java.util.List;
+
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
@@ -15,13 +20,12 @@ import uk.co.senab.photoview.PhotoViewAttacher;
  */
 public class ZoomImageActivity extends BaseActivity {
 
+    @Bind(R.id.view_pager)
+    ViewPager viewPager;
 
-    @Bind(R.id.iv_photo)
-    ImageView ivPhoto;
-    @Bind(R.id.tv_detail)
-    TextView tvDetail;
+    List<String> mList;
 
-    PhotoViewAttacher mAttacher;
+    DetailPageAdapter mAdapter;
 
     @Override
     public void initDagger() {
@@ -30,14 +34,19 @@ public class ZoomImageActivity extends BaseActivity {
 
     @Override
     public void initContentView() {
+        supportStartPostponedEnterTransition();
         setContentView(R.layout.activity_zoomimage);
         StatusBarUtil.setTranslucent(this);
-        
-        mAttacher = new PhotoViewAttacher(ivPhoto);
     }
 
     @Override
     public void initViewsAndListener() {
+        mList = getIntent().getStringArrayListExtra("imgurl");
+        int index = getIntent().getIntExtra("index", 0);
+        mAdapter = new DetailPageAdapter(getSupportFragmentManager(), mList);
+        viewPager.setAdapter(mAdapter);
+        viewPager.setCurrentItem(index);
+        
 
     }
 
@@ -51,4 +60,10 @@ public class ZoomImageActivity extends BaseActivity {
 
     }
 
+    @Override
+    public void supportFinishAfterTransition() {
+
+        Intent data = new Intent();
+        super.supportFinishAfterTransition();
+    }
 }

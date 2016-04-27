@@ -27,7 +27,9 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
+import com.ozj.baby.event.UploadPhotoUri;
 import com.ozj.baby.mvp.model.dao.UserDao;
+import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.MainPresenterImpl;
 import com.ozj.baby.mvp.views.home.IMainView;
 import com.ozj.baby.mvp.views.home.fragment.SouvenirFragment;
@@ -70,7 +72,8 @@ public class MainActivity extends BaseActivity
     DrawerLayout drawerLayout;
     @Inject
     ChoosePicDialog mPicDialog;
-
+    @Inject
+    RxBus mRxbus;
 
     @Bind(R.id.coordinatorlayout)
     CoordinatorLayout coordinatorlayout;
@@ -80,7 +83,6 @@ public class MainActivity extends BaseActivity
     SouvenirFragment souvenirFragment;
     GalleryFragment galleryFragment;
     static final int ChangeProfile = 8;
-    boolean isShown = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,11 +151,6 @@ public class MainActivity extends BaseActivity
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if (isShown) {
-            menu.getItem(0).setVisible(true);
-        } else {
-            menu.getItem(0).setVisible(false);
-        }
         return true;
     }
 
@@ -173,8 +170,6 @@ public class MainActivity extends BaseActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
 
-        } else if (id == R.id.action_picture) {
-            showPicDialog();
         }
 
         return true;
@@ -192,14 +187,12 @@ public class MainActivity extends BaseActivity
             }
             collaspingToolBarlayout.setTitle("Moment");
             mMainPersenter.replaceFragment(souvenirFragment, "Moment", true);
-            isShown = false;
         } else if (id == R.id.nav_gallery) {
             if (galleryFragment == null) {
                 galleryFragment = GalleryFragment.newInstance();
             }
             collaspingToolBarlayout.setTitle("相册");
             mMainPersenter.replaceFragment(galleryFragment, "Gallery", false);
-            isShown = true;
         } else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
@@ -297,7 +290,7 @@ public class MainActivity extends BaseActivity
         });
 
         if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
-            mMainPersenter.UploadPicTure(UCrop.getOutput(data));
+            mRxbus.post(new UploadPhotoUri(0, UCrop.getOutput(data)));
         } else if (resultCode == UCrop.RESULT_ERROR) {
             //noinspection ConstantConditions
             Logger.e(UCrop.getError(data).getMessage());

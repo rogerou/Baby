@@ -1,17 +1,25 @@
 package com.ozj.baby.mvp.views.navigation.fragment;
 
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
 
+import com.github.jorgecastilloprz.FABProgressCircle;
+import com.github.jorgecastilloprz.listeners.FABProgressListener;
 import com.ozj.baby.R;
 import com.ozj.baby.adapter.GalleryAdapter;
 import com.ozj.baby.base.BaseFragment;
 import com.ozj.baby.event.AddGalleryEvent;
+import com.ozj.baby.event.UploadPhotoUri;
 import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.navigation.impl.GalleryPresenterImpl;
 import com.ozj.baby.mvp.views.navigation.IGalleryView;
+import com.ozj.baby.util.OnItemClickListener;
+import com.ozj.baby.widget.ChoosePicDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +27,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import rx.Subscription;
 import rx.functions.Action1;
@@ -26,7 +35,7 @@ import rx.functions.Action1;
 /**
  * Created by Roger on 2016/4/24.
  */
-public class GalleryFragment extends BaseFragment implements IGalleryView, SwipeRefreshLayout.OnRefreshListener {
+public class GalleryFragment extends BaseFragment implements IGalleryView, SwipeRefreshLayout.OnRefreshListener, OnItemClickListener {
     @Bind(R.id.ry_gallgery)
     RecyclerView ryGallgery;
     @Bind(R.id.swipeFreshLayout)
@@ -35,6 +44,16 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
     RxBus mRxbus;
     @Inject
     GalleryPresenterImpl mGalleryPresenter;
+    @Bind(R.id.fab)
+    FloatingActionButton fab;
+    @Bind(R.id.fab_progress)
+    FABProgressCircle fabProgress;
+
+    @Inject
+    ChoosePicDialog mDialog;
+    StaggeredGridLayoutManager layout;
+    int size = 20;
+    int page = 0;
 
     GalleryAdapter mAdapter;
 
@@ -42,10 +61,9 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
 
     Subscription mSubscription;
 
+    Subscription mUploadPhoto;
+
     boolean isFirst = true;
-    StaggeredGridLayoutManager layout;
-    int size = 20;
-    int page = 0;
 
     @Override
     public int getLayoutRes() {
@@ -54,6 +72,7 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
 
     @Override
     public void initViews() {
+//        fabProgress.attachListener(this);
         layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
         ryGallgery.setLayoutManager(layout);
         ryGallgery.setItemAnimator(new FadeInUpAnimator());
@@ -74,11 +93,14 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
                 }
             }
         });
+        mAdapter.setOnItemActionListener(this);
+
     }
 
     @Override
     public void initDagger() {
         mFragmentComponet.inject(this);
+
     }
 
     @Override
@@ -112,6 +134,16 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
 
                     }
                 });
+        mUploadPhoto = mRxbus.toObservable(UploadPhotoUri.class)
+                .subscribe(new Action1<UploadPhotoUri>() {
+                    @Override
+                    public void call(UploadPhotoUri uploadPhotoUri) {
+                        if (uploadPhotoUri.getUri() != null && uploadPhotoUri.getType() == 0) {
+                            mGalleryPresenter.UploadPhoto(uploadPhotoUri.getUri());
+                        }
+                    }
+                });
+
     }
 
     @Override
@@ -143,6 +175,35 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
             swipeFreshLayout.setRefreshing(false);
     }
 
+    @Override
+    public void showUpdating() {
+        fabProgress.post(new Runnable() {
+            @Override
+            public void run() {
+                if (fabProgress != null) {
+                    fabProgress.show();
+
+                }
+            }
+        });
+    }
+
+    @Override
+    public void UpdateCompelte() {
+        fabProgress.beginFinalAnimation();
+    }
+
+    @Override
+    public void showPicDialog() {
+        mDialog.show();
+
+    }
+
+    @Override
+    public void showSnackBar(String msg) {
+        Snackbar.make(fabProgress, msg, Snackbar.LENGTH_SHORT).show();
+    }
+
     public static GalleryFragment newInstance() {
         return new GalleryFragment();
     }
@@ -153,6 +214,9 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
         super.onDestroyView();
         if (mSubscription != null) {
             mSubscription.isUnsubscribed();
+        }
+        if (mUploadPhoto != null) {
+            mUploadPhoto.isUnsubscribed();
         }
         isFirst = true;
         mList.clear();
@@ -173,5 +237,20 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
                 maxVal = arr[i];
         }
         return maxVal;
+    }
+
+//    @Override
+//    public void onFABProgressAnimationEnd() {
+//    }
+
+
+    @OnClick(R.id.fab)
+    public void onClick() {
+        showPicDialog();
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+
     }
 }

@@ -14,14 +14,16 @@ public class AddGalleryEvent {
         return gallery;
     }
 
-    public AddGalleryEvent(Gallery gallery, boolean isList) {
-        this.gallery = gallery;
-        this.isList = isList;
-    }
-
-    public AddGalleryEvent(List<Gallery> list, boolean isList) {
+    public AddGalleryEvent(List<Gallery> list, boolean isList, boolean isFresh) {
         this.list = list;
         this.isList = isList;
+        this.isFresh = isFresh;
+    }
+
+    public AddGalleryEvent(Gallery gallery, boolean isList, boolean isFresh) {
+        this.gallery = gallery;
+        this.isList = isList;
+        this.isFresh = isFresh;
     }
 
     public void setGallery(Gallery gallery) {

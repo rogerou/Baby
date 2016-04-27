@@ -36,8 +36,6 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     @Inject
     SouvenirPresenterImpl mSouvenirPresenterImpl;
     @Inject
-    RxBabyRealm mRxBabyRealm;
-    @Inject
     RxBus mRxbus;
     SouvenirAdapter mAdapter;
     @Bind(R.id.ry_souvenir)
@@ -193,6 +191,14 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
 
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mSubscription != null) {
+            mSubscription.isUnsubscribed();
+        }
+    }
+
+    @Override
     public void onDestroyView() {
         super.onDestroyView();
         if (mSubscription != null) {
@@ -201,7 +207,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
         isFirst = true;
         page = 0;
         mList.clear();
-        
+
     }
 
 }

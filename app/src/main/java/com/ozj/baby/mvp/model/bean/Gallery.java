@@ -22,6 +22,26 @@ public class Gallery extends AVObject implements Parcelable {
     private String authorId;
     private User user;
 
+    public int getHeight() {
+        return getInt(GalleryDao.HEIGHT);
+    }
+
+    public void setHeight(int height) {
+        put(GalleryDao.HEIGHT, height);
+    }
+
+    private int height;
+
+    public int getWidth() {
+        return getInt(GalleryDao.WIDTH);
+    }
+
+    public void setWidth(int width) {
+        put(GalleryDao.WIDTH, width);
+    }
+
+    private int width;
+
     public User getUser() {
         return (User) get(GalleryDao.AUTHOR);
     }
@@ -55,11 +75,6 @@ public class Gallery extends AVObject implements Parcelable {
     @Override
     public int hashCode() {
         return objectId.hashCode();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
 

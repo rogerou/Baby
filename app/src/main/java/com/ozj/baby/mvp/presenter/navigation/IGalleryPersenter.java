@@ -1,5 +1,7 @@
 package com.ozj.baby.mvp.presenter.navigation;
 
+import android.net.Uri;
+
 import com.ozj.baby.base.BasePresenter;
 
 /**
@@ -8,5 +10,7 @@ import com.ozj.baby.base.BasePresenter;
 public interface IGalleryPersenter extends BasePresenter {
 
     void fetchDataFromNetwork(boolean isFirst, int size, int page);
+
+    void UploadPhoto(Uri uri);
 
 }

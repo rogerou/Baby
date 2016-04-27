@@ -9,4 +9,14 @@ public interface IGalleryView extends BaseView {
     void showRefreshing();
 
     void hideRefreshing();
+
+    void showUpdating();
+
+    void UpdateCompelte();
+
+
+    void showPicDialog();
+
+    void showSnackBar(String msg);
+
 }
