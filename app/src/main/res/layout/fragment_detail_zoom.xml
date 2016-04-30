@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <uk.co.senab.photoview.PhotoView
+    <ImageView
         android:id="@+id/iv_photo"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -25,19 +25,19 @@
     <!--android:layout_marginStart="@dimen/spacing_small"-->
     <!--android:layout_marginTop="@dimen/spacing_small" />-->
 
-    <TextView
-        android:id="@+id/tv_time"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:layout_marginTop="@dimen/spacing_small"
-        android:drawableLeft="@drawable/ic_access_time_grey_500_12dp_vector_state"
-        android:drawablePadding="@dimen/icon_padding"
-        android:drawableStart="@drawable/ic_access_time_grey_500_12dp_vector_state"
-        android:ellipsize="end"
-        android:lines="1"
-        android:paddingLeft="@dimen/spacing_small"
-        android:paddingRight="@dimen/spacing_small"
-        android:textColor="@color/grey500"
-        android:textSize="12sp" />
+    <!--<TextView-->
+    <!--android:id="@+id/tv_time"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="bottom"-->
+    <!--android:layout_marginTop="@dimen/spacing_small"-->
+    <!--android:drawableLeft="@drawable/ic_access_time_grey_500_12dp_vector_state"-->
+    <!--android:drawablePadding="@dimen/icon_padding"-->
+    <!--android:drawableStart="@drawable/ic_access_time_grey_500_12dp_vector_state"-->
+    <!--android:ellipsize="end"-->
+    <!--android:lines="1"-->
+    <!--android:paddingLeft="@dimen/spacing_small"-->
+    <!--android:paddingRight="@dimen/spacing_small"-->
+    <!--android:textColor="@color/grey500"-->
+    <!--android:textSize="12sp" />-->
 </FrameLayout>

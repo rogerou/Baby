@@ -48,7 +48,7 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
     @Override
     public void LoadingDataFromNet(final boolean isFresh, final int size, final int page) {
         mSouvenirView.showRefreshingLoading();
-        mRxleanCloud.GetALlSouvenirByLeanCloud(mPreferencepManager.getCurrentUserId(), mPreferencepManager.GetLoverID(),  size, page)
+        mRxleanCloud.GetALlSouvenirByLeanCloud(mPreferencepManager.getCurrentUserId(), mPreferencepManager.GetLoverID(), size, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Souvenir>>() {
                     @Override

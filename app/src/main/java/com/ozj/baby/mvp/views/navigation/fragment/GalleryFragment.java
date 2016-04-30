@@ -1,14 +1,16 @@
 package com.ozj.baby.mvp.views.navigation.fragment;
 
+import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
 
+import com.avos.avoscloud.AVAnalytics;
 import com.github.jorgecastilloprz.FABProgressCircle;
-import com.github.jorgecastilloprz.listeners.FABProgressListener;
 import com.ozj.baby.R;
 import com.ozj.baby.adapter.GalleryAdapter;
 import com.ozj.baby.base.BaseFragment;
@@ -17,6 +19,8 @@ import com.ozj.baby.event.UploadPhotoUri;
 import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.navigation.impl.GalleryPresenterImpl;
+import com.ozj.baby.mvp.views.home.activity.DetailImageActivity;
+import com.ozj.baby.mvp.views.home.activity.ProfileActivity;
 import com.ozj.baby.mvp.views.navigation.IGalleryView;
 import com.ozj.baby.util.OnItemClickListener;
 import com.ozj.baby.widget.ChoosePicDialog;
@@ -57,7 +61,7 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
 
     GalleryAdapter mAdapter;
 
-    List<Gallery> mList = new ArrayList<>();
+    List<Gallery> mList;
 
     Subscription mSubscription;
 
@@ -77,8 +81,9 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
         ryGallgery.setLayoutManager(layout);
         ryGallgery.setItemAnimator(new FadeInUpAnimator());
         swipeFreshLayout.setColorSchemeResources(R.color.colorPrimary);
-        ryGallgery.setNestedScrollingEnabled(false);
         swipeFreshLayout.setOnRefreshListener(this);
+        ryGallgery.setNestedScrollingEnabled(false);
+        mList = new ArrayList<>();
         mAdapter = new GalleryAdapter(mList, getActivity());
         ryGallgery.setAdapter(mAdapter);
         ryGallgery.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -104,34 +109,45 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        AVAnalytics.onFragmentEnd("GalleryFragment");
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        AVAnalytics.onFragmentStart("GalleryFragment");
+    }
+
+    @Override
     public void initData() {
         mGalleryPresenter.fetchDataFromNetwork(true, size, page);
         mSubscription = mRxbus.toObservable(AddGalleryEvent.class)
                 .subscribe(new Action1<AddGalleryEvent>() {
                     @Override
                     public void call(AddGalleryEvent addGalleryEvent) {
-                        if (addGalleryEvent.isFresh()) {
-                            if (addGalleryEvent.isList()) {
+                        if (addGalleryEvent.isList()) {
+                            if (addGalleryEvent.isFresh()) {
+                                mList.clear();
                                 for (Gallery g : addGalleryEvent.getList()) {
                                     if (!mList.contains(g)) {
-                                        mList.add(0, g);
-                                        mAdapter.notifyItemInserted(0);
+                                        mList.add(g);
                                     }
                                 }
 
                             } else {
-                                mList.add(0, addGalleryEvent.getGallery());
-                                mAdapter.notifyItemInserted(0);
-                            }
-                        } else {
-                            for (Gallery s : addGalleryEvent.getList()) {
-                                if (!mList.contains(s)) {
-                                    mList.add(s);
-                                    mAdapter.notifyItemInserted(mList.size() - 1);
+                                for (Gallery g : addGalleryEvent.getList()) {
+                                    if (!mList.contains(g)) {
+                                        mList.add(g);
+                                    }
                                 }
                             }
+                        } else {
+                            mList.add(0, addGalleryEvent.getGallery());
                         }
-
+                        mAdapter.notifyDataSetChanged();
                     }
                 });
         mUploadPhoto = mRxbus.toObservable(UploadPhotoUri.class)
@@ -182,7 +198,6 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
             public void run() {
                 if (fabProgress != null) {
                     fabProgress.show();
-
                 }
             }
         });
@@ -204,6 +219,14 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
         Snackbar.make(fabProgress, msg, Snackbar.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void toProfileActivity() {
+
+        Intent intent = new Intent(getActivity(), ProfileActivity.class);
+        startActivity(intent);
+        showToast("请邀请另一半一起来玩吧");
+    }
+
     public static GalleryFragment newInstance() {
         return new GalleryFragment();
     }
@@ -212,21 +235,19 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mSubscription != null) {
-            mSubscription.isUnsubscribed();
+        if (!mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
         }
-        if (mUploadPhoto != null) {
-            mUploadPhoto.isUnsubscribed();
+        if (!mUploadPhoto.isUnsubscribed()) {
+            mUploadPhoto.unsubscribe();
         }
         isFirst = true;
-        mList.clear();
-        size = 20;
         page = 0;
     }
 
     @Override
     public void onRefresh() {
-        mGalleryPresenter.fetchDataFromNetwork(true, size, page);
+        mGalleryPresenter.fetchDataFromNetwork(true, size, 0);
     }
 
     private int getMaxElem(int[] arr) {
@@ -239,18 +260,28 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
         return maxVal;
     }
 
-//    @Override
-//    public void onFABProgressAnimationEnd() {
-//    }
-
 
     @OnClick(R.id.fab)
     public void onClick() {
-        showPicDialog();
+        if (mGalleryPresenter.isHavedLover()) {
+            showPicDialog();
+        } else {
+            toProfileActivity();
+        }
+
     }
 
     @Override
     public void onClick(View view, int position) {
+        Intent intent = new Intent(getActivity(), DetailImageActivity.class);
+        ArrayList<String> imgurls = new ArrayList<>();
+        for (Gallery gallery : mList) {
+            imgurls.add(gallery.getImgUrl());
+        }
+        intent.putStringArrayListExtra("imgurl", imgurls);
+        intent.putExtra("index", position);
+        ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), view, imgurls.get(position));
+        startActivity(intent, optionsCompat.toBundle());
 
     }
 }

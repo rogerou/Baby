@@ -10,7 +10,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
@@ -22,6 +21,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.PushService;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.orhanobut.logger.Logger;
@@ -39,7 +39,6 @@ import com.squareup.haha.perflib.Main;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
-import java.net.URI;
 
 import javax.inject.Inject;
 
@@ -99,6 +98,8 @@ public class MainActivity extends BaseActivity
     @Override
     public void initContentView() {
         setContentView(R.layout.activity_main);
+        PushService.setDefaultPushCallback(this, MainActivity.class);
+//        PushService.subscribe(this, "public", MainActivity.class);
 
     }
 

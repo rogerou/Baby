@@ -2,12 +2,11 @@ package com.ozj.baby.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v4.media.session.MediaControllerCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -16,14 +15,10 @@ import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.util.OnItemClickListener;
 import com.ozj.baby.widget.RatioImageView;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by YX201603-6 on 2016/4/25.

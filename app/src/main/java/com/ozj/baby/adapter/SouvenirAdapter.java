@@ -1,7 +1,10 @@
 package com.ozj.baby.adapter;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVException;
-import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.SaveCallback;
 import com.bumptech.glide.Glide;
@@ -20,10 +22,11 @@ import com.like.OnLikeListener;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.mvp.model.bean.Souvenir;
-import com.ozj.baby.mvp.model.dao.SouvenirDao;
 import com.ozj.baby.mvp.model.dao.UserDao;
+import com.ozj.baby.mvp.views.home.activity.DetailImageActivity;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -58,8 +61,20 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
         holder.tvContent.setText(mList.get(position).getContent());
         holder.tvAuthor.setText(mList.get(position).getAuthor().getString(UserDao.NICK));
         holder.txtTime.setText(getTime(mList.get(position).getCreatedAt()));
-        Glide.with(mContext).load(mList.get(position).getPicture()).diskCacheStrategy(DiskCacheStrategy.ALL).crossFade().thumbnail((float) 0.8).into(holder.ivSouvenirPic);
+        Glide.with(mContext).load(mList.get(position).getPicture()).diskCacheStrategy(DiskCacheStrategy.ALL).crossFade().into(holder.ivSouvenirPic);
         Glide.with(mContext).load(mList.get(position).getAuthor().getString(UserDao.AVATARURL)).bitmapTransform(new CropCircleTransformation(mContext)).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivSpeaker);
+        holder.ivSouvenirPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mContext, DetailImageActivity.class);
+                ArrayList<String> list = new ArrayList<String>();
+                list.add(mList.get(holder.getAdapterPosition()).getPicture());
+                intent.putStringArrayListExtra("imgurl", list);
+                intent.putExtra("index", holder.getAdapterPosition());
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation((Activity) mContext, v, mList.get(holder.getAdapterPosition()).getPicture());
+                mContext.startActivity(intent, optionsCompat.toBundle());
+            }
+        });
         if (isMySouvenir(position)) {
             if (mList.get(position).isLikedMine()) {
                 holder.likeButton.setLiked(true);
@@ -98,6 +113,7 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
         });
 
     }
+
 
     private void isLikeSouvenir(ViewHolder holder, boolean isMine, boolean islike) {
         if (isMine) {

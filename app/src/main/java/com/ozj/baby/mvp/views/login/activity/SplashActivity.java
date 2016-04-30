@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.avos.avoscloud.PushService;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
@@ -72,6 +73,7 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     @Override
     public void initContentView() {
         setContentView(R.layout.activity_splash);
+        PushService.subscribe(this, "public", MainActivity.class);
     }
 
 

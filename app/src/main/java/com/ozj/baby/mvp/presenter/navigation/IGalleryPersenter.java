@@ -13,4 +13,7 @@ public interface IGalleryPersenter extends BasePresenter {
 
     void UploadPhoto(Uri uri);
 
+
+    boolean isHavedLover();
+    
 }

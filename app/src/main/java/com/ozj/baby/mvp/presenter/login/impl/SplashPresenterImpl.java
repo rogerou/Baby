@@ -13,21 +13,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVInstallation;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.LogInCallback;
+import com.avos.avoscloud.PushService;
+import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SignUpCallback;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
+import com.ozj.baby.mvp.model.bean.User;
 import com.ozj.baby.mvp.model.dao.UserDao;
+import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.login.ISplashPresenter;
+import com.ozj.baby.mvp.views.home.activity.MainActivity;
 import com.ozj.baby.mvp.views.login.ISplashView;
+import com.ozj.baby.mvp.views.login.activity.SplashActivity;
 import com.ozj.baby.util.PreferenceManager;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
 import javax.inject.Inject;
 
+import rx.Observable;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
+import rx.functions.Func1;
 
 /**
  * Created by Roger ou on 2016/3/25.
@@ -36,16 +48,17 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
 
     ISplashView mSplashView;
     private Context mContext;
-    private Activity mActivity;
     private PreferenceManager mPreferenceManager;
+
+    private RxLeanCloud mRxleanCloud;
     private Handler mHandler;
     private static final int MESSAGE_WHAT = 1;
     AnimatorSet mAnimatorSet;
 
     @Inject
-    public SplashPresenterImpl(@ContextLife("Activity") Context context, Activity activity, PreferenceManager preferenceManager) {
+    public SplashPresenterImpl(@ContextLife("Activity") Context context, PreferenceManager preferenceManager, RxLeanCloud mRxleanCloud) {
+        this.mRxleanCloud = mRxleanCloud;
         mContext = context;
-        mActivity = activity;
         mPreferenceManager = preferenceManager;
 
     }
@@ -127,6 +140,7 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
 
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public void Login(TextInputLayout usernameLogin, TextInputLayout passwdLogin) {
         String username = usernameLogin.getEditText().getText().toString();
@@ -142,22 +156,45 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
             return;
         }
         mSplashView.showProgress("登陆中...");
-        AVUser.logInInBackground(username, passwd, new LogInCallback<AVUser>() {
+        mRxleanCloud.Login(username, passwd)
+                .flatMap(new Func1<User, Observable<String>>() {
+                    @Override
+                    public Observable<String> call(User user) {
+                        mPreferenceManager.setIslogin(true);
+                        mPreferenceManager.saveCurrentUserId(user.getObjectId());
+                        mPreferenceManager.SaveLoverId(user.getString(UserDao.LOVERID));
+
+                        return mRxleanCloud.SaveInstallationId();
+                    }
+                }).flatMap(new Func1<String, Observable<Boolean>>() {
             @Override
-            public void done(AVUser avUser, AVException e) {
+            public Observable<Boolean> call(String s) {
+                User user = User.getCurrentUser(User.class);
+                user.setInstallationId(s);
+
+                return mRxleanCloud.SaveUserByLeanCloud(user);
+            }
+        }).subscribe(new Observer<Boolean>() {
+            @Override
+            public void onCompleted() {
+                mSplashView.toMainActivity();
                 mSplashView.hideProgress();
-                if (e == null && avUser != null) {
-                    mPreferenceManager.setIslogin(true);
-                    mPreferenceManager.saveCurrentUserId(avUser.getObjectId());
-                    mPreferenceManager.SaveLoverId(avUser.getString(UserDao.LOVERID));
-                    mSplashView.toMainActivity();
-                } else {
-                    mSplashView.showToast("登陆失败，检查一下账号密码和网络");
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mSplashView.showToast("登陆失败，检查一下账号密码和网络");
+                Logger.e(e.getMessage());
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+                if (aBoolean) {
+                    Logger.d("登陆成功");
                 }
-
-
             }
         });
+//     
     }
 
 

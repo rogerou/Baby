@@ -19,4 +19,6 @@ public interface IGalleryView extends BaseView {
 
     void showSnackBar(String msg);
 
+    void toProfileActivity();
+
 }

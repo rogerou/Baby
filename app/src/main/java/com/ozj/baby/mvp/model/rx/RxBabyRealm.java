@@ -3,10 +3,7 @@ package com.ozj.baby.mvp.model.rx;
 import android.content.Context;
 
 import com.ozj.baby.di.scope.ContextLife;
-import com.ozj.baby.mvp.model.bean.Gallery;
-import com.ozj.baby.mvp.model.bean.User;
-
-import java.util.List;
+import com.ozj.baby.mvp.model.bean.News;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -101,6 +98,17 @@ public class RxBabyRealm {
 //        mRealm.commitTransaction();
 //
 //    }
+
+    public void saveNews(News news) {
+        mRealm.beginTransaction();
+        mRealm.copyToRealmOrUpdate(news);
+        mRealm.commitTransaction();
+
+    }
+
+    public Observable<RealmResults<News>> getAllNews() {
+        return mRealm.where(News.class).findAllSorted("time").asObservable();
+    }
 
     public void Close() {
         mRealm.close();

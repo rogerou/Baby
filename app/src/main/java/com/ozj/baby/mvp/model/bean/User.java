@@ -3,13 +3,8 @@ package com.ozj.baby.mvp.model.bean;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.avos.avoscloud.AVClassName;
-import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.ozj.baby.mvp.model.dao.UserDao;
-
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by Administrator on 2016/4/17.
@@ -21,6 +16,8 @@ public class User extends AVUser implements Parcelable {
     private String loverusername;
     private String sex;
     private String anotherUserID;
+    private String InstallationId;
+    private String LoverInstallationId;
 
     public long getLovetimeStamp() {
         return getLong(UserDao.LOVETIMESTAMP);
@@ -34,7 +31,7 @@ public class User extends AVUser implements Parcelable {
 
 
     public User() {
-        
+
     }
 //    public User(AVUser user) {
 //        if (user.getString(UserDao.AVATARURL) != null) {
@@ -150,4 +147,20 @@ public class User extends AVUser implements Parcelable {
             return new User[size];
         }
     };
+
+    public String getInstallationId() {
+        return getString(UserDao.INSTALLATIONID);
+    }
+
+    public void setInstallationId(String installationId) {
+        put(UserDao.INSTALLATIONID, installationId);
+    }
+
+    public String getLoverInstallationId() {
+        return getString(UserDao.LOVERINSTALLATIONID);
+    }
+
+    public void setLoverInstallationId(String loverInstallationId) {
+        put(UserDao.LOVERINSTALLATIONID, loverInstallationId);
+    }
 }

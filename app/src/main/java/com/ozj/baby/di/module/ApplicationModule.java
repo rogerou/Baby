@@ -30,7 +30,7 @@ public class ApplicationModule {
         mPreferenceManager = new PreferenceManager(mApplication.getApplicationContext());
         mRxBabyRealm = new RxBabyRealm(mApplication.getApplicationContext());
         mRxLeanCloud = new RxLeanCloud(mApplication.getApplicationContext());
-        mRxBus = RxBus.getDefaultInstance();
+        mRxBus = new RxBus();
     }
 
     @Provides

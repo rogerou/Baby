@@ -24,5 +24,6 @@
     <string name="idea">这一刻的想法...</string>
     <string name="fetchPic">获取相片</string>
     <string name="upload">上传</string>
+    <string name="news">通知</string>
 
 </resources>

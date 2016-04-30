@@ -2,22 +2,32 @@ package com.ozj.baby.mvp.model.rx;
 
 import android.content.Context;
 
+import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
+import com.avos.avoscloud.AVInstallation;
+import com.avos.avoscloud.AVPush;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.FindCallback;
+import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SaveCallback;
+import com.avos.avoscloud.SendCallback;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.mvp.model.bean.Gallery;
+import com.ozj.baby.mvp.model.bean.News;
 import com.ozj.baby.mvp.model.bean.Souvenir;
+import com.ozj.baby.mvp.model.bean.User;
 import com.ozj.baby.mvp.model.dao.GalleryDao;
+import com.ozj.baby.mvp.model.dao.NewsDao;
 import com.ozj.baby.mvp.model.dao.SouvenirDao;
 import com.ozj.baby.mvp.model.dao.UserDao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -280,7 +290,87 @@ public class RxLeanCloud {
 
 
             }
-        }).subscribeOn(Schedulers.io());
+        }).subscribeOn(AndroidSchedulers.mainThread());
     }
 
+    public Observable<Boolean> PushToLover(final String content, final int action) {
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(final Subscriber<? super Boolean> subscriber) {
+                AVPush push = new AVPush();
+                Map<String, Object> map = new HashMap<>();
+                String installationId = User.getCurrentUser(User.class).getInstallationId();
+                map.put(NewsDao.CONTENT, content);
+                map.put(NewsDao.ACTION, "com.ozj.baby.Push");
+                map.put(NewsDao.AVATARURL, User.getCurrentUser(User.class).getAvatar());
+                map.put(NewsDao.INSTALLATIONIID,
+                        installationId);
+                map.put(NewsDao.TITLE, action == 0 ? "Moment" : "相册");
+                map.put(NewsDao.TIME, System.currentTimeMillis());
+                push.setData(map);
+                push.setMessage(content);
+                push.setCloudQuery("select * from _Installation where installationId ='" + installationId
+                        + "'");
+//                push.setCloudQuery("select * from _Installation where installationId ='" + installationId
+//                        + "'");
+                push.sendInBackground(new SendCallback() {
+                    @Override
+                    public void done(AVException e) {
+                        if (e == null) {
+                            subscriber.onNext(true);
+                        } else {
+                            subscriber.onError(e);
+                        }
+                        subscriber.onCompleted();
+
+                    }
+                });
+
+            }
+        }).subscribeOn(AndroidSchedulers.mainThread());
+    }
+
+
+    public Observable<String> SaveInstallationId() {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(final Subscriber<? super String> subscriber) {
+                AVInstallation.getCurrentInstallation().saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(AVException e) {
+                        if (e == null) {
+                            subscriber.onNext(AVInstallation.getCurrentInstallation().getInstallationId());
+
+                        } else {
+                            subscriber.onError(e);
+                        }
+                        subscriber.onCompleted();
+                    }
+                });
+            }
+        }).subscribeOn(AndroidSchedulers.mainThread());
+
+    }
+
+    public Observable<User> Login(final String username, final String passwd) {
+        return Observable.create(new Observable.OnSubscribe<User>() {
+            @Override
+            public void call(final Subscriber<? super User> subscriber) {
+
+                AVUser.logInInBackground(username, passwd, new LogInCallback<User>() {
+                    @Override
+                    public void done(User user, AVException e) {
+                        if (e == null) {
+                            subscriber.onNext(user);
+                        } else {
+                            subscriber.onError(e);
+                        }
+                        subscriber.onCompleted();
+                    }
+
+                }, User.class);
+
+            }
+        }).subscribeOn(AndroidSchedulers.mainThread());
+    }
 }

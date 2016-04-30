@@ -6,13 +6,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.avos.avoscloud.AVAnalytics;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.adapter.SouvenirAdapter;
 import com.ozj.baby.base.BaseFragment;
 import com.ozj.baby.event.AddSouvenirEvent;
 import com.ozj.baby.mvp.model.bean.Souvenir;
-import com.ozj.baby.mvp.model.rx.RxBabyRealm;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.SouvenirPresenterImpl;
 import com.ozj.baby.mvp.views.home.ISouvenirVIew;
@@ -45,7 +45,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     Subscription mSubscription;
 
     int page = 0;
-    int size = 2;
+    int size = 15;
     LinearLayoutManager layout;
     List<Souvenir> mList = new ArrayList<>();
     boolean isFirst;
@@ -84,6 +84,19 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        AVAnalytics.onFragmentStart("SouvenirFragment");
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        AVAnalytics.onFragmentEnd("SouvenirFragment");
+    }
+
+    @Override
     public void initDagger() {
         mFragmentComponet.inject(this);
 
@@ -111,13 +124,9 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
                     public void onNext(AddSouvenirEvent addSouvenirEvent) {
                         if (addSouvenirEvent.isList()) {
                             if (addSouvenirEvent.isRefresh()) {
-                                for (Souvenir s : addSouvenirEvent.getMlist()) {
-                                    if (!mList.contains(s)) {
-                                        mList.add(0, s);
-                                        mAdapter.notifyItemInserted(0);
-                                    }
-                                }
-
+                                mList.clear();
+                                mList.addAll(addSouvenirEvent.getMlist());
+                                mAdapter.notifyDataSetChanged();
                             } else {
                                 for (Souvenir s : addSouvenirEvent.getMlist()) {
                                     if (!mList.contains(s)) {
@@ -128,10 +137,8 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
 
                             }
                         } else {
-                            if (!mList.contains(addSouvenirEvent.getSouvenir())) {
-                                mList.add(0, addSouvenirEvent.getSouvenir());
-                                mAdapter.notifyItemInserted(0);
-                            }
+                            mList.add(0, addSouvenirEvent.getSouvenir());
+                            mAdapter.notifyItemInserted(0);
                         }
 
                     }
@@ -191,18 +198,10 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
 
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (mSubscription != null) {
-            mSubscription.isUnsubscribed();
-        }
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if (mSubscription != null) {
-            mSubscription.isUnsubscribed();
+        if (!mSubscription.isUnsubscribed()) {
+            mSubscription.unsubscribe();
         }
         isFirst = true;
         page = 0;

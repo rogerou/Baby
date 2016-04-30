@@ -71,21 +71,21 @@ public class AddSouvenirImpl implements IAddSouvenirPresenter {
                             object.setLikedOther(false);
                             object.setOhterUserId(manager.GetLoverID());
                             object.setPicture(s);
-//                            object.put(SouvenirDao.SOUVENIR_AUTHOR, AVUser.getCurrentUser());
-//                            object.put(SouvenirDao.SOUVENIR_AUTHORID, AVUser.getCurrentUser().getObjectId());
-//                            object.put(SouvenirDao.SOUVENIR_CONTENT, content);
-//                            object.put(SouvenirDao.SOUVENIR_ISLIKEME, false);
-//                            object.put(SouvenirDao.SOUVENIR_ISLIKEOTHER, false);
-//                            object.put(SouvenirDao.SOUVENIR_OTHERUSERID, manager.GetLoverID());
-//                            object.put(SouvenirDao.SOUVENIR_PICTUREURL, s);
                             return mRxLeanCloud.SaveSouvenirByLeanCloud(object);
 
                         }
                     }).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<Souvenir>() {
+                    .flatMap(new Func1<Souvenir, Observable<Boolean>>() {
+                        @Override
+                        public Observable<Boolean> call(Souvenir souvenir) {
+                            mRxbus.post(new AddSouvenirEvent(false, false, souvenir));
+                            return mRxLeanCloud.PushToLover("Ta发布了一个新的Moment", 0);
+                        }
+                    })
+                    .subscribe(new Observer<Boolean>() {
                         @Override
                         public void onCompleted() {
-                            mView.showToast("上传成功");
+                            mView.showToast("发布成功");
                             mView.hideProgress();
                             mView.close();
                         }
@@ -98,8 +98,10 @@ public class AddSouvenirImpl implements IAddSouvenirPresenter {
                         }
 
                         @Override
-                        public void onNext(Souvenir souvenir) {
-                            mRxbus.post(new AddSouvenirEvent(false, false, souvenir));
+                        public void onNext(Boolean bollean) {
+                            if (bollean) {
+                                Logger.d("发布Moment并推送成功");
+                            }
                         }
                     });
 

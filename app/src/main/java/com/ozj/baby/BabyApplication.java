@@ -36,6 +36,8 @@ public class BabyApplication extends Application {
         initComponet();
         LeakCanary.install(this);
         Logger.init("Baby").logLevel(LogLevel.FULL).logTool(new AndroidLogTool());
+        AVOSCloud.setDebugLogEnabled(true);
+        
     }
 
     private void initComponet() {

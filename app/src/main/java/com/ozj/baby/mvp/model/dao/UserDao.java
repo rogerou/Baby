@@ -13,5 +13,6 @@ public class UserDao {
     public static final String USERNAME = "username";
     public static final String LOVETIMESTAMP = "lovetimestamp";
     public static final String TABLENAME = "_User";
-
+    public static final String INSTALLATIONID = "InstallationId";
+    public static final String LOVERINSTALLATIONID = "loverInstallationId";
 }
