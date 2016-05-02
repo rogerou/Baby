@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:paddingTop="13dp" >
+    android:paddingTop="13dp">
 
     <TextView
         android:id="@+id/timestamp"
@@ -15,7 +15,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_chat_activity" >
+        android:layout_marginTop="@dimen/margin_chat_activity">
 
         <ImageView
             android:id="@+id/iv_userhead"
@@ -24,7 +24,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_marginRight="@dimen/margin_chat_activity"
-            android:background="@drawable/ease_default_avatar"
+            android:background="@android:color/transparent"
             android:scaleType="fitXY" />
 
         <RelativeLayout
@@ -33,14 +33,14 @@
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/margin_chat_activity"
             android:layout_toLeftOf="@id/iv_userhead"
-            android:background="@drawable/ease_chatto_bg" >
+            android:background="@drawable/ease_chatto_bg">
 
             <ImageView
-                android:layout_marginLeft="4dp"
                 android:id="@+id/iv_call_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginLeft="4dp"
                 android:src="@drawable/ease_chat_voice_call_self" />
 
             <TextView
@@ -52,8 +52,7 @@
                 android:layout_toRightOf="@id/iv_call_icon"
                 android:background="@null"
                 android:minHeight="40dp"
-                android:padding="6dp"
-              />
+                android:padding="6dp" />
         </RelativeLayout>
 
         <ImageView

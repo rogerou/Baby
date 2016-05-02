@@ -24,7 +24,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginLeft="@dimen/margin_chat_activity"
-            android:background="@drawable/ease_default_avatar"
+            android:background="@android:color/transparent"
             android:scaleType="fitXY" />
 
         <LinearLayout

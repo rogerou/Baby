@@ -71,24 +71,20 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void showProgress(String message) {
-        if (mProgressdialog == null) {
-            mProgressdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-            mProgressdialog.getProgressHelper().setBarColor(getResources().getColor(R.color.colorPrimary));
-            mProgressdialog.setTitleText(message);
-            mProgressdialog.setCancelable(false);
-        }
+        mProgressdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        mProgressdialog.getProgressHelper().setBarColor(getResources().getColor(R.color.colorPrimary));
+        mProgressdialog.setTitleText(message);
+        mProgressdialog.setCancelable(false);
         mProgressdialog.show();
 
     }
 
     @Override
     public void showProgress(String message, int progress) {
-        if (mProgressdialog == null) {
-            mProgressdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-            mProgressdialog.getProgressHelper().setBarColor(getResources().getColor(R.color.colorPrimary));
-            mProgressdialog.setTitleText(message);
-            mProgressdialog.setCancelable(false);
-        }
+        mProgressdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        mProgressdialog.getProgressHelper().setBarColor(getResources().getColor(R.color.colorPrimary));
+        mProgressdialog.setTitleText(message);
+        mProgressdialog.setCancelable(false);
         mProgressdialog.getProgressHelper().setProgress(progress);
         mProgressdialog.show();
 
@@ -124,26 +120,22 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
 
     public void showWarningDialog(String title, String content, SweetAlertDialog.OnSweetClickListener listener) {
-        if (mWarningDialog == null) {
-            mWarningDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                    .setTitleText(title)
-                    .setContentText(content)
-                    .setConfirmText("确定")
-                    .setCancelText("取消")
-                    .setConfirmClickListener(listener);
-        }
+        mWarningDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(title)
+                .setContentText(content)
+                .setConfirmText("确定")
+                .setCancelText("取消")
+                .setConfirmClickListener(listener);
+
         mWarningDialog.show();
     }
 
     public void showErrorDialog(String title, String content, SweetAlertDialog.OnSweetClickListener listener) {
-        if (mErrorDialog == null) {
-            mErrorDialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
-                    .setConfirmText("确定")
-                    .setTitleText(title)
-                    .setContentText(content)
-                    .setConfirmClickListener(listener);
-        }
-
+        mErrorDialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                .setConfirmText("确定")
+                .setTitleText(title)
+                .setContentText(content)
+                .setConfirmClickListener(listener);
         mErrorDialog.show();
     }
 }

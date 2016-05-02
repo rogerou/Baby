@@ -110,6 +110,7 @@ public class EaseChatRowImage extends EaseChatRowFile{
      * 
      * @param thumbernailPath
      * @param iv
+     * @param position
      * @return the image exists or not
      */
     private boolean showImageView(final String thumbernailPath, final ImageView iv, final String localFullSizePath,final EMMessage message) {

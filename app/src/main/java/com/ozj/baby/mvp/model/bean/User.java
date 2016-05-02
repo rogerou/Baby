@@ -18,8 +18,6 @@ public class User extends AVUser implements Parcelable {
     private String anotherUserID;
     private String InstallationId;
     private String LoverInstallationId;
-    private String LoverAvatar;
-    private String LoverNick;
     private String Background;
     private long lovetimeStamp;
 
@@ -145,20 +143,5 @@ public class User extends AVUser implements Parcelable {
         put(UserDao.LOVERINSTALLATIONID, loverInstallationId);
     }
 
-    public String getLoverAvatar() {
-        return getString(UserDao.LOVERAVATAR);
-    }
-
-    public void setLoverAvatar(String loverAvatar) {
-        put(UserDao.LOVERAVATAR, loverAvatar);
-    }
-
-    public String getLoverNick() {
-        return getString(UserDao.LOVERNICK);
-    }
-
-    public void setLoverNick(String loverNick) {
-        put(UserDao.LOVERNICK, loverNick);
-
-    }
+  
 }

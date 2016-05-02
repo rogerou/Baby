@@ -420,7 +420,7 @@ public class RxLeanCloud {
                 }
                 subscriber.onCompleted();
             }
-        }).subscribeOn(Schedulers.io());
+        });
     }
 
     public Observable<Boolean> HXLogin(final String username, final String passwd) {

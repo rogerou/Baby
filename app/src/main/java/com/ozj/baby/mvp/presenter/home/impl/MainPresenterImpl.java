@@ -185,7 +185,7 @@ public class MainPresenterImpl implements IMainPresenter {
             public void onSuccess() {
                 AVUser.logOut();
                 mPreferenceManager.Clear();
-                mActivity.startActivity(new Intent(mActivity, SplashActivity.class).setFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                mActivity.startActivity(new Intent(mActivity, SplashActivity.class));
                 mActivity.finish();
             }
 

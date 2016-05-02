@@ -65,105 +65,111 @@ public class EaseChatInputMenu extends LinearLayout {
         emojiconMenuContainer = (FrameLayout) findViewById(R.id.emojicon_menu_container);
         chatExtendMenuContainer = (FrameLayout) findViewById(R.id.extend_menu_container);
 
-        // 扩展按钮栏
-        chatExtendMenu = (EaseChatExtendMenu) findViewById(R.id.extend_menu);
-
+         // 扩展按钮栏
+         chatExtendMenu = (EaseChatExtendMenu) findViewById(R.id.extend_menu);
+        
 
     }
 
     /**
      * init view 此方法需放在registerExtendMenuItem后面及setCustomEmojiconMenu，
      * setCustomPrimaryMenu(如果需要自定义这两个menu)后面
-     *
      * @param emojiconGroupList 表情组类别，传null使用easeui默认的表情
      */
     public void init(List<EaseEmojiconGroupEntity> emojiconGroupList) {
-        if (inited) {
+        if(inited){
             return;
         }
         // 主按钮菜单栏,没有自定义的用默认的
-        if (chatPrimaryMenu == null) {
+        if(chatPrimaryMenu == null){
             chatPrimaryMenu = (EaseChatPrimaryMenu) layoutInflater.inflate(R.layout.ease_layout_chat_primary_menu, null);
         }
         primaryMenuContainer.addView(chatPrimaryMenu);
 
         // 表情栏，没有自定义的用默认的
-        if (emojiconMenu == null) {
+        if(emojiconMenu == null){
             emojiconMenu = (EaseEmojiconMenu) layoutInflater.inflate(R.layout.ease_layout_emojicon_menu, null);
-            if (emojiconGroupList == null) {
+            if(emojiconGroupList == null){
                 emojiconGroupList = new ArrayList<EaseEmojiconGroupEntity>();
-                emojiconGroupList.add(new EaseEmojiconGroupEntity(R.drawable.ee_1, Arrays.asList(EaseDefaultEmojiconDatas.getData())));
+                emojiconGroupList.add(new EaseEmojiconGroupEntity(R.drawable.ee_1,  Arrays.asList(EaseDefaultEmojiconDatas.getData())));
             }
-            ((EaseEmojiconMenu) emojiconMenu).init(emojiconGroupList);
+            ((EaseEmojiconMenu)emojiconMenu).init(emojiconGroupList);
         }
         emojiconMenuContainer.addView(emojiconMenu);
 
         processChatMenu();
         // 初始化extendmenu
         chatExtendMenu.init();
-
+        
         inited = true;
     }
-
-    public void init() {
+    
+    public void init(){
         init(null);
     }
-
+    
     /**
      * 设置自定义的表情栏，该控件需要继承自EaseEmojiconMenuBase，
      * 以及回调你想要回调出去的事件给设置的EaseEmojiconMenuListener
-     *
      * @param customEmojiconMenu
      */
-    public void setCustomEmojiconMenu(EaseEmojiconMenuBase customEmojiconMenu) {
+    public void setCustomEmojiconMenu(EaseEmojiconMenuBase customEmojiconMenu){
         this.emojiconMenu = customEmojiconMenu;
     }
-
+    
     /**
      * 设置自定义的主菜单栏，该控件需要继承自EaseChatPrimaryMenuBase，
      * 以及回调你想要回调出去的事件给设置的EaseEmojiconMenuListener
+     * @param customEmojiconMenu
      */
-    public void setCustomPrimaryMenu(EaseChatPrimaryMenuBase customPrimaryMenu) {
+    public void setCustomPrimaryMenu(EaseChatPrimaryMenuBase customPrimaryMenu){
         this.chatPrimaryMenu = customPrimaryMenu;
     }
-
-    public EaseChatPrimaryMenuBase getPrimaryMenu() {
+    
+    public EaseChatPrimaryMenuBase getPrimaryMenu(){
         return chatPrimaryMenu;
     }
-
-    public EaseChatExtendMenu getExtendMenu() {
+    
+    public EaseChatExtendMenu getExtendMenu(){
         return chatExtendMenu;
     }
-
-    public EaseEmojiconMenuBase getEmojiconMenu() {
+    
+    public EaseEmojiconMenuBase getEmojiconMenu(){
         return emojiconMenu;
     }
-
+    
 
     /**
      * 注册扩展菜单的item
-     *
-     * @param name        item名字
-     * @param drawableRes item背景
-     * @param itemId      id
-     * @param listener    item点击事件
+     * 
+     * @param name
+     *            item名字
+     * @param drawableRes
+     *            item背景
+     * @param itemId
+     *            id
+     * @param listener
+     *            item点击事件
      */
     public void registerExtendMenuItem(String name, int drawableRes, int itemId,
-                                       EaseChatExtendMenuItemClickListener listener) {
+            EaseChatExtendMenuItemClickListener listener) {
         chatExtendMenu.registerMenuItem(name, drawableRes, itemId, listener);
     }
 
     /**
      * 注册扩展菜单的item
-     * <p/>
-     * item名字
-     *
-     * @param drawableRes item背景
-     * @param itemId      id
-     * @param listener    item点击事件
+     * 
+     * @param name
+     *            item名字
+     * @param drawableRes
+     *            item背景
+     * @param itemId
+     *            id
+     * @param listener
+     *            item点击事件
      */
     public void registerExtendMenuItem(int nameRes, int drawableRes, int itemId,
-                                       EaseChatExtendMenuItemClickListener listener) {
+            EaseChatExtendMenuItemClickListener listener) {
         chatExtendMenu.registerMenuItem(nameRes, drawableRes, itemId, listener);
     }
 
@@ -201,7 +207,7 @@ public class EaseChatInputMenu extends LinearLayout {
 
             @Override
             public boolean onPressToSpeakBtnTouch(View v, MotionEvent event) {
-                if (listener != null) {
+                if(listener != null){
                     return listener.onPressToSpeakBtnTouch(v, event);
                 }
                 return false;
@@ -213,12 +219,12 @@ public class EaseChatInputMenu extends LinearLayout {
 
             @Override
             public void onExpressionClicked(EaseEmojicon emojicon) {
-                if (emojicon.getType() != EaseEmojicon.Type.BIG_EXPRESSION) {
-                    if (emojicon.getEmojiText() != null) {
-                        chatPrimaryMenu.onEmojiconInputEvent(EaseSmileUtils.getSmiledText(context, emojicon.getEmojiText()));
+                if(emojicon.getType() != EaseEmojicon.Type.BIG_EXPRESSION){
+                    if(emojicon.getEmojiText() != null){
+                        chatPrimaryMenu.onEmojiconInputEvent(EaseSmileUtils.getSmiledText(context,emojicon.getEmojiText()));
                     }
-                } else {
-                    if (listener != null) {
+                }else{
+                    if(listener != null){
                         listener.onBigExpressionClicked(emojicon);
                     }
                 }
@@ -234,6 +240,7 @@ public class EaseChatInputMenu extends LinearLayout {
 
     /**
      * 显示或隐藏图标按钮页
+     * 
      */
     protected void toggleMore() {
         if (chatExtendMenuContainer.getVisibility() == View.GONE) {
@@ -301,9 +308,9 @@ public class EaseChatInputMenu extends LinearLayout {
 
     /**
      * 系统返回键被按时调用此方法
-     *
+     * 
      * @return 返回false表示返回键时扩展菜单栏时打开状态，true则表示按返回键时扩展栏是关闭状态<br/>
-     * 如果返回时打开状态状态，会先关闭扩展栏再返回值
+     *         如果返回时打开状态状态，会先关闭扩展栏再返回值
      */
     public boolean onBackPressed() {
         if (chatExtendMenuContainer.getVisibility() == View.VISIBLE) {
@@ -314,7 +321,7 @@ public class EaseChatInputMenu extends LinearLayout {
         }
 
     }
-
+    
 
     public void setChatInputMenuListener(ChatInputMenuListener listener) {
         this.listener = listener;
@@ -323,26 +330,25 @@ public class EaseChatInputMenu extends LinearLayout {
     public interface ChatInputMenuListener {
         /**
          * 发送消息按钮点击
-         *
-         * @param content 文本内容
+         * 
+         * @param content
+         *            文本内容
          */
         void onSendMessage(String content);
-
+        
         /**
          * 大表情被点击
-         *
          * @param emojicon
          */
         void onBigExpressionClicked(EaseEmojicon emojicon);
 
         /**
          * 长按说话按钮touch事件
-         *
          * @param v
          * @param event
          * @return
          */
         boolean onPressToSpeakBtnTouch(View v, MotionEvent event);
     }
-
+    
 }

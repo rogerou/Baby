@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/header"
@@ -21,7 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@drawable/ease_mm_listitem"
-        android:duplicateParentState="true" >
+        android:duplicateParentState="true">
 
         <ImageView
             android:id="@+id/avatar"
@@ -29,8 +29,8 @@
             android:layout_height="43dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="11dp"
-            android:scaleType="fitXY"
-            android:src="@drawable/ease_default_avatar" />
+            android:background="@android:color/transparent"
+            android:scaleType="fitXY" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,12 +39,12 @@
             android:layout_toLeftOf="@+id/unread_msg_number"
             android:layout_toRightOf="@id/avatar"
             android:gravity="center_vertical"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical" >
+                android:gravity="center_vertical">
 
                 <TextView
                     android:id="@+id/name"
@@ -71,16 +71,16 @@
         </LinearLayout>
 
         <TextView
-            android:layout_centerVertical="true"
             android:id="@+id/unread_msg_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:layout_marginRight="20dp"
             android:background="@drawable/ease_unread_dot"
             android:gravity="center"
-            android:visibility="invisible"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:visibility="invisible" />
     </RelativeLayout>
 
 </LinearLayout>

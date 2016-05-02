@@ -20,7 +20,7 @@ ext {
             buildToolsVersion: "23.0.2",
             compileVersion   : 23,
             minSdk           : 16,
-            targetSdk        : 23,
+            targetSdk        : 22,
             version_code     : 201603140,
             version_name     : "1.0",
     ]

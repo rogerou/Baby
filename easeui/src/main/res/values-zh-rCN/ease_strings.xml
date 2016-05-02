@@ -29,12 +29,22 @@
     <string name="resend">重发</string>
     <string name="confirm_resend">确认重发该信息？</string>
     <string name="connect_failuer_toast">请检查网络或稍候重试</string>
+    <string name="switch_camera">切换摄像头</string>
+
     <string name="network_unavailable">网络连接不可用，请检查网络</string>
     <string name="copy">复制</string>
     <string name="forward">转发</string>
+    <string name="call_version_inconsistent">通话协议版本不一致</string>
+    <string name="network_unstable">网络不稳定</string>
+    <string name="no_call_data">没有通话数据</string>
+
     <string name="button_logout">退出登录</string>
     <string name="button_uploadlog">上传运行日志</string>
+    <string name="record_finish_toast">录制完毕，文件存储在%s</string>
+
     <string name="ok">确定</string>
+    <string name="stop_record">停止录制</string>
+
     <string name="cancel">取消</string>
     <string name="prompt">提示</string>
     <string name="clear_records">清空记录</string>
@@ -123,10 +133,10 @@
     <string name="agree">同意</string>
     <string name="Group_chat">群聊:</string>
     <string name="not_download">未下载:</string>
-	<string name="Please_enter_a_username">请输入用户名</string>
+    <string name="Please_enter_a_username">请输入用户名</string>
     <string name="is_down_please_wait">正在下载视频请稍候</string>
     <string name="Exit_the_group_chat">退出群聊</string>
-    
+
     <string name="not_add_myself">不能添加自己</string>
     <string name="This_user_is_already_your_friend">此用户已是你的好友</string>
     <string name="Add_a_friend">加个好友呗</string>
@@ -258,23 +268,23 @@
     <string name="Is_download_voice_click_later">正在下载语音，稍后点击</string>
     <string name="Send_the_following_pictures">发送以下图片？</string>
     <string name="search_new">搜</string>
-    
+
     <string name="Delete_the_contact">删除联系人</string>
     <string name="Move_into_the_blacklist_new">移入到黑名单</string>
     <string name="Change_the_group_name">改变群名称</string>
     <string name="Sync_Groups_From_Server">从服务器下载群聊信息</string>
-    
+
     <string name="update_contact_list">更新联系人列表</string>
     <string name="update_black_list">更新黑名单</string>
     <string name="update_groups">更新群聊</string>
-    
+
     <string name="update_contact_list_failed">更新联系人列表失败</string>
     <string name="update_black_list_failed">更新黑名单失败</string>
     <string name="update_groups_failed">更新群聊失败</string>
-    
-    <string name= "no_more_messages">没有更多的消息了</string>
+
+    <string name="no_more_messages">没有更多的消息了</string>
     <string name="gorup_not_found">找不到这个群组</string>
-    <string name= "chatroom_allow_owner_leave"> 允许聊天室群主离开</string>
+    <string name="chatroom_allow_owner_leave"> 允许聊天室群主离开</string>
     <string name="group_id">群ID</string>
     <string name="move_out_backlist">移出黑名单</string>
     <string name="input_new_nick_hint">输入新昵称</string>

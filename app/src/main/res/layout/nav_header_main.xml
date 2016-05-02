@@ -31,7 +31,7 @@
         android:layout_marginLeft="@dimen/spacing"
         android:layout_marginRight="@dimen/spacing"
         android:layout_marginStart="@dimen/spacing"
-        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
         android:ellipsize="end"
         android:lines="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"

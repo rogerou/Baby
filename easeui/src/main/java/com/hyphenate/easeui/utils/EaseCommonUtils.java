@@ -157,6 +157,7 @@ public class EaseCommonUtils {
 	/**
      * 设置user昵称(没有昵称取username)的首字母属性，方便通讯中对联系人按header分类显示，以及通过右侧ABCD...字母栏快速定位联系人
      * 
+     * @param username
      * @param user
      */
     public static void setUserInitialLetter(EaseUser user) {

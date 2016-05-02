@@ -27,15 +27,18 @@ import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.orhanobut.logger.Logger;
+import com.ozj.baby.Constant;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
 import com.ozj.baby.event.HxDisconnectEvent;
 import com.ozj.baby.event.UploadPhotoUri;
+import com.ozj.baby.mvp.model.bean.User;
 import com.ozj.baby.mvp.model.dao.UserDao;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.MainPresenterImpl;
 import com.ozj.baby.mvp.views.home.IMainView;
 import com.ozj.baby.mvp.views.home.fragment.SouvenirFragment;
+import com.hyphenate.easeui.ui.ChatActivity;
 import com.ozj.baby.mvp.views.navigation.fragment.GalleryFragment;
 import com.ozj.baby.widget.ChoosePicDialog;
 import com.yalantis.ucrop.UCrop;
@@ -211,7 +214,9 @@ public class MainActivity extends BaseActivity
             showWarningDialog("退出", "确定要退出吗？", new SweetAlertDialog.OnSweetClickListener() {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    sweetAlertDialog.dismissWithAnimation();
                     mMainPersenter.Logout();
+
                 }
             });
 
@@ -219,7 +224,14 @@ public class MainActivity extends BaseActivity
             Snackbar.make(coordinatorlayout, "分享", Snackbar.LENGTH_LONG).show();
             mMainPersenter.Share();
         } else if (id == R.id.nav_send) {
-            Snackbar.make(coordinatorlayout, "聊天", Snackbar.LENGTH_LONG).show();
+            if (mMainPersenter.isHavedLover()) {
+                Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+                intent.putExtra(Constant.EXTRA_USER_ID, User.getCurrentUser(User.class).getLoverusername());
+                startActivity(intent);
+            } else {
+                toProfileActivity();
+
+            }
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -232,7 +244,6 @@ public class MainActivity extends BaseActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_album:
-
                 showPicDialog();
                 break;
             case R.id.fab:

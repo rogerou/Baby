@@ -103,7 +103,6 @@ public class EaseChatExtendMenu extends GridView{
 
         private Context context;
 
-        @SuppressWarnings("ResourceType")
         public ItemAdapter(Context context, List<ChatMenuItemModel> objects) {
             super(context, 1, objects);
             this.context = context;

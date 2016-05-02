@@ -8,13 +8,22 @@ import java.util.Map;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
+import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.domain.EaseEmojicon;
+import com.hyphenate.easeui.domain.EaseEmojiconGroupEntity;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.model.EaseNotifier;
+import com.hyphenate.easeui.model.EmojiconExampleGroupData;
+import com.hyphenate.easeui.ui.ChatActivity;
+import com.hyphenate.easeui.ui.VideoCallActivity;
+import com.hyphenate.easeui.ui.VoiceCallActivity;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.exceptions.HyphenateException;
 
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.util.Log;
 
@@ -47,6 +56,8 @@ public final class EaseUI {
      * the notifier
      */
     private EaseNotifier notifier = null;
+    public boolean isVideoCalling;
+    public boolean isVoiceCalling;
 
     /**
      * 用来记录注册了eventlistener的foreground Activity
@@ -58,6 +69,7 @@ public final class EaseUI {
             activityList.add(0, activity);
         }
     }
+
 
     public void popActivity(Activity activity) {
         activityList.remove(activity);
@@ -117,7 +129,88 @@ public final class EaseUI {
         if (settingsProvider == null) {
             settingsProvider = new DefaultSettingsProvider();
         }
+        this.setEmojiconInfoProvider(new EaseEmojiconInfoProvider() {
+            @Override
+            public EaseEmojicon getEmojiconInfo(String emojiconIdentityCode) {
+                EaseEmojiconGroupEntity data = EmojiconExampleGroupData.getData();
+                for (EaseEmojicon emojicon : data.getEmojiconList()) {
+                    if (emojicon.getIdentityCode().equals(emojiconIdentityCode)) {
+                        return emojicon;
+                    }
+                }
+                return null;
+            }
 
+            @Override
+            public Map<String, Object> getTextEmojiconMapping() {
+                return null;
+            }
+        });
+        //不设置，则使用easeui默认的
+        this.getNotifier().setNotificationInfoProvider(new EaseNotifier.EaseNotificationInfoProvider() {
+
+            @Override
+            public String getTitle(EMMessage message) {
+                //修改标题,这里使用默认
+                return null;
+            }
+
+            @Override
+            public int getSmallIcon(EMMessage message) {
+                //设置小图标，这里为默认
+                return 0;
+            }
+
+            @Override
+            public String getDisplayedText(EMMessage message) {
+                // 设置状态栏的消息提示，可以根据message的类型做相应提示
+                String ticker = EaseCommonUtils.getMessageDigest(message, appContext);
+                if (message.getType() == EMMessage.Type.TXT) {
+                    ticker = ticker.replaceAll("\\[.{2,3}\\]", "[表情]");
+                }
+                String nick = null;
+                try {
+                    nick = message.getStringAttribute("nick");
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+                return nick + ": " + ticker;
+            }
+
+            @Override
+            public String getLatestText(EMMessage message, int fromUsersNum, int messageNum) {
+                return null;
+                // return fromUsersNum + "个基友，发来了" + messageNum + "条消息";
+            }
+
+            @Override
+            public Intent getLaunchIntent(EMMessage message) {
+                //设置点击通知栏跳转事件
+                Intent intent = new Intent(appContext, ChatActivity.class);
+                //有电话时优先跳转到通话页面
+                if (isVideoCalling) {
+                    intent = new Intent(appContext, VideoCallActivity.class);
+                } else if (isVoiceCalling) {
+                    intent = new Intent(appContext, VoiceCallActivity.class);
+                } else {
+                    EMMessage.ChatType chatType = message.getChatType();
+                    if (chatType == EMMessage.ChatType.Chat) { // 单聊信息
+                        intent.putExtra("userId", message.getFrom());
+                        intent.putExtra("chatType", EaseConstant.CHATTYPE_SINGLE);
+                    } else { // 群聊信息
+                        // message.getTo()为群聊id
+                        intent.putExtra("userId", message.getTo());
+                        if (chatType == EMMessage.ChatType.GroupChat) {
+                            intent.putExtra("chatType", EaseConstant.CHATTYPE_GROUP);
+                        } else {
+                            intent.putExtra("chatType", EaseConstant.CHATTYPE_CHATROOM);
+                        }
+
+                    }
+                }
+                return intent;
+            }
+        });
         sdkInited = true;
         return true;
     }

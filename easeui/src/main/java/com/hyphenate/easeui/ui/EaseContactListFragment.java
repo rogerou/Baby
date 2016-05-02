@@ -193,7 +193,7 @@ public class EaseContactListFragment extends EaseBaseFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         public void run() {
                             pd.dismiss();
-                            Toast.makeText(getActivity(), st2, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), st2, 0).show();
                             refresh();
                         }
                     });
@@ -202,7 +202,7 @@ public class EaseContactListFragment extends EaseBaseFragment {
                     getActivity().runOnUiThread(new Runnable() {
                         public void run() {
                             pd.dismiss();
-                            Toast.makeText(getActivity(), st3,Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), st3, 0).show();
                         }
                     });
                 }

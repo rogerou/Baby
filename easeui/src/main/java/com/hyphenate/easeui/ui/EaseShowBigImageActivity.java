@@ -18,12 +18,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
-import android.annotation.TargetApi;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -127,7 +125,6 @@ public class EaseShowBigImageActivity extends EaseBaseActivity {
 			public void onSuccess() {
 
 				runOnUiThread(new Runnable() {
-					@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 					@Override
 					public void run() {
                         new File(tempPath).renameTo(new File(localFilePath));
@@ -162,7 +159,6 @@ public class EaseShowBigImageActivity extends EaseBaseActivity {
 					file.delete();
 				}
 				runOnUiThread(new Runnable() {
-					@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 					@Override
 					public void run() {
 						if (EaseShowBigImageActivity.this.isFinishing() || EaseShowBigImageActivity.this.isDestroyed()) {
@@ -178,7 +174,6 @@ public class EaseShowBigImageActivity extends EaseBaseActivity {
 				EMLog.d(TAG, "Progress: " + progress);
 				final String str2 = getResources().getString(R.string.Download_the_pictures_new);
 				runOnUiThread(new Runnable() {
-					@TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 					@Override
 					public void run() {
                         if (EaseShowBigImageActivity.this.isFinishing() || EaseShowBigImageActivity.this.isDestroyed()) {

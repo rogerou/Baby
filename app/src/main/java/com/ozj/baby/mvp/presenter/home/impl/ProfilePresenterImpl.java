@@ -88,8 +88,6 @@ public class ProfilePresenterImpl implements IProfilePresenter {
                     avUser.put(UserDao.LOVERID, user.getObjectId());
                     avUser.put(UserDao.LOVETIMESTAMP, System.currentTimeMillis());
                     avUser.put(UserDao.LOVERINSTALLATIONID, user.getString(UserDao.INSTALLATIONID));
-                    avUser.put(UserDao.LOVERAVATAR, user.getString(UserDao.AVATARURL));
-                    avUser.put(UserDao.LOVERNICK, user.getString(UserDao.LOVERNICK));
                     avUser.put(UserDao.LOVERBACKGROUND, user.getString(UserDao.BACKGROUND));
                     mPreferenceManager.SaveLoverId(user.getObjectId());
                     return mRxleanCloud.SaveUserByLeanCloud(avUser);

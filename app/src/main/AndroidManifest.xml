@@ -25,11 +25,6 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <permission
-        android:name="com.hyphenate.chatuidemo.permission.C2D_MESSAGE"
-        android:protectionLevel="signature" />
-    <uses-permission android:name="com.hyphenate.chatuidemo.permission.C2D_MESSAGE" />
-
     <application
         android:name=".BabyApplication"
         android:allowBackup="true"
@@ -39,6 +34,15 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
 
+        <!-- 百度地图所需的service -->
+        <service
+            android:name="com.baidu.location.f"
+            android:enabled="true"
+            android:process=":remote" />
+        <!-- umeng appkey，可忽略 -->
+        <meta-data
+            android:name="com.baidu.lbsapi.API_KEY"
+            android:value="3ecea51f560650b1ed8a4b99808f52e8" />
 
         <activity
             android:name=".mvp.views.login.activity.SplashActivity"
@@ -54,6 +58,7 @@
 
         <activity
             android:name=".mvp.views.home.activity.MainActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -76,6 +81,41 @@
             android:theme="@style/AppTheme.NoActionBar" />
         />
         <activity android:name="com.avos.avoscloud.feedback.ThreadActivity" />
+
+        <activity
+            android:name="com.hyphenate.easeui.ui.ChatActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.hyphenate.easeui.ui.EaseBaiduMapActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.hyphenate.easeui.ui.EaseShowBigImageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.hyphenate.easeui.ui.EaseShowNormalFileActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.hyphenate.easeui.ui.EaseShowVideoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.hyphenate.easeui.ui.ContextMenuActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyle" />
+
+        <activity
+            android:name="com.hyphenate.easeui.ui.VideoCallActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.hyphenate.easeui.ui.VoiceCallActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.hyphenate.easeui.ui.ImageGridActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service
             android:name="com.avos.avoscloud.PushService"
             android:exported="true" />

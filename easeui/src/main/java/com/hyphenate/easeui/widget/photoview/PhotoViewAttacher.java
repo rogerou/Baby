@@ -202,6 +202,7 @@ class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGe
 	 * when the ImageView is no longer used. A good example is from
 	 * {@link View#onDetachedFromWindow()} or from
 	 * {@link android.app.Activity#onDestroy()}. This is automatically called if
+	 * you are using {@link EasePhotoView.co.senab.photoview.PhotoView}.
 	 */
 	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")

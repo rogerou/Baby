@@ -18,8 +18,9 @@
             android:layout_height="45dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
+          android:background="@android:color/transparent"
             android:scaleType="fitXY"
-            android:src="@drawable/ease_default_avatar" />
+           />
 
         <TextView
             android:id="@+id/unread_msg_number"

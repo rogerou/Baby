@@ -127,13 +127,13 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     public void showLoginView() {
         if (!isBlured) {
             Blurry.with(SplashActivity.this).radius(25).sampling(2).async().capture(splashBg).into(splashBg);
-                isBlured = true;
-            }
-            ObjectAnimator animator = ObjectAnimator.ofFloat(login, "alpha", 0.1f, 1f);
-            animator.addListener(new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                    Logger.d("onAnimationEnd:visable");
+            isBlured = true;
+        }
+        ObjectAnimator animator = ObjectAnimator.ofFloat(login, "alpha", 0.1f, 1f);
+        animator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                Logger.d("onAnimationEnd:visable");
                 ViewGroup parent = (ViewGroup) login.getParent();
                 if (parent != null) {
                     login.setVisibility(View.VISIBLE);

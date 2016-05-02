@@ -33,6 +33,9 @@ import com.ozj.baby.mvp.views.login.activity.SplashActivity;
 import com.ozj.baby.util.PreferenceManager;
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.inject.Inject;
 
 import rx.Observable;
@@ -40,6 +43,7 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by Roger ou on 2016/3/25.
@@ -97,8 +101,8 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
     @Override
     public void Register(TextInputLayout registerUser, TextInputLayout registerPass, TextInputLayout registerRepeatPasswd) {
 
-        String username = registerUser.getEditText().getText().toString();
-        String passwd = registerPass.getEditText().getText().toString();
+        final String username = registerUser.getEditText().getText().toString();
+        final String passwd = registerPass.getEditText().getText().toString();
         String repeatPassWd = registerRepeatPasswd.getEditText().getText().toString();
         if (username.isEmpty()) {
             registerUser.setErrorEnabled(true);
@@ -120,31 +124,70 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
             registerRepeatPasswd.setError("两段密码不一致");
             return;
         }
+        Pattern pattern = Pattern.compile("^[a-z0-9]+$");
+        Matcher matcher = pattern.matcher(username);
+        if (!matcher.matches()) {
+            registerUser.setErrorEnabled(true);
+            registerUser.setError("用户名不能有大写字母哦");
+            return;
+        }
         mSplashView.showProgress("注册中...");
-        AVUser user = new AVUser();
-        user.setUsername(username);
-        user.setPassword(passwd);
-        user.put(UserDao.NICK, username);
-        user.signUpInBackground(new SignUpCallback() {
-            @Override
-            public void done(AVException e) {
-                mSplashView.hideProgress();
-                if (e == null) {
-                    mSplashView.showToast("注册成功");
-                } else {
-                    mSplashView.showToast("注册失败，请稍后再试");
-                }
+        mRxleanCloud.HXRegister(username, passwd)
+                .subscribeOn(Schedulers.io())
+                .flatMap(new Func1<Boolean, Observable<User>>() {
+                    @Override
+                    public Observable<User> call(Boolean aBoolean) {
+                        if (aBoolean) {
+                            return mRxleanCloud.Register(username, passwd);
+                        } else {
+                            return Observable.error(new Throwable("网络出问题了"));
+                        }
 
-            }
-        });
+                    }
+                }).observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<User>() {
+                    @Override
+                    public void onCompleted() {
+                        mSplashView.showToast("注册成功");
+                        mSplashView.hideProgress();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mSplashView.showToast("注册失败，请稍后再试");
+                        mSplashView.hideProgress();
+                        Logger.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+
+                    }
+                });
+//        AVUser user = new AVUser();
+//        user.setUsername(username);
+//        user.setPassword(passwd);
+//        user.put(UserDao.NICK, username);
+//        user.signUpInBackground(new SignUpCallback() {
+//            @Override
+//            public void done(AVException e) {
+//            
+//                if (e == null) {
+//                
+//                } else {
+//                  
+//                }
+//
+//            }
+//        });
 
     }
 
     @SuppressWarnings("ConstantConditions")
     @Override
     public void Login(TextInputLayout usernameLogin, TextInputLayout passwdLogin) {
-        String username = usernameLogin.getEditText().getText().toString();
-        String passwd = passwdLogin.getEditText().getText().toString();
+        final String username = usernameLogin.getEditText().getText().toString();
+        final String passwd = passwdLogin.getEditText().getText().toString();
         if (username.isEmpty()) {
             usernameLogin.setErrorEnabled(true);
             usernameLogin.setError("用户名不能为空");
@@ -174,7 +217,13 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
 
                 return mRxleanCloud.SaveUserByLeanCloud(user);
             }
-        }).subscribe(new Observer<AVUser>() {
+        }).flatMap(new Func1<AVUser, Observable<Boolean>>() {
+            @Override
+            public Observable<Boolean> call(AVUser user) {
+
+                return mRxleanCloud.HXLogin(username, passwd);
+            }
+        }).subscribe(new Observer<Boolean>() {
             @Override
             public void onCompleted() {
                 mSplashView.toMainActivity();
@@ -188,13 +237,13 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
             }
 
             @Override
-            public void onNext(AVUser user) {
-                if (user != null) {
+            public void onNext(Boolean logined) {
+                if (logined) {
                     Logger.d("登陆成功");
                 }
             }
         });
-//     
+
     }
 
 
