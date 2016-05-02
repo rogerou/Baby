@@ -21,8 +21,13 @@ public interface IMainPresenter extends BasePresenter {
 
     boolean isHavedLover();
 
-    void initData(ImageView avatar, TextView nick);
+    void initData(ImageView avatar, TextView nick, ImageView ivAlbum);
 
     void UploadPicTure(Uri uri);
+
+    void Share();
+
+    void Logout();
+
 
 }

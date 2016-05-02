@@ -241,8 +241,6 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
         if (!mUploadPhoto.isUnsubscribed()) {
             mUploadPhoto.unsubscribe();
         }
-        isFirst = true;
-        page = 0;
     }
 
     @Override

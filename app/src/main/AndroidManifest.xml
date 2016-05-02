@@ -16,6 +16,20 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.GET_TASKS" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <permission
+        android:name="com.hyphenate.chatuidemo.permission.C2D_MESSAGE"
+        android:protectionLevel="signature" />
+    <uses-permission android:name="com.hyphenate.chatuidemo.permission.C2D_MESSAGE" />
+
     <application
         android:name=".BabyApplication"
         android:allowBackup="true"
@@ -61,7 +75,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         />
-
+        <activity android:name="com.avos.avoscloud.feedback.ThreadActivity" />
         <service
             android:name="com.avos.avoscloud.PushService"
             android:exported="true" />
@@ -75,15 +89,33 @@
         </receiver>
 
 
-        <receiver
-            android:name="com.ozj.baby.receiver.BabyReceiver"
-            android:exported="false">
+        <receiver android:name="com.ozj.baby.receiver.BabyReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.USER_PRESENT" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="com.avos.UPDATE_STATUS" />
                 <action android:name="com.ozj.baby.Push" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="EASEMOB_APPKEY"
+            android:value="baby258#baby" />
+        <!-- 声明sdk所需的service SDK核心功能-->
+        <service
+            android:name="com.hyphenate.chat.EMChatService"
+            android:exported="true" />
+        <!-- 声明sdk所需的receiver -->
+        <receiver android:name="com.hyphenate.chat.EMMonitorReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <data android:scheme="package" />
+            </intent-filter>
+            <!-- 可选filter -->
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.USER_PRESENT" />
             </intent-filter>
         </receiver>
     </application>

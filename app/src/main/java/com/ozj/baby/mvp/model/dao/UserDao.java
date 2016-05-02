@@ -15,4 +15,8 @@ public class UserDao {
     public static final String TABLENAME = "_User";
     public static final String INSTALLATIONID = "InstallationId";
     public static final String LOVERINSTALLATIONID = "loverInstallationId";
+    public static final String LOVERAVATAR = "loveravatar";
+    public static final String LOVERNICK = "lovernick";
+    public static final String BACKGROUND = "background";
+    public static final String LOVERBACKGROUND = "loverbackground";
 }

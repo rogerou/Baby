@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="avoscloud_timestamp_gray">#888</color>
+    <color name="avoscloud_feedback_white">#fff</color>
+    <color name="avoscloud_feedback_back_background">#333333</color>
+    <color name="avoscloud_feedback_thread_header_background">#000</color>
+    <color name="avoscloud_feedback_thread_actionbar_blue">#56b8f4</color>
+    <color name="avoscloud_feedback_text_gray">#898989</color>
+    <color name="avoscloud_feedback_input_wrap_background">#f8f8f8</color>
+
+</resources>

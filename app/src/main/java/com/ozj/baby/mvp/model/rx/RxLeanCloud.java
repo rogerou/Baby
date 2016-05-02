@@ -13,6 +13,10 @@ import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SaveCallback;
 import com.avos.avoscloud.SendCallback;
+import com.avos.avoscloud.SignUpCallback;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.exceptions.HyphenateException;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.mvp.model.bean.Gallery;
@@ -83,16 +87,17 @@ public class RxLeanCloud {
         }).subscribeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable<Boolean> SaveUserByLeanCloud(final AVUser user) {
-        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+    public Observable<AVUser> SaveUserByLeanCloud(final AVUser user) {
+        return Observable.create(new Observable.OnSubscribe<AVUser>() {
             @Override
-            public void call(final Subscriber<? super Boolean> subscriber) {
+            public void call(final Subscriber<? super AVUser> subscriber) {
 
+                user.setFetchWhenSave(true);
                 user.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(AVException e) {
                         if (e == null) {
-                            subscriber.onNext(true);
+                            subscriber.onNext(user);
                         } else {
                             subscriber.onError(e);
                             Logger.e(e.getMessage());
@@ -299,7 +304,7 @@ public class RxLeanCloud {
             public void call(final Subscriber<? super Boolean> subscriber) {
                 AVPush push = new AVPush();
                 Map<String, Object> map = new HashMap<>();
-                String installationId = User.getCurrentUser(User.class).getInstallationId();
+                String installationId = User.getCurrentUser(User.class).getLoverInstallationId();
                 map.put(NewsDao.CONTENT, content);
                 map.put(NewsDao.ACTION, "com.ozj.baby.Push");
                 map.put(NewsDao.AVATARURL, User.getCurrentUser(User.class).getAvatar());
@@ -372,5 +377,76 @@ public class RxLeanCloud {
 
             }
         }).subscribeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<User> Register(final String username, final String passwd) {
+        return Observable.create(new Observable.OnSubscribe<User>() {
+            @Override
+            public void call(final Subscriber<? super User> subscriber) {
+
+                final User user = new User();
+                user.setUsername(username);
+                user.setPassword(passwd);
+                user.setNick(username);
+                user.setFetchWhenSave(true);
+                user.signUpInBackground(new SignUpCallback() {
+                    @Override
+                    public void done(AVException e) {
+                        if (e == null) {
+                            subscriber.onNext(user);
+                        } else {
+                            subscriber.onError(e);
+                        }
+                        subscriber.onCompleted();
+                    }
+                });
+            }
+        });
+
+    }
+
+    public Observable<Boolean> HXRegister(final String username, final String passwd) {
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(Subscriber<? super Boolean> subscriber) {
+                try {
+                    EMClient.getInstance().createAccount(username, passwd);
+
+                    subscriber.onNext(true);
+
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                    subscriber.onError(e);
+                }
+                subscriber.onCompleted();
+            }
+        }).subscribeOn(Schedulers.io());
+    }
+
+    public Observable<Boolean> HXLogin(final String username, final String passwd) {
+
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(final Subscriber<? super Boolean> subscriber) {
+                EMClient.getInstance().login(username, passwd, new EMCallBack() {
+                    @Override
+                    public void onSuccess() {
+                        subscriber.onNext(true);
+                        subscriber.onCompleted();
+                    }
+
+                    @Override
+                    public void onError(int i, String s) {
+                        subscriber.onError(new Throwable(s));
+                    }
+
+                    @Override
+                    public void onProgress(int i, String s) {
+
+                    }
+                });
+            }
+        });
+
     }
 }

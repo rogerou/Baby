@@ -19,7 +19,6 @@ public class BabyReceiver extends BroadcastReceiver {
     @Inject
     RxBabyRealm mRealm;
 
-
     @Override
     public void onReceive(Context context, Intent intent) {
         Logger.d("receive something");

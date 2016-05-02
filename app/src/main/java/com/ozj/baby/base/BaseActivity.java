@@ -8,11 +8,14 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
+import com.avos.avoscloud.AVUser;
+import com.hyphenate.chat.EMClient;
 import com.ozj.baby.BabyApplication;
 import com.ozj.baby.R;
 import com.ozj.baby.di.component.ActivityComponet;
 import com.ozj.baby.di.component.DaggerActivityComponet;
 import com.ozj.baby.di.module.ActivityModule;
+import com.ozj.baby.mvp.model.bean.User;
 
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;
@@ -25,6 +28,9 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     public SweetAlertDialog mProgressdialog;
     public BasePresenter mIPresenter;
     public ActivityComponet mActivityComponet;
+
+    public SweetAlertDialog mWarningDialog;
+    public SweetAlertDialog mErrorDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -116,4 +122,28 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     }
 
+
+    public void showWarningDialog(String title, String content, SweetAlertDialog.OnSweetClickListener listener) {
+        if (mWarningDialog == null) {
+            mWarningDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText(title)
+                    .setContentText(content)
+                    .setConfirmText("确定")
+                    .setCancelText("取消")
+                    .setConfirmClickListener(listener);
+        }
+        mWarningDialog.show();
+    }
+
+    public void showErrorDialog(String title, String content, SweetAlertDialog.OnSweetClickListener listener) {
+        if (mErrorDialog == null) {
+            mErrorDialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+                    .setConfirmText("确定")
+                    .setTitleText(title)
+                    .setContentText(content)
+                    .setConfirmClickListener(listener);
+        }
+
+        mErrorDialog.show();
+    }
 }

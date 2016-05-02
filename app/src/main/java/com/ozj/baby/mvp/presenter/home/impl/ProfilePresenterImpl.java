@@ -81,18 +81,21 @@ public class ProfilePresenterImpl implements IProfilePresenter {
             avUser.put(UserDao.SEX, sex);
         }
         if (!TextUtils.isEmpty(lover)) {
-            mRxleanCloud.GetUserByUsername(lover).flatMap(new Func1<AVUser, Observable<Boolean>>() {
+            mRxleanCloud.GetUserByUsername(lover).flatMap(new Func1<AVUser, Observable<AVUser>>() {
                 @Override
-                public Observable<Boolean> call(AVUser user) {
+                public Observable<AVUser> call(AVUser user) {
                     avUser.put(UserDao.LOVERUSERNAME, lover);
                     avUser.put(UserDao.LOVERID, user.getObjectId());
                     avUser.put(UserDao.LOVETIMESTAMP, System.currentTimeMillis());
                     avUser.put(UserDao.LOVERINSTALLATIONID, user.getString(UserDao.INSTALLATIONID));
+                    avUser.put(UserDao.LOVERAVATAR, user.getString(UserDao.AVATARURL));
+                    avUser.put(UserDao.LOVERNICK, user.getString(UserDao.LOVERNICK));
+                    avUser.put(UserDao.LOVERBACKGROUND, user.getString(UserDao.BACKGROUND));
                     mPreferenceManager.SaveLoverId(user.getObjectId());
                     return mRxleanCloud.SaveUserByLeanCloud(avUser);
                 }
             }).observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<Boolean>() {
+                    .subscribe(new Observer<AVUser>() {
                         @Override
                         public void onCompleted() {
                             mProfileView.hideProgress();
@@ -105,8 +108,8 @@ public class ProfilePresenterImpl implements IProfilePresenter {
                         }
 
                         @Override
-                        public void onNext(Boolean aBoolean) {
-                            if (aBoolean) {
+                        public void onNext(AVUser avUser1) {
+                            if (avUser1 != null) {
                                 mProfileView.showToast("保存资料成功");
                                 mProfileView.setResultCode();
                             }
@@ -115,7 +118,7 @@ public class ProfilePresenterImpl implements IProfilePresenter {
         } else {
             mRxleanCloud.SaveUserByLeanCloud(avUser)
                     .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<Boolean>() {
+                    .subscribe(new Observer<AVUser>() {
                         @Override
                         public void onCompleted() {
                             mProfileView.hideProgress();
@@ -127,8 +130,8 @@ public class ProfilePresenterImpl implements IProfilePresenter {
                         }
 
                         @Override
-                        public void onNext(Boolean aBoolean) {
-                            if (aBoolean) {
+                        public void onNext(AVUser user) {
+                            if (user != null) {
                                 mProfileView.showToast("保存资料成功");
                                 mProfileView.setResultCode();
                             }
@@ -197,15 +200,15 @@ public class ProfilePresenterImpl implements IProfilePresenter {
             if (uri != null) {
                 AVFile file = AVFile.withFile(name, new File(new URI(uri.toString())));
                 mRxleanCloud.UploadPicture(file)
-                        .flatMap(new Func1<String, Observable<Boolean>>() {
+                        .flatMap(new Func1<String, Observable<AVUser>>() {
                             @Override
-                            public Observable<Boolean> call(String s) {
+                            public Observable<AVUser> call(String s) {
                                 AVUser user = AVUser.getCurrentUser();
                                 user.put(UserDao.AVATARURL, s);
                                 return mRxleanCloud.SaveUserByLeanCloud(user);
                             }
                         }).observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(new Observer<Boolean>() {
+                        .subscribe(new Observer<AVUser>() {
                             @Override
                             public void onCompleted() {
                                 mProfileView.hideProgress();
@@ -218,8 +221,8 @@ public class ProfilePresenterImpl implements IProfilePresenter {
                             }
 
                             @Override
-                            public void onNext(Boolean aBoolean) {
-                                if (aBoolean) {
+                            public void onNext(AVUser user) {
+                                if (user != null) {
                                     mProfileView.showToast("保存头像成功");
                                     Logger.d("更换头像成功");
                                     mProfileView.setResultCode();

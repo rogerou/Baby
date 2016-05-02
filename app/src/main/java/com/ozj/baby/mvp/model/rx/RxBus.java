@@ -6,11 +6,11 @@ import rx.subjects.SerializedSubject;
 
 /**
  * Created by Roger ou on 2016/4/14.
- * <p>
+ * <p/>
  * 利用Rxjava实现Eventbus
  */
 public class RxBus {
-    //    private  volatile RxBus defaultInstance;
+    private static volatile RxBus defaultInstance;
     //主题
     private final SerializedSubject mSubject;
 
@@ -18,21 +18,20 @@ public class RxBus {
         mSubject = new SerializedSubject<>(PublishSubject.create());
     }
 
-//
-//    public  RxBus getDefaultInstance() {
-//        RxBus rxBus = defaultInstance;
-//        if (rxBus == null) {
-//            synchronized (RxBus.class) {
-//                rxBus = defaultInstance;
-//                if (rxBus == null) {
-//                    rxBus = new RxBus();
-//                    defaultInstance = rxBus;
-//                }
-//            }
-//        }
-//
-//        return rxBus;
-//    }
+    public static RxBus getDefaultInstance() {
+        RxBus rxBus = defaultInstance;
+        if (rxBus == null) {
+            synchronized (RxBus.class) {
+                rxBus = defaultInstance;
+                if (rxBus == null) {
+                    rxBus = new RxBus();
+                    defaultInstance = rxBus;
+                }
+            }
+        }
+
+        return rxBus;
+    }
 
     @SuppressWarnings("unchecked")
     public void post(Object o) {

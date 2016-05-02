@@ -9,6 +9,7 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -22,11 +23,13 @@ import android.widget.TextView;
 
 import com.avos.avoscloud.AVUser;
 import com.avos.avoscloud.PushService;
+import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
+import com.ozj.baby.event.HxDisconnectEvent;
 import com.ozj.baby.event.UploadPhotoUri;
 import com.ozj.baby.mvp.model.dao.UserDao;
 import com.ozj.baby.mvp.model.rx.RxBus;
@@ -35,7 +38,6 @@ import com.ozj.baby.mvp.views.home.IMainView;
 import com.ozj.baby.mvp.views.home.fragment.SouvenirFragment;
 import com.ozj.baby.mvp.views.navigation.fragment.GalleryFragment;
 import com.ozj.baby.widget.ChoosePicDialog;
-import com.squareup.haha.perflib.Main;
 import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
@@ -44,8 +46,11 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import pl.aprilapps.easyphotopicker.EasyImage;
+import rx.Subscription;
+import rx.functions.Action1;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, IMainView {
@@ -53,8 +58,6 @@ public class MainActivity extends BaseActivity
     MainPresenterImpl mMainPersenter;
     @Bind(R.id.iv_album)
     ImageView ivAlbum;
-    @Bind(R.id.fade_cover)
-    View fadeCover;
     @Bind(R.id.rl_loverbackground)
     RelativeLayout rlLoverbackground;
     @Bind(R.id.toolbar)
@@ -82,6 +85,12 @@ public class MainActivity extends BaseActivity
     SouvenirFragment souvenirFragment;
     GalleryFragment galleryFragment;
     static final int ChangeProfile = 8;
+    static final int GalleryPhoto = 9;
+    static final int AlbumPhoto = 10;
+
+    boolean isAlbum = false;
+
+    Subscription mSubscripition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,7 +108,6 @@ public class MainActivity extends BaseActivity
     public void initContentView() {
         setContentView(R.layout.activity_main);
         PushService.setDefaultPushCallback(this, MainActivity.class);
-//        PushService.subscribe(this, "public", MainActivity.class);
 
     }
 
@@ -123,11 +131,11 @@ public class MainActivity extends BaseActivity
                 toProfileActivity();
             }
         });
-        mMainPersenter.initData(iv_avatar, tv_nick);
-
+        mMainPersenter.initData(iv_avatar, tv_nick, ivAlbum);
         navView.getMenu().getItem(0).setChecked(true);
         souvenirFragment = SouvenirFragment.newInsatance();
         mMainPersenter.replaceFragment(souvenirFragment, "Moment", true);
+        initBus();
     }
 
     @Override
@@ -186,22 +194,32 @@ public class MainActivity extends BaseActivity
             if (souvenirFragment == null) {
                 souvenirFragment = SouvenirFragment.newInsatance();
             }
+            isAlbum = true;
             collaspingToolBarlayout.setTitle("Moment");
             mMainPersenter.replaceFragment(souvenirFragment, "Moment", true);
         } else if (id == R.id.nav_gallery) {
             if (galleryFragment == null) {
                 galleryFragment = GalleryFragment.newInstance();
             }
+            isAlbum = false;
             collaspingToolBarlayout.setTitle("相册");
             mMainPersenter.replaceFragment(galleryFragment, "Gallery", false);
-        } else if (id == R.id.nav_slideshow) {
-
         } else if (id == R.id.nav_manage) {
+            FeedbackAgent agent = new FeedbackAgent(MainActivity.this);
+            agent.startDefaultThreadActivity();
+        } else if (id == R.id.nav_logout) {
+            showWarningDialog("退出", "确定要退出吗？", new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    mMainPersenter.Logout();
+                }
+            });
 
         } else if (id == R.id.nav_share) {
-
+            Snackbar.make(coordinatorlayout, "分享", Snackbar.LENGTH_LONG).show();
+            mMainPersenter.Share();
         } else if (id == R.id.nav_send) {
-
+            Snackbar.make(coordinatorlayout, "聊天", Snackbar.LENGTH_LONG).show();
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -214,6 +232,7 @@ public class MainActivity extends BaseActivity
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_album:
+
                 showPicDialog();
                 break;
             case R.id.fab:
@@ -254,6 +273,36 @@ public class MainActivity extends BaseActivity
         appBar.setExpanded(false, true);
     }
 
+    @Override
+    public void initBus() {
+        mSubscripition = mRxbus.toObservable(HxDisconnectEvent.class)
+                .subscribe(new Action1<HxDisconnectEvent>() {
+                    @Override
+                    public void call(HxDisconnectEvent hxDisconnectEvent) {
+                        switch (hxDisconnectEvent.getEvent()) {
+                            case HxDisconnectEvent.USER_LOGIN_ANOTHER_DEVICE:
+                                showErrorDialog("出错啦", "你的账号在别的地方登陆了", new SweetAlertDialog.OnSweetClickListener() {
+                                    @Override
+                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                        mMainPersenter.Logout();
+                                        sweetAlertDialog.dismissWithAnimation();
+                                    }
+                                });
+                                break;
+
+                            case HxDisconnectEvent.NONETWORK:
+                                showErrorDialog("出错啦", "你的网路出问题了", null);
+                                break;
+
+                            default:
+                                break;
+
+                        }
+                    }
+                });
+
+    }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -272,10 +321,16 @@ public class MainActivity extends BaseActivity
             public void onImagePicked(File file, EasyImage.ImageSource imageSource, int i) {
                 UCrop.Options options = new UCrop.Options();
                 options.setCompressionFormat(Bitmap.CompressFormat.JPEG);
-                options.setCompressionQuality(80);
-                UCrop.of(Uri.fromFile(file), Uri.fromFile(file))
-                        .withOptions(options)
-                        .start(MainActivity.this);
+                if (isAlbum) {
+                    UCrop.of(Uri.fromFile(file), Uri.fromFile(file))
+                            .withOptions(options)
+                            .start(MainActivity.this, AlbumPhoto);
+                } else {
+                    UCrop.of(Uri.fromFile(file), Uri.fromFile(file))
+                            .withOptions(options)
+                            .start(MainActivity.this, GalleryPhoto);
+                }
+
             }
 
             @Override
@@ -290,8 +345,11 @@ public class MainActivity extends BaseActivity
             }
         });
 
-        if (resultCode == RESULT_OK && requestCode == UCrop.REQUEST_CROP) {
+        if (resultCode == RESULT_OK && requestCode == GalleryPhoto) {
             mRxbus.post(new UploadPhotoUri(0, UCrop.getOutput(data)));
+        } else if (resultCode == RESULT_OK && requestCode == AlbumPhoto) {
+            Glide.with(MainActivity.this).load(UCrop.getOutput(data)).crossFade().fitCenter().diskCacheStrategy(DiskCacheStrategy.ALL).into(ivAlbum);
+            mMainPersenter.UploadPicTure(UCrop.getOutput(data));
         } else if (resultCode == UCrop.RESULT_ERROR) {
             //noinspection ConstantConditions
             Logger.e(UCrop.getError(data).getMessage());

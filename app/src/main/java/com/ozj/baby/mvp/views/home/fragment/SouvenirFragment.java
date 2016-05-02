@@ -203,10 +203,6 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
         if (!mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
         }
-        isFirst = true;
-        page = 0;
-        mList.clear();
-
     }
 
 }

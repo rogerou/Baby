@@ -319,3 +319,6 @@
   **[] $VALUES;
   public *;
 }
+
+-keep class com.hyphenate.** {*;}
+-dontwarn  com.hyphenate.**

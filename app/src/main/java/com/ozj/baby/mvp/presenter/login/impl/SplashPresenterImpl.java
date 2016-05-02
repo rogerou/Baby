@@ -166,15 +166,15 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
 
                         return mRxleanCloud.SaveInstallationId();
                     }
-                }).flatMap(new Func1<String, Observable<Boolean>>() {
+                }).flatMap(new Func1<String, Observable<AVUser>>() {
             @Override
-            public Observable<Boolean> call(String s) {
+            public Observable<AVUser> call(String s) {
                 User user = User.getCurrentUser(User.class);
                 user.setInstallationId(s);
 
                 return mRxleanCloud.SaveUserByLeanCloud(user);
             }
-        }).subscribe(new Observer<Boolean>() {
+        }).subscribe(new Observer<AVUser>() {
             @Override
             public void onCompleted() {
                 mSplashView.toMainActivity();
@@ -188,8 +188,8 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
             }
 
             @Override
-            public void onNext(Boolean aBoolean) {
-                if (aBoolean) {
+            public void onNext(AVUser user) {
+                if (user != null) {
                     Logger.d("登陆成功");
                 }
             }

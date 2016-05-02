@@ -16,6 +16,8 @@ public interface IMainView extends BaseView {
     void showScrollView();
 
     void hideScrollView();
-    
+
+    void initBus();
+
 
 }

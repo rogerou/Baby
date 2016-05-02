@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="avoscloud_feedback_app_name">AvosCloudFeedback</string>
+    <string name="avoscloud_feedback_thread_activity_title">Feedback</string>
+    <string name="avoscloud_feedback_send_text">Send</string>
+    <string name="avoscloud_feedback_new_item">Got new reply </string>
+    <string name="avoscloud_feedback_input_hint">Write your feedback</string>
+    <string name="avoscloud_feedback_contact_hint">Contact information</string>
+    <string name="avoscloud_feedback_just_now">Just Now</string>
+    <string name="avoscloud_feedback_select_image">Select Image</string>
+</resources>

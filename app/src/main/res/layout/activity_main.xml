@@ -46,19 +46,19 @@
                         android:layout_height="match_parent"
                         android:fitsSystemWindows="true"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/img_default_cover_auto_mirrored" />
+                        android:src="@drawable/background" />
 
-                    <View
-                        android:id="@+id/fade_cover"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBottom="@id/iv_album"
-                        android:layout_alignEnd="@id/iv_album"
-                        android:layout_alignLeft="@id/iv_album"
-                        android:layout_alignRight="@id/iv_album"
-                        android:layout_alignStart="@id/iv_album"
-                        android:layout_alignTop="@id/iv_album"
-                        android:background="@color/amber500_alpha_54" />
+                    <!--<View-->
+                        <!--android:id="@+id/fade_cover"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_alignBottom="@id/iv_album"-->
+                        <!--android:layout_alignEnd="@id/iv_album"-->
+                        <!--android:layout_alignLeft="@id/iv_album"-->
+                        <!--android:layout_alignRight="@id/iv_album"-->
+                        <!--android:layout_alignStart="@id/iv_album"-->
+                        <!--android:layout_alignTop="@id/iv_album"-->
+                        <!--android:background="@color/amber500_alpha_54" />-->
 
                 </RelativeLayout>
 

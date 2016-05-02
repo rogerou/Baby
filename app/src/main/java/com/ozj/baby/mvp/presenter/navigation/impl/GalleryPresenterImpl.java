@@ -10,6 +10,7 @@ import com.avos.avoscloud.AVFile;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.target.Target;
+import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.event.AddGalleryEvent;
@@ -133,6 +134,20 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
                         gallery.setImgUrl(s);
                         gallery.setUser(User.getCurrentUser(User.class));
                         gallery.setAuthorId(mPreferenceManager.getCurrentUserId());
+                        Bitmap bitmap = null;
+                        try {
+                            bitmap = Glide.with(mContext).load(s).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
+                        } catch (InterruptedException | ExecutionException e) {
+                            e.printStackTrace();
+                        }
+                        if (bitmap != null) {
+                            gallery.setHeight(bitmap.getHeight());
+                            gallery.setWidth(bitmap.getWidth());
+                        } else {
+                            gallery.setHeight(0);
+                            gallery.setWidth(0);
+                        }
+
                         return mRxleanCloud.saveGallery(gallery);
                     }
                 }).observeOn(AndroidSchedulers.mainThread())
@@ -158,7 +173,9 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
 
             @Override
             public void onNext(Boolean aBoolean) {
-
+                if (aBoolean) {
+                    Logger.d("上传图片成功");
+                }
             }
         });
     }

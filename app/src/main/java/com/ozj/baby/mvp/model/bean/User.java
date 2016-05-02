@@ -18,6 +18,29 @@ public class User extends AVUser implements Parcelable {
     private String anotherUserID;
     private String InstallationId;
     private String LoverInstallationId;
+    private String LoverAvatar;
+    private String LoverNick;
+    private String Background;
+    private long lovetimeStamp;
+
+    public String getLoverBackGround() {
+        return getString(UserDao.LOVERBACKGROUND);
+    }
+
+    public void setLoverBackGround(String loverBackGround) {
+        put(UserDao.LOVERBACKGROUND, loverBackGround);
+    }
+
+    private String LoverBackGround;
+
+    public String getBackground() {
+        return getString(UserDao.BACKGROUND);
+    }
+
+    public void setBackground(String background) {
+        put(UserDao.BACKGROUND, background);
+    }
+
 
     public long getLovetimeStamp() {
         return getLong(UserDao.LOVETIMESTAMP);
@@ -27,40 +50,10 @@ public class User extends AVUser implements Parcelable {
         put(UserDao.LOVETIMESTAMP, lovetimeStamp);
     }
 
-    private long lovetimeStamp;
-
 
     public User() {
 
     }
-//    public User(AVUser user) {
-//        if (user.getString(UserDao.AVATARURL) != null) {
-//            avatar = user.getString(UserDao.AVATARURL);
-//        }
-//        if (user.getString(UserDao.CITY) != null) {
-//            this.city = user.getString(UserDao.CITY);
-//        }
-//        if (user.getString(UserDao.LOVERUSERNAME) != null) {
-//            this.loverusername = user.getString(UserDao.LOVERUSERNAME);
-//        }
-//        if (user.getString(UserDao.SEX) != null) {
-//            this.sex = user.getString(UserDao.SEX);
-//        }
-//        if (user.getObjectId() != null) {
-//            this.ID = user.getObjectId();
-//        }
-//        if (user.getString(UserDao.NICK) != null) {
-//            this.nick = user.getString(UserDao.NICK);
-//        }
-//        this.createTime = user.getCreatedAt().getTime();
-//        if (user.getString(UserDao.LOVERID) != null) {
-//            this.anotherUserID = user.getString(UserDao.LOVERID);
-//        }
-//    }
-//
-//    public User() {
-//
-//    }
 
     public String getLoverusername() {
         return getString(UserDao.LOVERUSERNAME);
@@ -136,18 +129,6 @@ public class User extends AVUser implements Parcelable {
         this.anotherUserID = in.readString();
     }
 
-    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
-        @Override
-        public User createFromParcel(Parcel source) {
-            return new User(source);
-        }
-
-        @Override
-        public User[] newArray(int size) {
-            return new User[size];
-        }
-    };
-
     public String getInstallationId() {
         return getString(UserDao.INSTALLATIONID);
     }
@@ -162,5 +143,22 @@ public class User extends AVUser implements Parcelable {
 
     public void setLoverInstallationId(String loverInstallationId) {
         put(UserDao.LOVERINSTALLATIONID, loverInstallationId);
+    }
+
+    public String getLoverAvatar() {
+        return getString(UserDao.LOVERAVATAR);
+    }
+
+    public void setLoverAvatar(String loverAvatar) {
+        put(UserDao.LOVERAVATAR, loverAvatar);
+    }
+
+    public String getLoverNick() {
+        return getString(UserDao.LOVERNICK);
+    }
+
+    public void setLoverNick(String loverNick) {
+        put(UserDao.LOVERNICK, loverNick);
+
     }
 }

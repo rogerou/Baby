@@ -83,4 +83,8 @@ public class PreferenceManager {
         editor.apply();
     }
 
+    public void Clear() {
+        mSharedPreferences.edit().clear().apply();
+    }
+
 }
