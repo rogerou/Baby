@@ -13,11 +13,11 @@
 ![](art/Screenshot_20160214-173322.png) ![](art/Screenshot_20160214-173339.png)
 
 
-*开屏页的登录和注册
-*首页的Moment
-*相册页面
-*编辑个人信息
-*等等....
+ * 开屏页的登录和注册
+ * 首页的Moment
+ * 相册页面
+ * 编辑个人信息
+ * 等等....
 
 ## Development Environment & Library
 
