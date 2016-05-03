@@ -54,8 +54,8 @@
 感谢Github、LeanCloud、环信、还有造那么多轮子给我们用的Square FaceBook Google的大大们。
 
 ## Contacts
-Email:379489343zhi@gmail.com
-QQ:37948943
+ * Email:379489343zhi@gmail.com
+ * QQ:37948943
 
 ## License
 
