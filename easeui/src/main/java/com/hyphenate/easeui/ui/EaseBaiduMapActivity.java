@@ -65,7 +65,7 @@ public class EaseBaiduMapActivity extends EaseBaseActivity {
     int index = 0;
     // LocationData locData = null;
     static BDLocation lastLocation = null;
-    public static EaseBaiduMapActivity instance = null;
+    public  EaseBaiduMapActivity instance = null;
     ProgressDialog progressDialog;
     private BaiduMap mBaiduMap;
 

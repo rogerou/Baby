@@ -131,9 +131,11 @@ public abstract class EaseChatRow extends LinearLayout {
                     (HyphenateException e) {
                 e.printStackTrace();
             }
-            Glide.with(context).load(avatar).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ic_speaker_placeholder).bitmapTransform(new CropCircleTransformation(context)).into(userAvatarView);
+            if (avatar != null) {
+                Glide.with(context).load(avatar).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ic_speaker_placeholder).bitmapTransform(new CropCircleTransformation(context)).into(userAvatarView);
+            }
+
             //发送方不显示nick
-//            UserUtils.setUserNick(EMChatManager.getInstance().getCurrentUser(), usernickView);
         } else {
             String avatar = null;
             String nick = null;
