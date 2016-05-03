@@ -25,7 +25,7 @@
 ### MVP
 这个项目是基于MVP框架写的（大体上，聊天那块直接用环信的了），大部分Base类参考[FastAndroid](https://github.com/huntermr/FastAndroid)里边的基类，参考这个很快就能布好基本的MVP架构。本来是有考虑过MVVM后来想想还是先学习一下MVP吧，看过几个MVVM项目感觉还是挺好用的，不过还是BETA版不知道有没有什么坑。
 
-### MATERIAL DESIGN
+### Material Design
 早就手痒想体验一把V7包里边的各种控件了，特喜欢coordinatorlayout和collapsingtoolbarlayout的互动让Tollbar隐藏又现的感觉，但是看起来好看还是要点代价的，在这里捣鼓了不少时间，尤其是collapsingtoolbarlayout的Expanded固定让我Google了好久，因为用英文搜索可能我表达的不太好，最后竟然是一句nestedScroll(false)就可以了。。。。
 还是感谢Stackoveflow里变的大腿吧。
 
