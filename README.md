@@ -5,7 +5,8 @@
 (讲道理还是为了毕业设计做的)
 
 ##Download
-
+![](art/下载.png)
+http://fir.im/b9u8
 
 ##Features
 ![](art/Screenshot_20160214-173027.png) ![](art/Screenshot_20160214-173042.png)
