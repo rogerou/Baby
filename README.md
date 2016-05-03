@@ -2,11 +2,11 @@
 # ![](app/src/main/res/mipmap-mdpi/ic_launcher.png)一个恋爱社交APP
 
 这个项目就当是学习一年安卓来的总结和学习的新技术的应用吧。
-(讲道理还是为了毕业设计做的)
+ (讲道理还是为了毕业设计做的)
 
 ##Download
 ![](art/下载.png)
-http://fir.im/b9u8
+  http://fir.im/b9u8
 
 ##Features
 ![](art/Screenshot_20160214-173027.png) ![](art/Screenshot_20160214-173042.png)
