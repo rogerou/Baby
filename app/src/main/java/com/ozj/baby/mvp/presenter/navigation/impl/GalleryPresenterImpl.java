@@ -15,7 +15,7 @@ import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.event.AddGalleryEvent;
 import com.ozj.baby.mvp.model.bean.Gallery;
-import com.ozj.baby.mvp.model.bean.User;
+import com.hyphenate.easeui.domain.User;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.navigation.IGalleryPersenter;

@@ -15,9 +15,11 @@ import com.ozj.baby.di.component.DaggerApplicationComponet;
 import com.ozj.baby.di.module.ApplicationModule;
 import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.bean.Souvenir;
-import com.ozj.baby.mvp.model.bean.User;
-import com.hyphenate.easeui.receiver.CallReceiver;
+import com.hyphenate.easeui.domain.User;
 import com.squareup.leakcanary.LeakCanary;
+
+
+import im.fir.sdk.FIR;
 
 /**
  * Created by Roger ou on 2016/3/25.
@@ -26,15 +28,15 @@ import com.squareup.leakcanary.LeakCanary;
 public class BabyApplication extends Application {
     private ApplicationComponet mAppComponet;
 
-    public boolean isVideoCalling = false;
-    public boolean isVoiceCalling = false;
-    private static volatile BabyApplication AppConext;
-    CallReceiver callReceiver;
 
     @Override
     public void onCreate() {
         super.onCreate();
-        AppConext = (BabyApplication) this.getApplicationContext();
+        initThirdService();
+        initEaseUI();
+    }
+
+    private void initThirdService() {
         AVUser.alwaysUseSubUserClass(User.class);
         AVObject.registerSubclass(Gallery.class);
         AVObject.registerSubclass(Souvenir.class);
@@ -43,20 +45,14 @@ public class BabyApplication extends Application {
         initComponet();
         LeakCanary.install(this);
         Logger.init("Baby").logLevel(LogLevel.FULL).logTool(new AndroidLogTool());
-        AVOSCloud.setDebugLogEnabled(true);
-        initEaseUI();
+        AVOSCloud.setDebugLogEnabled(false);
+        FIR.init(this);
     }
 
     private void initEaseUI() {
         EaseUI.getInstance().init(this, null);
-
-      
     }
 
-    public static BabyApplication getInstanace() {
-
-        return AppConext;
-    }
 
     private void initComponet() {
         mAppComponet = DaggerApplicationComponet.builder().applicationModule(new ApplicationModule(this)).build();
@@ -66,4 +62,6 @@ public class BabyApplication extends Application {
         return mAppComponet;
 
     }
+
+
 }

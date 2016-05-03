@@ -4,14 +4,12 @@ import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.avos.avoscloud.AVFile;
-import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.event.AddSouvenirEvent;
 import com.ozj.baby.mvp.model.bean.Souvenir;
-import com.ozj.baby.mvp.model.bean.User;
-import com.ozj.baby.mvp.model.dao.SouvenirDao;
+import com.hyphenate.easeui.domain.User;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.home.IAddSouvenirPresenter;

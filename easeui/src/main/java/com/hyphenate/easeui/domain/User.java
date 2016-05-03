@@ -1,10 +1,9 @@
-package com.ozj.baby.mvp.model.bean;
+package com.hyphenate.easeui.domain;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.avos.avoscloud.AVUser;
-import com.ozj.baby.mvp.model.dao.UserDao;
 
 /**
  * Created by Administrator on 2016/4/17.
@@ -20,6 +19,25 @@ public class User extends AVUser implements Parcelable {
     private String LoverInstallationId;
     private String Background;
     private long lovetimeStamp;
+
+    public String getLoverAvatar() {
+        return getString(UserDao.LOVERAVATAR);
+    }
+
+    public void setLoverAvatar(String loverAvatar) {
+        put(UserDao.LOVERAVATAR, loverAvatar);
+    }
+
+    public String getLoverNick() {
+        return getString(UserDao.LOVERNICK);
+    }
+
+    public void setLoverNick(String loverNick) {
+        put(UserDao.LOVERNICK, loverNick);
+    }
+
+    private String loverNick;
+    private String loverAvatar;
 
     public String getLoverBackGround() {
         return getString(UserDao.LOVERBACKGROUND);
@@ -143,5 +161,5 @@ public class User extends AVUser implements Parcelable {
         put(UserDao.LOVERINSTALLATIONID, loverInstallationId);
     }
 
-  
+
 }

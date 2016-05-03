@@ -56,11 +56,11 @@ public class EmojiconExampleGroupData {
         for (int i = 0; i < icons.length; i++) {
             datas[i] = new EaseEmojicon(icons[i], null, Type.BIG_EXPRESSION);
             datas[i].setBigIcon(bigIcons[i]);
-            datas[i].setName("示例" + (i + 1));
+            datas[i].setName("");
             datas[i].setIdentityCode("em" + (1000 + i + 1));
         }
         emojiconGroupEntity.setEmojiconList(Arrays.asList(datas));
-        emojiconGroupEntity.setIcon(R.drawable.ee_2);
+        emojiconGroupEntity.setIcon(R.drawable.ee_31);
         emojiconGroupEntity.setType(Type.BIG_EXPRESSION);
         return emojiconGroupEntity;
     }

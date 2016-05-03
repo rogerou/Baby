@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.avos.avoscloud.PushService;
 import com.facebook.shimmer.ShimmerFrameLayout;
+import com.hyphenate.chat.EMClient;
 import com.jaeger.library.StatusBarUtil;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
@@ -78,10 +79,10 @@ public class SplashActivity extends BaseActivity implements ISplashView {
 
     @Override
     public void initViewsAndListener() {
-
         mSplashPresenter.isLoginButtonVisable();
         mSplashPresenter.beginAnimation(splashBg, tvSlogan, shimmerLayout);
         mSplashPresenter.doingSplash();
+        EMClient.getInstance().chatManager().loadAllConversations();
         login.setListener(new MaterialLoginViewListener() {
             @SuppressWarnings("ConstantConditions")
             @Override

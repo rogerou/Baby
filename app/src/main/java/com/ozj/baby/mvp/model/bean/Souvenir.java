@@ -5,6 +5,7 @@ import android.os.Parcelable;
 
 import com.avos.avoscloud.AVClassName;
 import com.avos.avoscloud.AVObject;
+import com.hyphenate.easeui.domain.User;
 import com.ozj.baby.mvp.model.dao.SouvenirDao;
 
 

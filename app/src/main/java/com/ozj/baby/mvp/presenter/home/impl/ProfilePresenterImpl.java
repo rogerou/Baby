@@ -16,8 +16,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
-import com.ozj.baby.mvp.model.bean.User;
-import com.ozj.baby.mvp.model.dao.UserDao;
+import com.hyphenate.easeui.domain.User;
+import com.hyphenate.easeui.domain.UserDao;
 import com.ozj.baby.mvp.model.rx.RxBabyRealm;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.home.IProfilePresenter;
@@ -89,6 +89,8 @@ public class ProfilePresenterImpl implements IProfilePresenter {
                     avUser.put(UserDao.LOVETIMESTAMP, System.currentTimeMillis());
                     avUser.put(UserDao.LOVERINSTALLATIONID, user.getString(UserDao.INSTALLATIONID));
                     avUser.put(UserDao.LOVERBACKGROUND, user.getString(UserDao.BACKGROUND));
+                    avUser.put(UserDao.LOVERAVATAR, user.getString(UserDao.AVATARURL));
+                    avUser.put(UserDao.LOVERNICK, user.getString(UserDao.NICK));
                     mPreferenceManager.SaveLoverId(user.getObjectId());
                     return mRxleanCloud.SaveUserByLeanCloud(avUser);
                 }

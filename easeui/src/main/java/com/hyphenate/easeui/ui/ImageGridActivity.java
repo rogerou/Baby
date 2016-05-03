@@ -1,12 +1,13 @@
 package com.hyphenate.easeui.ui;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v7.appcompat.BuildConfig;
 
+import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.utils.Utils;
+import com.jaeger.library.StatusBarUtil;
 
 public class ImageGridActivity extends FragmentActivity {
 
@@ -24,6 +25,7 @@ public class ImageGridActivity extends FragmentActivity {
             ft.add(android.R.id.content, new ImageGridFragment(), TAG);
             ft.commit();
         }
+        StatusBarUtil.setColor(this, R.color.colorPrimary);
     }
 
 

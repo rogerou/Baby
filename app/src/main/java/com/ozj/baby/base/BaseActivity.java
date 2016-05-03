@@ -2,20 +2,15 @@ package com.ozj.baby.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
-import com.avos.avoscloud.AVUser;
-import com.hyphenate.chat.EMClient;
 import com.ozj.baby.BabyApplication;
 import com.ozj.baby.R;
 import com.ozj.baby.di.component.ActivityComponet;
 import com.ozj.baby.di.component.DaggerActivityComponet;
 import com.ozj.baby.di.module.ActivityModule;
-import com.ozj.baby.mvp.model.bean.User;
 
 import butterknife.ButterKnife;
 import cn.pedant.SweetAlert.SweetAlertDialog;

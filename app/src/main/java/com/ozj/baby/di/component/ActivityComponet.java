@@ -9,6 +9,7 @@ import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.mvp.model.rx.RxBabyRealm;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
+import com.ozj.baby.mvp.views.home.activity.AboutActivity;
 import com.ozj.baby.mvp.views.home.activity.AddSouvenirActivity;
 import com.ozj.baby.mvp.views.home.activity.MainActivity;
 import com.ozj.baby.mvp.views.home.activity.ProfileActivity;
@@ -48,4 +49,5 @@ public interface ActivityComponet {
 
     void inject(AddSouvenirActivity activity);
 
+    void inject(AboutActivity activity);
 }

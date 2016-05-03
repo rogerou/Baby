@@ -34,6 +34,10 @@
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
 
+
+        <meta-data
+            android:name="BUG_HD_SDK_GENERAL_KEY"
+            android:value="5b05bd2d93472939912698c90c85ceb7" />
         <!-- 百度地图所需的service -->
         <service
             android:name="com.baidu.location.f"
@@ -115,6 +119,13 @@
             android:name="com.hyphenate.easeui.ui.ImageGridActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
+            android:name=".mvp.views.home.activity.AboutActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+
+            />
+
 
         <service
             android:name="com.avos.avoscloud.PushService"

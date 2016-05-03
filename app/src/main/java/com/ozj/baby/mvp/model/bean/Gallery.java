@@ -1,16 +1,12 @@
 package com.ozj.baby.mvp.model.bean;
 
-import android.os.Parcel;
 import android.os.Parcelable;
 
 
 import com.avos.avoscloud.AVClassName;
 import com.avos.avoscloud.AVObject;
-import com.avos.avoscloud.AVUser;
+import com.hyphenate.easeui.domain.User;
 import com.ozj.baby.mvp.model.dao.GalleryDao;
-
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
 /**
  * Created by YX201603-6 on 2016/4/25.

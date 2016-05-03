@@ -2,7 +2,6 @@ package com.ozj.baby.mvp.model.rx;
 
 import android.content.Context;
 
-import com.alibaba.fastjson.JSONObject;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVInstallation;
@@ -20,13 +19,12 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.mvp.model.bean.Gallery;
-import com.ozj.baby.mvp.model.bean.News;
 import com.ozj.baby.mvp.model.bean.Souvenir;
-import com.ozj.baby.mvp.model.bean.User;
+import com.hyphenate.easeui.domain.User;
 import com.ozj.baby.mvp.model.dao.GalleryDao;
 import com.ozj.baby.mvp.model.dao.NewsDao;
 import com.ozj.baby.mvp.model.dao.SouvenirDao;
-import com.ozj.baby.mvp.model.dao.UserDao;
+import com.hyphenate.easeui.domain.UserDao;
 
 import java.util.ArrayList;
 import java.util.HashMap;

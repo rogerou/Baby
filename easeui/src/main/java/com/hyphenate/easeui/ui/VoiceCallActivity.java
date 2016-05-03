@@ -39,6 +39,7 @@ import com.hyphenate.chat.EMCallStateChangeListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.controller.EaseUI;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.util.EMLog;
 
 /**
@@ -108,7 +109,7 @@ public class VoiceCallActivity extends CallActivity implements OnClickListener {
         isInComingCall = getIntent().getBooleanExtra("isComingCall", false);
 
         // 设置通话人
-        nickTextView.setText(username);
+        nickTextView.setText(User.getCurrentUser(User.class).getLoverNick());
         if (!isInComingCall) {// 拨打电话
             soundPool = new SoundPool(1, AudioManager.STREAM_RING, 0);
             outgoing = soundPool.load(this, R.raw.em_outgoing, 1);

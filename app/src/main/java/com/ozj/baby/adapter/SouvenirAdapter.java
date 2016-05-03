@@ -22,7 +22,7 @@ import com.like.OnLikeListener;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.mvp.model.bean.Souvenir;
-import com.ozj.baby.mvp.model.dao.UserDao;
+import com.hyphenate.easeui.domain.UserDao;
 import com.ozj.baby.mvp.views.home.activity.DetailImageActivity;
 
 import java.text.SimpleDateFormat;

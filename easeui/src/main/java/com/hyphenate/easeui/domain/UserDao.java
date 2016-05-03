@@ -1,4 +1,4 @@
-package com.ozj.baby.mvp.model.dao;
+package com.hyphenate.easeui.domain;
 
 /**
  * Created by Administrator on 2016/4/17.
@@ -17,4 +17,6 @@ public class UserDao {
     public static final String LOVERINSTALLATIONID = "loverInstallationId";
     public static final String BACKGROUND = "background";
     public static final String LOVERBACKGROUND = "loverbackground";
+    public static final String LOVERNICK = "lovernick";
+    public static final String LOVERAVATAR = "loverAvatar";
 }

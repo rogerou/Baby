@@ -26,14 +26,13 @@ import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.hyphenate.easeui.EaseConstant;
 import com.orhanobut.logger.Logger;
-import com.ozj.baby.Constant;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
-import com.ozj.baby.event.HxDisconnectEvent;
 import com.ozj.baby.event.UploadPhotoUri;
-import com.ozj.baby.mvp.model.bean.User;
-import com.ozj.baby.mvp.model.dao.UserDao;
+import com.hyphenate.easeui.domain.User;
+import com.hyphenate.easeui.domain.UserDao;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.MainPresenterImpl;
 import com.ozj.baby.mvp.views.home.IMainView;
@@ -93,7 +92,6 @@ public class MainActivity extends BaseActivity
 
     boolean isAlbum = false;
 
-    Subscription mSubscripition;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -138,7 +136,6 @@ public class MainActivity extends BaseActivity
         navView.getMenu().getItem(0).setChecked(true);
         souvenirFragment = SouvenirFragment.newInsatance();
         mMainPersenter.replaceFragment(souvenirFragment, "Moment", true);
-        initBus();
     }
 
     @Override
@@ -180,7 +177,9 @@ public class MainActivity extends BaseActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
+            Intent intent = new Intent(this, AboutActivity.class);
+            startActivity(intent);
 
         }
 
@@ -221,21 +220,19 @@ public class MainActivity extends BaseActivity
             });
 
         } else if (id == R.id.nav_share) {
-            Snackbar.make(coordinatorlayout, "分享", Snackbar.LENGTH_LONG).show();
             mMainPersenter.Share();
         } else if (id == R.id.nav_send) {
             if (mMainPersenter.isHavedLover()) {
                 Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-                intent.putExtra(Constant.EXTRA_USER_ID, User.getCurrentUser(User.class).getLoverusername());
+                intent.putExtra(EaseConstant.EXTRA_USER_ID, User.getCurrentUser(User.class).getLoverusername());
                 startActivity(intent);
             } else {
                 toProfileActivity();
-
+                showToast("老实说，这是个两个人    使用的APP    ");
             }
         }
 
         drawerLayout.closeDrawer(GravityCompat.START);
-        invalidateOptionsMenu();
         return true;
     }
 
@@ -286,31 +283,31 @@ public class MainActivity extends BaseActivity
 
     @Override
     public void initBus() {
-        mSubscripition = mRxbus.toObservable(HxDisconnectEvent.class)
-                .subscribe(new Action1<HxDisconnectEvent>() {
-                    @Override
-                    public void call(HxDisconnectEvent hxDisconnectEvent) {
-                        switch (hxDisconnectEvent.getEvent()) {
-                            case HxDisconnectEvent.USER_LOGIN_ANOTHER_DEVICE:
-                                showErrorDialog("出错啦", "你的账号在别的地方登陆了", new SweetAlertDialog.OnSweetClickListener() {
-                                    @Override
-                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                                        mMainPersenter.Logout();
-                                        sweetAlertDialog.dismissWithAnimation();
-                                    }
-                                });
-                                break;
-
-                            case HxDisconnectEvent.NONETWORK:
-                                showErrorDialog("出错啦", "你的网路出问题了", null);
-                                break;
-
-                            default:
-                                break;
-
-                        }
-                    }
-                });
+//        mSubscripition = mRxbus.toObservable(HxDisconnectEvent.class)
+//                .subscribe(new Action1<HxDisconnectEvent>() {
+//                    @Override
+//                    public void call(HxDisconnectEvent hxDisconnectEvent) {
+//                        switch (hxDisconnectEvent.getEvent()) {
+//                            case HxDisconnectEvent.USER_LOGIN_ANOTHER_DEVICE:
+//                                showErrorDialog("出错啦", "你的账号在别的地方登陆了", new SweetAlertDialog.OnSweetClickListener() {
+//                                    @Override
+//                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+//                                        mMainPersenter.Logout();
+//                                        sweetAlertDialog.dismissWithAnimation();
+//                                    }
+//                                });
+//                                break;
+//
+//                            case HxDisconnectEvent.NONETWORK:
+//                                showErrorDialog("出错啦", "你的网路出问题了", null);
+//                                break;
+//
+//                            default:
+//                                break;
+//
+//                        }
+//                    }
+//                });
 
     }
 

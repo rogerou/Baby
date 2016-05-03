@@ -7,6 +7,7 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.ui.EaseChatFragment.EaseChatFragmentListener;
 import com.hyphenate.easeui.widget.chatrow.ChatRowVoiceCall;
 import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
@@ -23,8 +24,11 @@ import android.graphics.Bitmap.CompressFormat;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
+
 import com.hyphenate.easeui.R;
+
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -140,9 +144,9 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentLi
 
     @Override
     public void onSetMessageAttributes(EMMessage message) {
-//        User user = User.getCurrentUser(User.class);
-//        message.setAttribute("avatar", user.getAvatar());
-//        message.setAttribute("nick", user.getNick());
+        User user = User.getCurrentUser(User.class);
+        message.setAttribute("avatar", user.getAvatar());
+        message.setAttribute("nick", user.getNick());
     }
 
     @Override

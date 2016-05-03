@@ -2,16 +2,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/root"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/height_top_bar"
-    android:background="@color/top_bar_normal_bg"
-    android:gravity="center_vertical" >
+    android:layout_height="?attr/actionBarSize"
+    android:background="@color/colorPrimary"
+    android:gravity="center_vertical">
 
     <RelativeLayout
         android:id="@+id/left_layout"
         android:layout_width="50dip"
         android:layout_height="match_parent"
         android:background="@drawable/ease_common_tab_bg"
-        android:clickable="true" >
+        android:clickable="true">
 
         <ImageView
             android:id="@+id/left_image"
@@ -34,7 +34,7 @@
         android:layout_width="50dp"
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
-        android:background="@drawable/ease_common_tab_bg" >
+        android:background="@drawable/ease_common_tab_bg">
 
         <ImageView
             android:id="@+id/right_image"
