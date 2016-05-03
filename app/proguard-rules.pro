@@ -147,20 +147,20 @@
 #-keep class org.xbill.DNS.** {*;}
 #另外，demo中发送表情的时候使用到反射，需要keep SmileUtils
 #-keep class com.easemob.chatuidemo.utils.SmileUtils {*;}
-#注意前面的包名，如果把这个类复制到自己的项目底下，比如放在com.example.utils底下，应该这么写(实际要去掉#)
-#-keep class com.example.utils.SmileUtils {*;}
+##注意前面的包名，如果把这个类复制到自己的项目底下，比如放在com.example.utils底下，应该这么写(实际要去掉#)
+#-keep com.hyphenate.easeui.utils.EaseSmileUtils{*;}
 #如果使用easeui库，需要这么写
-#-keep class com.easemob.easeui.utils.EaseSmileUtils {*;}
-#
-##2.0.9后加入语音通话功能，如需使用此功能的api，加入以下keep
-#-dontwarn ch.imvs.**
-#-dontwarn org.slf4j.**
-#-keep class org.ice4j.** {*;}
-#-keep class net.java.sip.** {*;}
-#-keep class org.webrtc.voiceengine.** {*;}
-#-keep class org.bitlet.** {*;}
-#-keep class org.slf4j.** {*;}
-#-keep class ch.imvs.** {*;}
+-keep class com.hyphenate.easeui.utils.EaseSmileUtils {*;}
+
+#2.0.9后加入语音通话功能，如需使用此功能的api，加入以下keep
+-dontwarn ch.imvs.**
+-dontwarn org.slf4j.**
+-keep class org.ice4j.** {*;}
+-keep class net.java.sip.** {*;}
+-keep class org.webrtc.voiceengine.** {*;}
+-keep class org.bitlet.** {*;}
+-keep class org.slf4j.** {*;}
+-keep class ch.imvs.** {*;}
 
 #domain
 #-keep  class com.easemob.easeui.domain.** {*;}
@@ -220,6 +220,8 @@
 # LeakCanary
 -keep class org.eclipse.mat.** { *; }
 -keep class com.squareup.leakcanary.** { *; }
+
+
 #demo.pinyin4j
 #-dontwarn demo.**
 #-keep class demo.**{*;}
@@ -230,8 +232,8 @@
 #-keep class net.sourceforge.pinyin4j.format.exception.**{*;}
 
 #==================gson==========================
--dontwarn com.google.**
--keep class com.google.gson.** {*;}
+#-dontwarn com.google.**
+#-keep class com.google.gson.** {*;}
 
 #==================protobuf======================
 -dontwarn com.google.**
@@ -253,8 +255,8 @@
     public static int d(...);
     public static int e(...);
 }
--keep class com.squareup.okhttp3.**{*;}
--dontwarn com.squareup.okhttp3.**
+#-keep class com.squareup.okhttp3.**{*;}
+#-dontwarn com.squareup.okhttp3.**
 
 -keep class  com.tbruyelle.rxpermissions.**{*;}
 -dontwarn  com.tbruyelle.rxpermissions.**

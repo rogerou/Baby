@@ -225,6 +225,7 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
             public void onError(Throwable e) {
                 mSplashView.showToast("登陆失败，检查一下账号密码和网络");
                 Logger.e(e.getMessage());
+                mSplashView.hideProgress();
             }
 
             @Override
