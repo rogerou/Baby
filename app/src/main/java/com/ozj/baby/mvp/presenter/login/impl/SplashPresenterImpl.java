@@ -200,11 +200,22 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
 
                         return mRxleanCloud.SaveInstallationId();
                     }
-                }).flatMap(new Func1<String, Observable<AVUser>>() {
+                })
+                .flatMap(new Func1<String, Observable<AVUser>>() {
+                    @Override
+                    public Observable<AVUser> call(String s) {
+                        User user = User.getCurrentUser(User.class);
+                        user.setInstallationId(s);
+                        return mRxleanCloud.GetUserByUsername(user.getLoverusername());
+                    }
+                }).flatMap(new Func1<AVUser, Observable<AVUser>>() {
             @Override
-            public Observable<AVUser> call(String s) {
+            public Observable<AVUser> call(AVUser avUser) {
                 User user = User.getCurrentUser(User.class);
-                user.setInstallationId(s);
+                user.setLoverAvatar(avUser.getString(UserDao.AVATARURL));
+                user.setLoverBackGround(avUser.getString(UserDao.BACKGROUND));
+                user.setLoverInstallationId(avUser.getString(UserDao.INSTALLATIONID));
+                user.setLoverNick(avUser.getString(UserDao.NICK));
 
                 return mRxleanCloud.SaveUserByLeanCloud(user);
             }

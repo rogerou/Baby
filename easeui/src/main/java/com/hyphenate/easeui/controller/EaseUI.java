@@ -5,27 +5,37 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMError;
+import com.hyphenate.EMMessageListener;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMCmdMessageBody;
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMOptions;
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.domain.EaseEmojicon;
 import com.hyphenate.easeui.domain.EaseEmojiconGroupEntity;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.model.EaseNotifier;
 import com.hyphenate.easeui.model.EmojiconExampleGroupData;
+import com.hyphenate.easeui.receiver.CallReceiver;
 import com.hyphenate.easeui.ui.ChatActivity;
 import com.hyphenate.easeui.ui.VideoCallActivity;
 import com.hyphenate.easeui.ui.VoiceCallActivity;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.exceptions.HyphenateException;
+import com.hyphenate.util.EMLog;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.util.Log;
+import android.widget.Toast;
 
 public final class EaseUI {
     private static final String TAG = EaseUI.class.getSimpleName();
@@ -56,8 +66,7 @@ public final class EaseUI {
      * the notifier
      */
     private EaseNotifier notifier = null;
-    public boolean isVideoCalling;
-    public boolean isVoiceCalling;
+
 
     /**
      * 用来记录注册了eventlistener的foreground Activity
@@ -123,94 +132,14 @@ public final class EaseUI {
         } else {
             EMClient.getInstance().init(context, options);
         }
-
         initNotifier();
+        //不设置，则使用easeui默认的
 
         if (settingsProvider == null) {
             settingsProvider = new DefaultSettingsProvider();
         }
-        this.setEmojiconInfoProvider(new EaseEmojiconInfoProvider() {
-            @Override
-            public EaseEmojicon getEmojiconInfo(String emojiconIdentityCode) {
-                EaseEmojiconGroupEntity data = EmojiconExampleGroupData.getData();
-                for (EaseEmojicon emojicon : data.getEmojiconList()) {
-                    if (emojicon.getIdentityCode().equals(emojiconIdentityCode)) {
-                        return emojicon;
-                    }
-                }
-                return null;
-            }
+    
 
-            @Override
-            public Map<String, Object> getTextEmojiconMapping() {
-                return null;
-            }
-        });
-        //不设置，则使用easeui默认的
-        this.getNotifier().setNotificationInfoProvider(new EaseNotifier.EaseNotificationInfoProvider() {
-
-            @Override
-            public String getTitle(EMMessage message) {
-                //修改标题,这里使用默认
-                return null;
-            }
-
-            @Override
-            public int getSmallIcon(EMMessage message) {
-                //设置小图标，这里为默认
-                return 0;
-            }
-
-            @Override
-            public String getDisplayedText(EMMessage message) {
-                // 设置状态栏的消息提示，可以根据message的类型做相应提示
-                String ticker = EaseCommonUtils.getMessageDigest(message, appContext);
-                if (message.getType() == EMMessage.Type.TXT) {
-                    ticker = ticker.replaceAll("\\[.{2,3}\\]", "[表情]");
-                }
-                String nick = null;
-                try {
-                    nick = message.getStringAttribute("nick");
-                } catch (HyphenateException e) {
-                    e.printStackTrace();
-                }
-                return nick + ": " + ticker;
-            }
-
-            @Override
-            public String getLatestText(EMMessage message, int fromUsersNum, int messageNum) {
-                return null;
-                // return fromUsersNum + "个基友，发来了" + messageNum + "条消息";
-            }
-
-            @Override
-            public Intent getLaunchIntent(EMMessage message) {
-                //设置点击通知栏跳转事件
-                Intent intent = new Intent(appContext, ChatActivity.class);
-                //有电话时优先跳转到通话页面
-                if (isVideoCalling) {
-                    intent = new Intent(appContext, VideoCallActivity.class);
-                } else if (isVoiceCalling) {
-                    intent = new Intent(appContext, VoiceCallActivity.class);
-                } else {
-                    EMMessage.ChatType chatType = message.getChatType();
-                    if (chatType == EMMessage.ChatType.Chat) { // 单聊信息
-                        intent.putExtra("userId", message.getFrom());
-                        intent.putExtra("chatType", EaseConstant.CHATTYPE_SINGLE);
-                    } else { // 群聊信息
-                        // message.getTo()为群聊id
-                        intent.putExtra("userId", message.getTo());
-                        if (chatType == EMMessage.ChatType.GroupChat) {
-                            intent.putExtra("chatType", EaseConstant.CHATTYPE_GROUP);
-                        } else {
-                            intent.putExtra("chatType", EaseConstant.CHATTYPE_CHATROOM);
-                        }
-
-                    }
-                }
-                return intent;
-            }
-        });
         sdkInited = true;
         return true;
     }
@@ -399,4 +328,78 @@ public final class EaseUI {
 
 
     }
+
+    /**
+     * 全局事件监听
+     * 因为可能会有UI页面先处理到这个消息，所以一般如果UI页面已经处理，这里就不需要再次处理
+     * activityList.size() <= 0 意味着所有页面都已经在后台运行，或者已经离开Activity Stack
+     */
+    protected void registerEventListener() {
+        EMMessageListener messageListener = new EMMessageListener() {
+            private BroadcastReceiver broadCastReceiver = null;
+
+            @Override
+            public void onMessageReceived(List<EMMessage> messages) {
+                for (EMMessage message : messages) {
+                    EMLog.d(TAG, "onMessageReceived id : " + message.getMsgId());
+                    //应用在后台，不需要刷新UI,通知栏提示新消息
+                    if (!EaseUI.getInstance().hasForegroundActivies()) {
+                        getNotifier().onNewMsg(message);
+                    }
+                }
+            }
+
+            @Override
+            public void onCmdMessageReceived(List<EMMessage> messages) {
+                for (EMMessage message : messages) {
+                    EMLog.d(TAG, "收到透传消息");
+                    //获取消息body
+                    EMCmdMessageBody cmdMsgBody = (EMCmdMessageBody) message.getBody();
+                    final String action = cmdMsgBody.action();//获取自定义action
+
+                    //获取扩展属性 此处省略
+                    //message.getStringAttribute("");
+                    EMLog.d(TAG, String.format("透传消息：action:%s,message:%s", action, message.toString()));
+                    final String str = appContext.getString(R.string.receive_the_passthrough);
+
+                    final String CMD_TOAST_BROADCAST = "hyphenate.demo.cmd.toast";
+                    IntentFilter cmdFilter = new IntentFilter(CMD_TOAST_BROADCAST);
+
+                    if (broadCastReceiver == null) {
+                        broadCastReceiver = new BroadcastReceiver() {
+
+                            @Override
+                            public void onReceive(Context context, Intent intent) {
+                                Toast.makeText(appContext, intent.getStringExtra("cmd_value"), Toast.LENGTH_SHORT).show();
+                            }
+                        };
+
+                        //注册广播接收者
+                        appContext.registerReceiver(broadCastReceiver, cmdFilter);
+                    }
+
+                    Intent broadcastIntent = new Intent(CMD_TOAST_BROADCAST);
+                    broadcastIntent.putExtra("cmd_value", str + action);
+                    appContext.sendBroadcast(broadcastIntent, null);
+                }
+            }
+
+            @Override
+            public void onMessageReadAckReceived(List<EMMessage> messages) {
+            }
+
+            @Override
+            public void onMessageDeliveryAckReceived(List<EMMessage> message) {
+            }
+
+            @Override
+            public void onMessageChanged(EMMessage message, Object change) {
+
+            }
+        };
+
+        EMClient.getInstance().chatManager().addMessageListener(messageListener);
+    }
+
+
 }

@@ -27,6 +27,7 @@ import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.controller.EaseUI;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
@@ -90,13 +91,14 @@ public class MainActivity extends BaseActivity
     static final int GalleryPhoto = 9;
     static final int AlbumPhoto = 10;
 
-    boolean isAlbum = false;
+    boolean isAlbum;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        isAlbum = true;
+        EaseUI.getInstance().pushActivity(this);
 
     }
 
@@ -228,7 +230,7 @@ public class MainActivity extends BaseActivity
                 startActivity(intent);
             } else {
                 toProfileActivity();
-                showToast("老实说，这是个两个人    使用的APP    ");
+                showToast("老实说，这是个两个人使用的APP");
             }
         }
 
@@ -366,6 +368,10 @@ public class MainActivity extends BaseActivity
 
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EaseUI.getInstance().popActivity(this);
+    }
 }
 

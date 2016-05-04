@@ -34,7 +34,7 @@
         app:loginPasswordHint="@string/passwd"
         app:loginTextColor="@color/PrimaryTextColor"
         app:loginTitle="@string/login"
-        app:registerActionText="@string/next"
+        app:registerActionText="@string/register"
         app:registerHint="@string/loverusername"
         app:registerPasswordHint="@string/passwd"
         app:registerRepeatPasswordHint="@string/repeatPasswd"
