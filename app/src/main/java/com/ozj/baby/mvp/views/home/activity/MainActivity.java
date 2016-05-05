@@ -9,7 +9,6 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -28,6 +27,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.controller.EaseUI;
+import com.hyphenate.easeui.ui.ChatActivity;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
@@ -38,7 +38,6 @@ import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.MainPresenterImpl;
 import com.ozj.baby.mvp.views.home.IMainView;
 import com.ozj.baby.mvp.views.home.fragment.SouvenirFragment;
-import com.hyphenate.easeui.ui.ChatActivity;
 import com.ozj.baby.mvp.views.navigation.fragment.GalleryFragment;
 import com.ozj.baby.widget.ChoosePicDialog;
 import com.yalantis.ucrop.UCrop;
@@ -52,8 +51,6 @@ import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 import pl.aprilapps.easyphotopicker.EasyImage;
-import rx.Subscription;
-import rx.functions.Action1;
 
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, IMainView {
@@ -93,12 +90,13 @@ public class MainActivity extends BaseActivity
 
     boolean isAlbum;
 
+    private boolean isConflictDialogShow = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         isAlbum = true;
-        EaseUI.getInstance().pushActivity(this);
 
     }
 
@@ -111,7 +109,9 @@ public class MainActivity extends BaseActivity
     public void initContentView() {
         setContentView(R.layout.activity_main);
         PushService.setDefaultPushCallback(this, MainActivity.class);
-
+        if (getIntent().getBooleanExtra(EaseConstant.ACCOUNT_CONFLICT, false) && !isConflictDialogShow) {
+            ConflictAngRestart();
+        }
     }
 
     @Override
@@ -284,32 +284,23 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void initBus() {
-//        mSubscripition = mRxbus.toObservable(HxDisconnectEvent.class)
-//                .subscribe(new Action1<HxDisconnectEvent>() {
-//                    @Override
-//                    public void call(HxDisconnectEvent hxDisconnectEvent) {
-//                        switch (hxDisconnectEvent.getEvent()) {
-//                            case HxDisconnectEvent.USER_LOGIN_ANOTHER_DEVICE:
-//                                showErrorDialog("出错啦", "你的账号在别的地方登陆了", new SweetAlertDialog.OnSweetClickListener() {
-//                                    @Override
-//                                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-//                                        mMainPersenter.Logout();
-//                                        sweetAlertDialog.dismissWithAnimation();
-//                                    }
-//                                });
-//                                break;
-//
-//                            case HxDisconnectEvent.NONETWORK:
-//                                showErrorDialog("出错啦", "你的网路出问题了", null);
-//                                break;
-//
-//                            default:
-//                                break;
-//
-//                        }
-//                    }
-//                });
+    public void ConflictAngRestart() {
+        /**
+         * 显示帐号在别处登录dialog
+         */
+        isConflictDialogShow = true;
+        String st = getResources().getString(R.string.Logoff_notification);
+        if (!MainActivity.this.isFinishing()) {
+            // clear up global variables
+            showErrorDialog(st, getString(R.string.connect_conflict), new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    mMainPersenter.Logout();
+                    sweetAlertDialog.dismissWithAnimation();
+                }
+            });
+        }
+
 
     }
 
@@ -371,7 +362,6 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        EaseUI.getInstance().popActivity(this);
     }
 }
 

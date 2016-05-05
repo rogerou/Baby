@@ -17,7 +17,7 @@ public interface IMainView extends BaseView {
 
     void hideScrollView();
 
-    void initBus();
 
+    void ConflictAngRestart();
 
 }

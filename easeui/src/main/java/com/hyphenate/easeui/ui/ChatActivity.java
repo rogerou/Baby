@@ -4,9 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.controller.EaseUI;
 import com.jaeger.library.StatusBarUtil;
 
 import com.hyphenate.easeui.R;
+
 public class ChatActivity extends EaseBaseActivity {
     public static ChatActivity activityInstance;
     private EaseChatFragment chatFragment;
@@ -24,6 +26,7 @@ public class ChatActivity extends EaseBaseActivity {
         //传入参数
         chatFragment.setArguments(getIntent().getExtras());
         getSupportFragmentManager().beginTransaction().add(R.id.chatfragment_container, chatFragment).commit();
+        EaseUI.getInstance().pushActivity(this);
 
     }
 
@@ -43,6 +46,7 @@ public class ChatActivity extends EaseBaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         activityInstance = null;
+        EaseUI.getInstance().popActivity(this);
     }
 
     @Override

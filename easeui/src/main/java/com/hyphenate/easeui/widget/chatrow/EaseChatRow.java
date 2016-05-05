@@ -123,18 +123,8 @@ public abstract class EaseChatRow extends LinearLayout {
         }
         //设置头像和nick
         if (message.direct() == Direct.SEND) {
-//            EaseUserUtils.setUserAvatar(context, EMClient.getInstance().getCurrentUser(), userAvatarView);
-            String avatar = null;
-            try {
-                avatar = message.getStringAttribute("avatar");
-            } catch
-                    (HyphenateException e) {
-                e.printStackTrace();
-            }
-            if (avatar != null) {
-                Glide.with(context).load(avatar).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ic_speaker_placeholder).bitmapTransform(new CropCircleTransformation(context)).into(userAvatarView);
-            }
-
+            User user = User.getCurrentUser(User.class);
+            Glide.with(context).load(user.getAvatar()).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(R.drawable.ic_speaker_placeholder).bitmapTransform(new CropCircleTransformation(context)).into(userAvatarView);
             //发送方不显示nick
         } else {
             String avatar = null;

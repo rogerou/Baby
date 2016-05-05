@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.util.EMLog;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
@@ -24,6 +26,7 @@ import com.hyphenate.easeui.domain.UserDao;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.home.IMainPresenter;
 import com.ozj.baby.mvp.views.home.IMainView;
+import com.ozj.baby.mvp.views.home.activity.MainActivity;
 import com.ozj.baby.mvp.views.login.activity.SplashActivity;
 import com.ozj.baby.util.PreferenceManager;
 
@@ -198,6 +201,6 @@ public class MainPresenterImpl implements IMainPresenter {
         });
 
     }
-
+    
 
 }
