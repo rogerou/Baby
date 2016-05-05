@@ -194,7 +194,7 @@ public final class EaseUI {
                 return intent;
             }
         });
-
+        EMClient.getInstance().setDebugMode(false);
         sdkInited = true;
         return true;
     }
@@ -210,7 +210,7 @@ public final class EaseUI {
         options.setRequireAck(true);
         // 设置是否需要已送达回执
         options.setRequireDeliveryAck(false);
-
+        options.setAutoLogin(true);
         return options;
 //        notifier.setNotificationInfoProvider(getNotificationListener());
     }

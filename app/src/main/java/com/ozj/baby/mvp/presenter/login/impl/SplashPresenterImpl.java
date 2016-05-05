@@ -34,6 +34,7 @@ import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.functions.Func1;
+import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 /**
@@ -123,6 +124,38 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
             return;
         }
         mSplashView.showProgress("注册中...");
+   /*     Observable.zip(mRxleanCloud.HXRegister(username, passwd), mRxleanCloud.Register(username, passwd), new Func2<Boolean, User, Boolean>() {
+            @Override
+            public Boolean call(Boolean aBoolean, User user) {
+                if (aBoolean && user != null) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        }).subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        mSplashView.showToast("注册成功");
+                        mSplashView.hideProgress();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mSplashView.showToast("注册失败，请稍后再试");
+                        mSplashView.hideProgress();
+                        Logger.e(e.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        if (aBoolean) {
+                            Logger.d("注册成功");
+                        }
+                    }
+                });*/
         mRxleanCloud.HXRegister(username, passwd)
                 .subscribeOn(Schedulers.io())
                 .flatMap(new Func1<Boolean, Observable<User>>() {
