@@ -21,9 +21,11 @@ import com.hyphenate.chat.EMCallStateChangeListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.controller.EaseUI;
+import com.hyphenate.easeui.domain.User;
 import com.hyphenate.media.EMLocalSurfaceView;
 import com.hyphenate.media.EMOppositeSurfaceView;
 import com.hyphenate.util.PathUtil;
+import com.jaeger.library.StatusBarUtil;
 
 import android.hardware.Camera;
 import android.media.AudioManager;
@@ -121,6 +123,7 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
             return;
         }
         setContentView(R.layout.em_activity_video_call);
+        StatusBarUtil.setColor(this, R.color.colorPrimary);
         EaseUI.getInstance().isVideoCalling = true;
         callType = 1;
 
@@ -171,7 +174,7 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
         username = getIntent().getStringExtra("username");
 
         // 设置通话人
-        nickTextView.setText(username);
+        nickTextView.setText(User.getCurrentUser(User.class).getLoverNick());
 
         // 显示本地图像的surfaceview
         localSurface = (EMLocalSurfaceView) findViewById(R.id.local_surface);

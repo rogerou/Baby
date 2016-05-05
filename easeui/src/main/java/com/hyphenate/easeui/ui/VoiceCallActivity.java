@@ -35,12 +35,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hyphenate.chat.EMCallStateChangeListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.util.EMLog;
+import com.jaeger.library.StatusBarUtil;
+
+import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * 语音通话页面
@@ -64,6 +69,7 @@ public class VoiceCallActivity extends CallActivity implements OnClickListener {
     String st1;
     private LinearLayout voiceContronlLayout;
     private TextView netwrokStatusVeiw;
+    private ImageView iv_avatar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +79,7 @@ public class VoiceCallActivity extends CallActivity implements OnClickListener {
             return;
         }
         setContentView(R.layout.em_activity_voice_call);
-
+        StatusBarUtil.setColor(this, R.color.colorPrimary);
         EaseUI.getInstance().isVoiceCalling = true;
         callType = 0;
 
@@ -89,7 +95,7 @@ public class VoiceCallActivity extends CallActivity implements OnClickListener {
         chronometer = (Chronometer) findViewById(R.id.chronometer);
         voiceContronlLayout = (LinearLayout) findViewById(R.id.ll_voice_control);
         netwrokStatusVeiw = (TextView) findViewById(R.id.tv_network_status);
-
+        iv_avatar = (ImageView) findViewById(R.id.iv_avatar);
         refuseBtn.setOnClickListener(this);
         answerBtn.setOnClickListener(this);
         hangupBtn.setOnClickListener(this);
@@ -110,6 +116,7 @@ public class VoiceCallActivity extends CallActivity implements OnClickListener {
 
         // 设置通话人
         nickTextView.setText(User.getCurrentUser(User.class).getLoverNick());
+        Glide.with(this).load(User.getCurrentUser(User.class).getLoverAvatar()).crossFade().bitmapTransform(new CropCircleTransformation(this)).diskCacheStrategy(DiskCacheStrategy.ALL).into(iv_avatar);
         if (!isInComingCall) {// 拨打电话
             soundPool = new SoundPool(1, AudioManager.STREAM_RING, 0);
             outgoing = soundPool.load(this, R.raw.em_outgoing, 1);
