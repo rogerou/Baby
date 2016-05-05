@@ -173,7 +173,7 @@ public class MainPresenterImpl implements IMainPresenter {
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
         intent.putExtra(Intent.EXTRA_SUBJECT, "Baby");
-        intent.putExtra(Intent.EXTRA_TEXT, "和我一起来玩吧");
+        intent.putExtra(Intent.EXTRA_TEXT, "和我一起来Baby玩耍吧,下载地址：http://fir.im/b9u8");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mActivity.startActivity(Intent.createChooser(intent, "把Baby分享给朋友吧"));
     }
@@ -201,6 +201,6 @@ public class MainPresenterImpl implements IMainPresenter {
         });
 
     }
-    
+
 
 }

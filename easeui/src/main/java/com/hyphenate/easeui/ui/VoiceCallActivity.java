@@ -116,6 +116,7 @@ public class VoiceCallActivity extends CallActivity implements OnClickListener {
 
         // 设置通话人
         nickTextView.setText(User.getCurrentUser(User.class).getLoverNick());
+        
         Glide.with(this).load(User.getCurrentUser(User.class).getLoverAvatar()).crossFade().bitmapTransform(new CropCircleTransformation(this)).diskCacheStrategy(DiskCacheStrategy.ALL).into(iv_avatar);
         if (!isInComingCall) {// 拨打电话
             soundPool = new SoundPool(1, AudioManager.STREAM_RING, 0);
