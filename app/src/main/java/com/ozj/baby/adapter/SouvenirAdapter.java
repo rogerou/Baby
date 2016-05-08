@@ -132,18 +132,7 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
             }
         });
 
-//        mySouvenir.put(like, islike);
-//        mySouvenir.saveInBackground(new SaveCallback() {
-//            @Override
-//            public void done(AVException e) {
-//                if (e == null) {
-//                    Logger.d("自己点赞成功和不取消赞成功");
-//                } else {
-//                    Logger.e("赞失败");
-//                }
-//
-//            }
-//        });
+//        
     }
 
     private boolean isMySouvenir(int position) {

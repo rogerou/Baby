@@ -32,6 +32,7 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.functions.Func1;
 import rx.functions.Func2;
@@ -124,7 +125,8 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
             return;
         }
         mSplashView.showProgress("注册中...");
-   /*     Observable.zip(mRxleanCloud.HXRegister(username, passwd), mRxleanCloud.Register(username, passwd), new Func2<Boolean, User, Boolean>() {
+
+        Observable.zip(mRxleanCloud.HXRegister(username, passwd), mRxleanCloud.Register(username, passwd), new Func2<Boolean, User, Boolean>() {
             @Override
             public Boolean call(Boolean aBoolean, User user) {
                 if (aBoolean && user != null) {
@@ -132,6 +134,7 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
                 } else {
                     return false;
                 }
+
             }
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -155,55 +158,7 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
                             Logger.d("注册成功");
                         }
                     }
-                });*/
-        mRxleanCloud.HXRegister(username, passwd)
-                .subscribeOn(Schedulers.io())
-                .flatMap(new Func1<Boolean, Observable<User>>() {
-                    @Override
-                    public Observable<User> call(Boolean aBoolean) {
-                        if (aBoolean) {
-                            return mRxleanCloud.Register(username, passwd);
-                        } else {
-                            return Observable.error(new Throwable("网络出问题了"));
-                        }
-
-                    }
-                }).observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<User>() {
-                    @Override
-                    public void onCompleted() {
-                        mSplashView.showToast("注册成功");
-                        mSplashView.hideProgress();
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        mSplashView.showToast("注册失败，请稍后再试");
-                        mSplashView.hideProgress();
-                        Logger.e(e.getMessage());
-                    }
-
-                    @Override
-                    public void onNext(User user) {
-
-                    }
                 });
-//        AVUser user = new AVUser();
-//        user.setUsername(username);
-//        user.setPassword(passwd);
-//        user.put(UserDao.NICK, username);
-//        user.signUpInBackground(new SignUpCallback() {
-//            @Override
-//            public void done(AVException e) {
-//            
-//                if (e == null) {
-//                
-//                } else {
-//                  
-//                }
-//
-//            }
-//        });
 
     }
 
@@ -223,62 +178,64 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
             return;
         }
         mSplashView.showProgress("登陆中...");
+
+
         mRxleanCloud.Login(username, passwd)
-                .flatMap(new Func1<User, Observable<String>>() {
+                .flatMap(new Func1<User, Observable<AVUser>>() {
                     @Override
-                    public Observable<String> call(User user) {
+                    public Observable<AVUser> call(User user) {
                         mPreferenceManager.setIslogin(true);
                         mPreferenceManager.saveCurrentUserId(user.getObjectId());
                         mPreferenceManager.SaveLoverId(user.getString(UserDao.LOVERID));
 
-                        return mRxleanCloud.SaveInstallationId();
-                    }
-                })
-                .flatMap(new Func1<String, Observable<AVUser>>() {
-                    @Override
-                    public Observable<AVUser> call(String s) {
-                        User user = User.getCurrentUser(User.class);
-                        user.setInstallationId(s);
-                        return mRxleanCloud.GetUserByUsername(user.getLoverusername());
-                    }
-                }).flatMap(new Func1<AVUser, Observable<AVUser>>() {
-            @Override
-            public Observable<AVUser> call(AVUser avUser) {
-                User user = User.getCurrentUser(User.class);
-                user.setLoverAvatar(avUser.getString(UserDao.AVATARURL));
-                user.setLoverBackGround(avUser.getString(UserDao.BACKGROUND));
-                user.setLoverInstallationId(avUser.getString(UserDao.INSTALLATIONID));
-                user.setLoverNick(avUser.getString(UserDao.NICK));
+                        return Observable.zip(mRxleanCloud.SaveInstallationId(), mRxleanCloud.GetUserByUsername(user.getLoverusername()), new Func2<String, AVUser, AVUser>() {
+                            @Override
+                            public AVUser call(String s, AVUser user) {
+                                User u = User.getCurrentUser(User.class);
+                                u.setInstallationId(s);
+                                if (user != null) {
+                                    u.setLoverAvatar(user.getString(UserDao.AVATARURL));
+                                    u.setLoverBackGround(user.getString(UserDao.BACKGROUND));
+                                    u.setLoverInstallationId(user.getString(UserDao.INSTALLATIONID));
+                                    u.setLoverNick(user.getString(UserDao.NICK));
+                                }
+                                return u;
+                            }
 
-                return mRxleanCloud.SaveUserByLeanCloud(user);
-            }
-        }).flatMap(new Func1<AVUser, Observable<Boolean>>() {
+                        });}
+                })
+                .flatMap(new Func1<AVUser, Observable<AVUser>>() {
+                    @Override
+                    public Observable<AVUser> call(AVUser user) {
+                        return mRxleanCloud.SaveUserByLeanCloud(user);
+                    }
+                }).flatMap(new Func1<AVUser, Observable<Boolean>>() {
             @Override
             public Observable<Boolean> call(AVUser user) {
-
-                return mRxleanCloud.HXLogin(username, passwd);
-            }
+                if (user != null) {
+                    return mRxleanCloud.HXLogin(username, passwd);
+                } else {
+                    return Observable.error(new Throwable("登陆失败"));
+                }}
         }).subscribe(new Observer<Boolean>() {
-            @Override
-            public void onCompleted() {
-                mSplashView.toMainActivity();
-                mSplashView.hideProgress();
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                mSplashView.showToast("登陆失败，检查一下账号密码和网络");
-                Logger.e(e.getMessage());
-                mSplashView.hideProgress();
-            }
-
-            @Override
-            public void onNext(Boolean logined) {
-                if (logined) {
-                    Logger.d("登陆成功");
-                }
-            }
-        });
+                         @Override
+                         public void onCompleted() {
+                             mSplashView.toMainActivity();
+                             mSplashView.hideProgress();
+                         }
+                         @Override
+                         public void onError(Throwable e) {
+                             mSplashView.showToast("登陆失败，检查一下账号密码和网络");
+                             Logger.e(e.getMessage());
+                             mSplashView.hideProgress();
+                         }
+                         @Override
+                         public void onNext(Boolean aBoolean) {
+                             if (aBoolean) {
+                                 Logger.d("登陆成功");
+                             }
+                         }
+                     });
 
     }
 

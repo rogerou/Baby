@@ -8,6 +8,6 @@ import com.ozj.baby.base.BasePresenter;
 public interface IAboutPresenter extends BasePresenter {
 
     void checkVersion();
-    
-    
+
+    void downloadApk(String url);
 }

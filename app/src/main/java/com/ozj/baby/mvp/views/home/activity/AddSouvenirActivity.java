@@ -3,6 +3,7 @@ package com.ozj.baby.mvp.views.home.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,7 @@ import java.net.URISyntaxException;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
 /**
@@ -35,18 +37,17 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 public class AddSouvenirActivity extends BaseActivity implements Toolbar.OnMenuItemClickListener, IAddSouvenirView {
 
 
+    @Inject
+    ChoosePicDialog mDialog;
+    @Inject
+    AddSouvenirImpl mAddSouenirPresenter;
+    File imgfile;
     @Bind(R.id.toolbar)
     Toolbar toolbar;
     @Bind(R.id.et_content)
     EditText etContent;
     @Bind(R.id.iv_album)
     ImageView ivAlbum;
-    @Inject
-    ChoosePicDialog mDialog;
-    @Inject
-    AddSouvenirImpl mAddSouenirPresenter;
-
-    File imgfile;
 
 
     @Override
@@ -165,4 +166,5 @@ public class AddSouvenirActivity extends BaseActivity implements Toolbar.OnMenuI
         }
 
     }
+
 }

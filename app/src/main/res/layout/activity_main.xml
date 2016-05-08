@@ -72,18 +72,18 @@
             </android.support.design.widget.CollapsingToolbarLayout>
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v4.widget.NestedScrollView
-            android:id="@+id/nested_scroll"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-            <!--<include-->
-            <!--layout="@layout/app_bar_main"-->
+        <!--<android.support.v4.widget.NestedScrollView-->
+            <!--android:id="@+id/nested_scroll"-->
             <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent" />-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
 
-        </android.support.v4.widget.NestedScrollView>
+            <!--&lt;!&ndash;<include&ndash;&gt;-->
+            <!--&lt;!&ndash;layout="@layout/app_bar_main"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="match_parent" />&ndash;&gt;-->
+
+        <!--</android.support.v4.widget.NestedScrollView>-->
 
         <FrameLayout
             android:id="@+id/fragment_container"

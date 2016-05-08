@@ -141,7 +141,7 @@ public class SplashActivity extends BaseActivity implements ISplashView {
                 }
             }
         });
-        animator.start();
+        animator.start(); 
 
     }
 
