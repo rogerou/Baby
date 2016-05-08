@@ -17,6 +17,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
 /**
@@ -29,6 +30,7 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
 
     private PreferenceManager mPreferencepManager;
     ISouvenirVIew mSouvenirView;
+    Subscription getAllSouvenir;
 
     @Inject
     public SouvenirPresenterImpl(RxLeanCloud rxLeanCloud, PreferenceManager preferenceManager, RxBus rxbus) {
@@ -48,7 +50,7 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
     @Override
     public void LoadingDataFromNet(final boolean isFresh, final int size, final int page) {
         mSouvenirView.showRefreshingLoading();
-        mRxleanCloud.GetALlSouvenirByLeanCloud(mPreferencepManager.getCurrentUserId(), mPreferencepManager.GetLoverID(), size, page)
+        getAllSouvenir = mRxleanCloud.GetALlSouvenirByLeanCloud(mPreferencepManager.getCurrentUserId(), mPreferencepManager.GetLoverID(), size, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<List<Souvenir>>() {
                     @Override
@@ -82,6 +84,8 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
 
     @Override
     public void detachView() {
-
+        if (getAllSouvenir != null && getAllSouvenir.isUnsubscribed()) {
+            getAllSouvenir.unsubscribe();
+        }
     }
 }

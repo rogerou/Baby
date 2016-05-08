@@ -33,6 +33,7 @@ import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
@@ -50,7 +51,7 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
     private RxBus mRxbus;
     private IGalleryView mGalleryView;
     private Context mContext;
-
+    Subscription mFetchAllPicture;
 
     @Inject
     public GalleryPresenterImpl(@ContextLife("Activity") Context context, RxLeanCloud rxLeanCloud, PreferenceManager PreferenceManager, RxBus rxBus) {
@@ -65,7 +66,7 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
     @Override
     public void fetchDataFromNetwork(final boolean isFirst, int size, int page) {
         mGalleryView.showRefreshing();
-        mRxleanCloud.FetchAllPicture(mPreferenceManager.getCurrentUserId(), mPreferenceManager.GetLoverID(), isFirst, size, page)
+        mFetchAllPicture = mRxleanCloud.FetchAllPicture(mPreferenceManager.getCurrentUserId(), mPreferenceManager.GetLoverID(), isFirst, size, page)
                 .observeOn(Schedulers.io())
                 .map(new Func1<List<Gallery>, List<Gallery>>() {
 
@@ -194,6 +195,8 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
 
     @Override
     public void detachView() {
-
+        if (mFetchAllPicture != null && mFetchAllPicture.isUnsubscribed()) {
+            mFetchAllPicture.unsubscribe();
+        }
     }
 }
