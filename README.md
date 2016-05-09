@@ -28,7 +28,8 @@
 ##Features
 <a href="art/Screenshot_20160214-173027.png"><img src="art/Screenshot_20160214-173027.png" width="40%"/></a>         <a href="art/Screenshot_20160214-173042.png"><img src="art/Screenshot_20160214-173042.png" width="40%"/></a>
 <a href="art/Screenshot_20160214-173045.png"><img src="art/Screenshot_20160214-173045.png" width="40%"/></a>         <a href="art/Screenshot_20160214-173205.png"><img src="art/Screenshot_20160214-173205.png" width="40%"/></a>  
-<a href="art/Screenshot_20160214-173322.png"><img src="art/Screenshot_20160214-173322.png" width="40%"/></a>         <a href="art/Screenshot_20160214-173339.png"><img src="art/Screenshot_20160214-173339.png" width="40%"/></a>           =
+<a href="art/Screenshot_20160214-173322.png"><img src="art/Screenshot_20160214-173322.png" width="40%"/></a>         <a href="art/Screenshot_20160214-173339.png"><img src="art/Screenshot_20160214-173339.png" width="40%"/></a>            
+<a href="art/QQ图片20160509142753.png"><img src="art/QQ图片20160509142753.png" width="40%"/></a>         <a href="art/Screenshot_20160509-144543.png"><img src="art/Screenshot_20160509-144543.png" width="40%"/></a>         
 
 
  * 开屏页的登录和注册
