@@ -44,7 +44,7 @@
 
 ### Material Design
 早就手痒想体验一把V7包里边的各种控件了，特喜欢coordinatorlayout和collapsingtoolbarlayout的互动让Tollbar隐藏又现的感觉，但是看起来好看还是要点代价的，在这里捣鼓了不少时间，尤其是collapsingtoolbarlayout的Expanded固定让我Google了好久，因为用英文搜索可能我表达的不太好，最后竟然是一句nestedScroll(false)就可以了。。。。
-还是感谢Stackoveflow里变的大腿吧。
+还是感谢Stackoveflow里边的大腿吧。
 
 ### Dagger2
 依赖注入[Dagger2](http://google.github.io/dagger/)，也是我早就想用的一个框架了，理由是各种配合Mvp十分方便和好用，渐渐也能体会到一次注入到处可用的快感。不过一个新技术真的学习成本，国内没什么中文文档介绍，看国外的看的云里雾里。原理看的明白，用起来好像不太知道如何使用，尤其是在@inject之后对象，也可以在别的地方Inject，原本是被Inject方后来也成了Module提供方。虽然到最后原理还不是特别明白这里，但还是不阻碍用起来的快感。
