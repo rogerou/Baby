@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.text.TextUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -167,12 +168,12 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
     public void Login(TextInputLayout usernameLogin, TextInputLayout passwdLogin) {
         final String username = usernameLogin.getEditText().getText().toString();
         final String passwd = passwdLogin.getEditText().getText().toString();
-        if (username.isEmpty()) {
+        if (TextUtils.isEmpty(username)) {
             usernameLogin.setErrorEnabled(true);
             usernameLogin.setError("用户名不能为空");
             return;
         }
-        if (passwd.isEmpty()) {
+        if (TextUtils.isEmpty(passwd)) {
             passwdLogin.setErrorEnabled(true);
             passwdLogin.setError("密码不能为空");
             return;
@@ -202,7 +203,8 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
                                 return u;
                             }
 
-                        });}
+                        });
+                    }
                 })
                 .flatMap(new Func1<AVUser, Observable<AVUser>>() {
                     @Override
@@ -216,26 +218,29 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
                     return mRxleanCloud.HXLogin(username, passwd);
                 } else {
                     return Observable.error(new Throwable("登陆失败"));
-                }}
+                }
+            }
         }).subscribe(new Observer<Boolean>() {
-                         @Override
-                         public void onCompleted() {
-                             mSplashView.toMainActivity();
-                             mSplashView.hideProgress();
-                         }
-                         @Override
-                         public void onError(Throwable e) {
-                             mSplashView.showToast("登陆失败，检查一下账号密码和网络");
-                             Logger.e(e.getMessage());
-                             mSplashView.hideProgress();
-                         }
-                         @Override
-                         public void onNext(Boolean aBoolean) {
-                             if (aBoolean) {
-                                 Logger.d("登陆成功");
-                             }
-                         }
-                     });
+            @Override
+            public void onCompleted() {
+                mSplashView.toMainActivity();
+                mSplashView.hideProgress();
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                mSplashView.showToast("登陆失败，检查一下账号密码和网络");
+                Logger.e(e.getMessage());
+                mSplashView.hideProgress();
+            }
+
+            @Override
+            public void onNext(Boolean aBoolean) {
+                if (aBoolean) {
+                    Logger.d("登陆成功");
+                }
+            }
+        });
 
     }
 

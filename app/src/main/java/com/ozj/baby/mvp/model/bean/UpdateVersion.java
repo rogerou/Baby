@@ -23,7 +23,7 @@ public class UpdateVersion {
      */
 
     private String name;
-    private String version;
+    private long version;
     private String changelog;
     private int updated_at;
     private String versionShort;
@@ -46,11 +46,11 @@ public class UpdateVersion {
         this.name = name;
     }
 
-    public String getVersion() {
+    public long getVersion() {
         return version;
     }
 
-    public void setVersion(String version) {
+    public void setVersion(long version) {
         this.version = version;
     }
 

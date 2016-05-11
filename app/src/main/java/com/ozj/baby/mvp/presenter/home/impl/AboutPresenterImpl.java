@@ -65,7 +65,7 @@ public class AboutPresenterImpl implements IAboutPresenter {
                 Log.i("fir", "check from fir.im success! " + "\n" + versionJson);
                 UpdateVersion version = JSON.parseObject(versionJson, UpdateVersion.class);
 
-                if (getAppVersionCode(mContext) < Long.valueOf(version.getVersion())) {
+                if (getAppVersionCode(mContext) < version.getVersion()) {
                     mAboutView.toWebView(version.getInstallUrl());
                 } else {
                     mAboutView.showToast("目前是最新版本");

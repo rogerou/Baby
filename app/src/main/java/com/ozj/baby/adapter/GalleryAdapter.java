@@ -43,8 +43,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         Gallery gallery = mList.get(position);
-//        holder.tvTime.setText(getTime(mList.get(position).getCreatedAt()));
-//        Glide.with(mContext).load(mList.get(position).getUser().getAvatar()).diskCacheStrategy(DiskCacheStrategy.ALL).bitmapTransform(new CropCircleTransformation(mContext)).crossFade().into(holder.ivAvatar);
         Glide.with(mContext).load(gallery.getImgUrl()).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivGallery);
         if (gallery.getHeight() != 0 && gallery.getWidth() != 0) {
             holder.ivGallery.setOriginalSize(gallery.getWidth(), gallery.getHeight());
@@ -65,10 +63,6 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.iv_gallery)
         RatioImageView ivGallery;
-//        @Bind(R.id.tv_time)
-//        TextView tvTime;
-//        @Bind(R.id.iv_avatar)
-//        RatioImageView ivAvatar;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -83,8 +77,4 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
         }
     }
 
-//    private String getTime(Date timestamp) {
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
-//        return simpleDateFormat.format(timestamp);
-//    }
 }

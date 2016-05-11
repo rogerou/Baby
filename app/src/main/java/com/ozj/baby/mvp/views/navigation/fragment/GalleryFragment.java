@@ -34,6 +34,7 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 /**
@@ -90,7 +91,6 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
-
                 if (newState == RecyclerView.SCROLL_STATE_DRAGGING && getMaxElem(layout.findLastVisibleItemPositions(new int[layout.getSpanCount()])) == layout.getItemCount() - 1) {
                     swipeFreshLayout.setRefreshing(true);
                     page++;
@@ -125,6 +125,7 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
     public void initData() {
         mGalleryPresenter.fetchDataFromNetwork(true, size, page);
         mSubscription = mRxbus.toObservable(AddGalleryEvent.class)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<AddGalleryEvent>() {
                     @Override
                     public void call(AddGalleryEvent addGalleryEvent) {
@@ -242,7 +243,7 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
             mUploadPhoto.unsubscribe();
         }
         mGalleryPresenter.detachView();
-        
+
     }
 
     @Override

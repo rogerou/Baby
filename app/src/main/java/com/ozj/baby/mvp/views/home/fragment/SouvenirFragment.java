@@ -28,6 +28,7 @@ import butterknife.Bind;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import rx.Observer;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by Administrator on 2016/4/19.
@@ -106,6 +107,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     public void initData() {
         mSouvenirPresenterImpl.LoadingDataFromNet(true, size, 0);
         mSubscription = mRxbus.toObservable(AddSouvenirEvent.class)
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<AddSouvenirEvent>() {
                     @Override
                     public void onCompleted() {

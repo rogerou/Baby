@@ -122,10 +122,11 @@
 
         <activity
             android:name=".mvp.views.home.activity.AboutActivity"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:theme="@style/AppTheme.NoActionBar" />
 
-            />
-
+        <activity
+            android:name="com.hyphenate.easeui.ui.RecorderVideoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name="com.avos.avoscloud.PushService"
