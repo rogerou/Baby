@@ -36,46 +36,11 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     //leancloud
-//    compile files('libs/avoscloud-push-v3.13.8.jar')
-//    compile files('libs/avoscloud-sdk-v3.13.8.jar')
-//    compile files('libs/avoscloud-statistics-v3.13.8.jar')
-//    compile files('libs/avoscloud-feedback-v3.13.8.jar')
-//    compile files('libs/fastjson.jar')
-//    compile files('libs/httpmime-4.2.4.jar')
-//    compile files('libs/Java-WebSocket-1.3.1-leancloud.jar')
-//    compile files('libs/okhttp-2.6.0-leancloud.jar')
-//    compile files('libs/okio-1.6.0-leancloud.jar')
-//    compile files('libs/protobuf-java-2.6.1.jar')
-    //    compile files('libs/qq.sdk.1.6.1.jar')
-
-    //    compile files('libs/weibo.sdk.android.sso.3.0.1-leancloud.jar')
-
     //support libray
     compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.android.support:design:23.3.0'
-    //eventbus
 
-    //    compile 'org.greenrobot:eventbus:3.0.0'
-
-    //    //gson
-
-    //    compile 'com.google.code.gson:gson:2.6.2'
-
-    //    //okhttp3
-
-    //    compile 'com.squareup.okhttp3:logging-interceptor:3.2.0'
-
-    //    compile 'com.squareup.okhttp3:okhttp:3.2.0'
-
-    //    //retrofit
-
-    //    compile 'com.squareup.retrofit2:retrofit:2.0.0'
-
-    //    compile 'com.squareup.retrofit2:converter-gson:2.0.0'
-
-    //    compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0'
-
-    //rxjava
+//rxjava
     compile 'io.reactivex:rxandroid:1.1.0'
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.5.2@aar'
@@ -98,20 +63,14 @@ dependencies {
     //other
     compile 'com.github.jd-alexander:LikeButton:0.2.0'
     compile 'com.facebook.shimmer:shimmer:0.1.0@aar'
-    //    compile 'hanks.xyz:htextview-library:0.1.3'
     compile 'com.github.orhanobut:logger:1.12'
-
     compile 'com.github.shem8:material-login:1.3.0'
     compile 'jp.wasabeef:blurry:2.0.0'
     compile 'cn.pedant.sweetalert:library:1.3'
     compile 'com.github.jkwiecien:EasyImage:1.2.1'
     compile 'com.yalantis:ucrop:1.5.0'
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'
-    //    compile 'com.github.chrisbanes:PhotoView:1.2.6'
     compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
-    //    compile 'cn.finalteam:galleryfinal:1.4.8.7'
-
-    //    compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
     compile project(':easeui')
 }
 
