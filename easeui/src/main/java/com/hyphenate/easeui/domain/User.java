@@ -20,6 +20,23 @@ public class User extends AVUser implements Parcelable {
     private String Background;
     private long lovetimeStamp;
 
+    private String loverNick;
+    private String loverAvatar;
+    private String LoverBackGround;
+
+    public User() {
+
+    }
+
+    protected User(Parcel in) {
+        this.nick = in.readString();
+        this.avatar = in.readString();
+        this.city = in.readString();
+        this.loverusername = in.readString();
+        this.sex = in.readString();
+        this.anotherUserID = in.readString();
+    }
+
     public String getLoverAvatar() {
         return getString(UserDao.LOVERAVATAR);
     }
@@ -36,9 +53,6 @@ public class User extends AVUser implements Parcelable {
         put(UserDao.LOVERNICK, loverNick);
     }
 
-    private String loverNick;
-    private String loverAvatar;
-
     public String getLoverBackGround() {
         return getString(UserDao.LOVERBACKGROUND);
     }
@@ -46,8 +60,6 @@ public class User extends AVUser implements Parcelable {
     public void setLoverBackGround(String loverBackGround) {
         put(UserDao.LOVERBACKGROUND, loverBackGround);
     }
-
-    private String LoverBackGround;
 
     public String getBackground() {
         return getString(UserDao.BACKGROUND);
@@ -64,11 +76,6 @@ public class User extends AVUser implements Parcelable {
 
     public void setLovetimeStamp(long lovetimeStamp) {
         put(UserDao.LOVETIMESTAMP, lovetimeStamp);
-    }
-
-
-    public User() {
-
     }
 
     public String getLoverusername() {
@@ -134,15 +141,6 @@ public class User extends AVUser implements Parcelable {
         dest.writeString(this.loverusername);
         dest.writeString(this.sex);
         dest.writeString(this.anotherUserID);
-    }
-
-    protected User(Parcel in) {
-        this.nick = in.readString();
-        this.avatar = in.readString();
-        this.city = in.readString();
-        this.loverusername = in.readString();
-        this.sex = in.readString();
-        this.anotherUserID = in.readString();
     }
 
     public String getInstallationId() {

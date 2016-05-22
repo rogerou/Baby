@@ -9,10 +9,9 @@ import java.util.List;
  */
 public class AddGalleryEvent {
     private List<Gallery> list;
-
-    public Gallery getGallery() {
-        return gallery;
-    }
+    private Gallery gallery;
+    boolean isList;
+    boolean isFresh;
 
     public AddGalleryEvent(List<Gallery> list, boolean isList, boolean isFresh) {
         this.list = list;
@@ -24,6 +23,10 @@ public class AddGalleryEvent {
         this.gallery = gallery;
         this.isList = isList;
         this.isFresh = isFresh;
+    }
+
+    public Gallery getGallery() {
+        return gallery;
     }
 
     public void setGallery(Gallery gallery) {
@@ -47,9 +50,6 @@ public class AddGalleryEvent {
         isList = list;
     }
 
-    private Gallery gallery;
-    boolean isList;
-
     public boolean isFresh() {
         return isFresh;
     }
@@ -57,7 +57,5 @@ public class AddGalleryEvent {
     public void setFresh(boolean fresh) {
         isFresh = fresh;
     }
-
-    boolean isFresh;
 
 }

@@ -9,6 +9,9 @@ public class News extends RealmObject {
     private String avatarUrl;
     private String title;
     private String installationId;
+    private int action;
+    private String content;
+    private String time;
 
     public int getAction() {
         return action;
@@ -17,8 +20,6 @@ public class News extends RealmObject {
     public void setAction(int action) {
         this.action = action;
     }
-
-    private int action;
 
     public String getContent() {
         return content;
@@ -51,10 +52,6 @@ public class News extends RealmObject {
     public void setTime(String time) {
         this.time = time;
     }
-
-    private String content;
-    private String time;
-
 
     public String getInstallationId() {
         return installationId;

@@ -1,33 +1,7 @@
 package com.hyphenate.easeui.domain;
 
 public class EaseEmojicon {
-    public EaseEmojicon(){
-    }
-    
-    /**
-     * 构造函数
-     * @param icon 静态图片resource id
-     * @param emojiText 表情emoji文本内容
-     */
-    public EaseEmojicon(int icon, String emojiText){
-        this.icon = icon;
-        this.emojiText = emojiText;
-        this.type = Type.NORMAL;
-    }
-    
-    /**
-     * 构造函数
-     * @param icon 静态图片resource id
-     * @param emojiText emojiText 表情emoji文本内容
-     * @param type 表情类型
-     */
-    public EaseEmojicon(int icon, String emojiText, Type type){
-        this.icon = icon;
-        this.emojiText = emojiText;
-        this.type = type;
-    }
-    
-    
+
     /**
      * 唯一识别号
      */
@@ -67,8 +41,33 @@ public class EaseEmojicon {
      * 大表情图片地址
      */
     private String bigIconPath;
-    
-    
+
+    public EaseEmojicon(){
+    }
+
+    /**
+     * 构造函数
+     * @param icon 静态图片resource id
+     * @param emojiText 表情emoji文本内容
+     */
+    public EaseEmojicon(int icon, String emojiText){
+        this.icon = icon;
+        this.emojiText = emojiText;
+        this.type = Type.NORMAL;
+    }
+
+    /**
+     * 构造函数
+     * @param icon 静态图片resource id
+     * @param emojiText emojiText 表情emoji文本内容
+     * @param type 表情类型
+     */
+    public EaseEmojicon(int icon, String emojiText, Type type){
+        this.icon = icon;
+        this.emojiText = emojiText;
+        this.type = type;
+    }
+
     /**
      * 获取静态图片(小图片)资源id
      * @return

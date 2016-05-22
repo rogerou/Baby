@@ -35,6 +35,11 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
     private MyFilter myFilter;
     private boolean notiyfyByFilter;
 
+    protected int primaryColor;
+    protected int primarySize;
+    protected Drawable initialLetterBg;
+    protected int initialLetterColor;
+
     public EaseContactAdapter(Context context, int resource, List<EaseUser> objects) {
         super(context, resource, objects);
         this.res = resource;
@@ -229,11 +234,6 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
             copyUserList.addAll(userList);
         }
     }
-    
-    protected int primaryColor;
-    protected int primarySize;
-    protected Drawable initialLetterBg;
-    protected int initialLetterColor;
 
     public EaseContactAdapter setPrimaryColor(int primaryColor) {
         this.primaryColor = primaryColor;

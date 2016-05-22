@@ -47,40 +47,6 @@ public class CallActivity extends EaseBaseActivity {
     protected boolean isAnswered = false;
     protected int streamID = -1;
 
-    /**
-     * 0：音频，1：视频
-     */
-    protected int callType = 0;
-
-    @Override
-    protected void onCreate(Bundle arg0) {
-        super.onCreate(arg0);
-        audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
-    }
-
-    @Override
-    protected void onDestroy() {
-        if (soundPool != null)
-            soundPool.release();
-        if (ringtone != null && ringtone.isPlaying())
-            ringtone.stop();
-        audioManager.setMode(AudioManager.MODE_NORMAL);
-        audioManager.setMicrophoneMute(false);
-
-        if (callStateListener != null)
-            EMClient.getInstance().callManager().removeCallStateChangeListener(callStateListener);
-        releaseHandler();
-        super.onDestroy();
-    }
-
-    @Override
-    public void onBackPressed() {
-        handler.sendEmptyMessage(MSG_CALL_END);
-        saveCallRecord();
-        finish();
-        super.onBackPressed();
-    }
-
     Runnable timeoutHangup = new Runnable() {
 
         @Override
@@ -193,6 +159,40 @@ public class CallActivity extends EaseBaseActivity {
             EMLog.d("EMCallManager CallActivity", "handleMessage ---exit--- msg.what:" + msg.what);
         }
     };
+
+    /**
+     * 0：音频，1：视频
+     */
+    protected int callType = 0;
+
+    @Override
+    protected void onCreate(Bundle arg0) {
+        super.onCreate(arg0);
+        audioManager = (AudioManager) this.getSystemService(Context.AUDIO_SERVICE);
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (soundPool != null)
+            soundPool.release();
+        if (ringtone != null && ringtone.isPlaying())
+            ringtone.stop();
+        audioManager.setMode(AudioManager.MODE_NORMAL);
+        audioManager.setMicrophoneMute(false);
+
+        if (callStateListener != null)
+            EMClient.getInstance().callManager().removeCallStateChangeListener(callStateListener);
+        releaseHandler();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        handler.sendEmptyMessage(MSG_CALL_END);
+        saveCallRecord();
+        finish();
+        super.onBackPressed();
+    }
 
     void releaseHandler() {
         handler.sendEmptyMessage(MSG_CALL_RLEASE_HANDLER);

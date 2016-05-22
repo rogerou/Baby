@@ -65,6 +65,11 @@ public final class EaseUI {
      */
     private List<Activity> activityList = new ArrayList<Activity>();
 
+    private EaseEmojiconInfoProvider emojiconInfoProvider;
+
+    private EaseUI() {
+    }
+
     public void pushActivity(Activity activity) {
         if (!activityList.contains(activity)) {
             activityList.add(0, activity);
@@ -74,10 +79,6 @@ public final class EaseUI {
 
     public void popActivity(Activity activity) {
         activityList.remove(activity);
-    }
-
-
-    private EaseUI() {
     }
 
     /**
@@ -321,8 +322,6 @@ public final class EaseUI {
          */
         Map<String, Object> getTextEmojiconMapping();
     }
-
-    private EaseEmojiconInfoProvider emojiconInfoProvider;
 
     /**
      * 获取表情提供者

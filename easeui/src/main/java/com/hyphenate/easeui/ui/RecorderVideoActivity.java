@@ -78,6 +78,8 @@ public class RecorderVideoActivity extends EaseBaseActivity implements
     Parameters cameraParameters = null;
     private SurfaceHolder mSurfaceHolder;
     int defaultVideoFrameRate = -1;
+    MediaScannerConnection msc = null;
+    ProgressDialog progressDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -455,9 +457,6 @@ public class RecorderVideoActivity extends EaseBaseActivity implements
         }
 
     }
-
-    MediaScannerConnection msc = null;
-    ProgressDialog progressDialog = null;
 
     public void sendVideo(View view) {
         if (TextUtils.isEmpty(localPath)) {
