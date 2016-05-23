@@ -338,11 +338,10 @@ class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGe
 			 * we're on, and the direction of the scroll (i.e. if we're pulling
 			 * against the edge, aka 'overscrolling', let the parent take over).
 			 */
-			if (mAllowParentInterceptOnEdge && !mScaleDragDetector.isScaling()) {
-				if (mScrollEdge == EDGE_BOTH || (mScrollEdge == EDGE_LEFT && dx >= 1f)
-						|| (mScrollEdge == EDGE_RIGHT && dx <= -1f)) {
-					imageView.getParent().requestDisallowInterceptTouchEvent(false);
-				}
+			if ( (mAllowParentInterceptOnEdge && !mScaleDragDetector.isScaling()) 
+					&& (mScrollEdge == EDGE_BOTH || (mScrollEdge == EDGE_LEFT && dx >= 1f)
+					|| (mScrollEdge == EDGE_RIGHT && dx <= -1f))) {
+				imageView.getParent().requestDisallowInterceptTouchEvent(false);
 			}
 		}
 	}
@@ -590,11 +589,10 @@ class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGe
 		 * PhotoView's getScaleType() will just divert to this.getScaleType() so
 		 * only call if we're not attached to a PhotoView.
 		 */
-		if (null != imageView && !(imageView instanceof EasePhotoView)) {
-			if (imageView.getScaleType() != ScaleType.MATRIX) {
-				throw new IllegalStateException(
-						"The ImageView's ScaleType has been changed since attaching a PhotoViewAttacher");
-			}
+		if (null != imageView && !(imageView instanceof EasePhotoView)
+				&& imageView.getScaleType() != ScaleType.MATRIX) {
+			throw new IllegalStateException(
+					"The ImageView's ScaleType has been changed since attaching a PhotoViewAttacher");
 		}
 	}
 

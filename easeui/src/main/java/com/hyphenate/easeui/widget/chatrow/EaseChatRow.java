@@ -184,9 +184,9 @@ public abstract class EaseChatRow extends LinearLayout {
                     bubbleLayout.setBackgroundDrawable(((EaseMessageAdapter) adapter).getMyBubbleBg());
                 // else
                 // bubbleLayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.chatto_bg));
-            } else if (message.direct() == Direct.RECEIVE) {
-                if (((EaseMessageAdapter) adapter).getOtherBuddleBg() != null)
-                    bubbleLayout.setBackgroundDrawable(((EaseMessageAdapter) adapter).getOtherBuddleBg());
+            } else if (message.direct() == Direct.RECEIVE &&
+                    ((EaseMessageAdapter) adapter).getOtherBuddleBg() != null) {
+                bubbleLayout.setBackgroundDrawable(((EaseMessageAdapter) adapter).getOtherBuddleBg());
 //                else
 //                    bubbleLayout.setBackgroundDrawable(context.getResources().getDrawable(R.drawable.ease_chatfrom_bg));
             }
@@ -265,11 +265,9 @@ public abstract class EaseChatRow extends LinearLayout {
 
                 @Override
                 public void onClick(View v) {
-                    if (itemClickListener != null) {
-                        if (!itemClickListener.onBubbleClick(message)) {
-                            //如果listener返回false不处理这个事件，执行lib默认的处理
-                            onBubbleClick();
-                        }
+                    if (itemClickListener != null && !itemClickListener.onBubbleClick(message)) {
+                        //如果listener返回false不处理这个事件，执行lib默认的处理
+                        onBubbleClick();
                     }
                 }
             });

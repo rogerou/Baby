@@ -599,10 +599,8 @@ public class EaseChatFragment extends EaseBaseFragment {
 
         @Override
         public void onClick(int itemId, View view) {
-            if (chatFragmentListener != null) {
-                if (chatFragmentListener.onExtendMenuItemClick(itemId, view)) {
-                    return;
-                }
+            if (chatFragmentListener != null && chatFragmentListener.onExtendMenuItemClick(itemId, view)) {
+                return;
             }
             switch (itemId) {
                 case ITEM_TAKE_PICTURE: // 拍照
@@ -831,10 +829,8 @@ public class EaseChatFragment extends EaseBaseFragment {
             if (chatFragmentListener != null) {
                 chatFragmentListener.onEnterToChatDetails();
             }
-        } else if (chatType == EaseConstant.CHATTYPE_CHATROOM) {
-            if (chatFragmentListener != null) {
-                chatFragmentListener.onEnterToChatDetails();
-            }
+        } else if (chatType == EaseConstant.CHATTYPE_CHATROOM && chatFragmentListener != null) {
+            chatFragmentListener.onEnterToChatDetails();
         }
     }
 
@@ -842,10 +838,10 @@ public class EaseChatFragment extends EaseBaseFragment {
      * 隐藏软键盘
      */
     protected void hideKeyboard() {
-        if (getActivity().getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-            if (getActivity().getCurrentFocus() != null)
-                inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
+        if (getActivity().getWindow().getAttributes().softInputMode !=
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN && getActivity().getCurrentFocus() != null) {
+            inputManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
 

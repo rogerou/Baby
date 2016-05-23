@@ -145,22 +145,20 @@ abstract class VersionedGestureDetector {
 				}
 
 				case MotionEvent.ACTION_UP: {
-					if (mIsDragging) {
-						if (null != mVelocityTracker) {
-							mLastTouchX = getActiveX(ev);
-							mLastTouchY = getActiveY(ev);
+					if (mIsDragging && null != mVelocityTracker) {
+						mLastTouchX = getActiveX(ev);
+						mLastTouchY = getActiveY(ev);
 
-							// Compute velocity within the last 1000ms
-							mVelocityTracker.addMovement(ev);
-							mVelocityTracker.computeCurrentVelocity(1000);
+						// Compute velocity within the last 1000ms
+						mVelocityTracker.addMovement(ev);
+						mVelocityTracker.computeCurrentVelocity(1000);
 
-							final float vX = mVelocityTracker.getXVelocity(), vY = mVelocityTracker.getYVelocity();
+						final float vX = mVelocityTracker.getXVelocity(), vY = mVelocityTracker.getYVelocity();
 
-							// If the velocity is greater than minVelocity, call
-							// listener
-							if (Math.max(Math.abs(vX), Math.abs(vY)) >= mMinimumVelocity) {
-								mListener.onFling(mLastTouchX, mLastTouchY, -vX, -vY);
-							}
+						// If the velocity is greater than minVelocity, call
+						// listener
+						if (Math.max(Math.abs(vX), Math.abs(vY)) >= mMinimumVelocity) {
+							mListener.onFling(mLastTouchX, mLastTouchY, -vX, -vY);
 						}
 					}
 

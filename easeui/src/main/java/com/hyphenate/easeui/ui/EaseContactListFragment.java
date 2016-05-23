@@ -272,13 +272,13 @@ public class EaseContactListFragment extends EaseBaseFragment {
                 if (!entry.getKey().equals("item_new_friends")
                         && !entry.getKey().equals("item_groups")
                         && !entry.getKey().equals("item_chatroom")
-                        && !entry.getKey().equals("item_robots")){
-                    if(!blackList.contains(entry.getKey())){
-                        //不显示黑名单中的用户
-                        EaseUser user = entry.getValue();
-                        EaseCommonUtils.setUserInitialLetter(user);
-                        contactList.add(user);
-                    }
+                        && !entry.getKey().equals("item_robots")
+                        && !blackList.contains(entry.getKey())) {
+                    //不显示黑名单中的用户
+                    EaseUser user = entry.getValue();
+                    EaseCommonUtils.setUserInitialLetter(user);
+                    contactList.add(user);
+
                 }
             }
         }

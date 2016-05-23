@@ -262,11 +262,11 @@ public class EaseConversationListFragment extends EaseBaseFragment{
     }
     
    protected void hideSoftKeyboard() {
-        if (getActivity().getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-            if (getActivity().getCurrentFocus() != null)
-                inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
-                        InputMethodManager.HIDE_NOT_ALWAYS);
-        }
+       if (getActivity().getWindow().getAttributes().softInputMode
+               != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN && getActivity().getCurrentFocus() != null) {
+           inputMethodManager.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(),
+                   InputMethodManager.HIDE_NOT_ALWAYS);
+       }
     }
 
     @Override

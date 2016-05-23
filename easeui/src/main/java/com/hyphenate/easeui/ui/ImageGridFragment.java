@@ -342,36 +342,33 @@ public class ImageGridFragment extends android.support.v4.app.Fragment implement
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == 100) {
-                Uri uri = data.getParcelableExtra("uri");
-                String[] projects = new String[]{MediaStore.Video.Media.DATA,
-                        MediaStore.Video.Media.DURATION};
-                Cursor cursor = getActivity().getContentResolver().query(
-                        uri, projects, null,
-                        null, null);
-                int duration = 0;
-                String filePath = null;
+        if (resultCode == Activity.RESULT_OK && requestCode == 100) {
+            Uri uri = data.getParcelableExtra("uri");
+            String[] projects = new String[]{MediaStore.Video.Media.DATA,
+                    MediaStore.Video.Media.DURATION};
+            Cursor cursor = getActivity().getContentResolver().query(
+                    uri, projects, null,
+                    null, null);
+            int duration = 0;
+            String filePath = null;
 
-                if (cursor.moveToFirst()) {
-                    // 路径：MediaStore.Audio.Media.DATA
-                    filePath = cursor.getString(cursor
-                            .getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
-                    // 总播放时长：MediaStore.Audio.Media.DURATION
-                    duration = cursor
-                            .getInt(cursor
-                                    .getColumnIndexOrThrow(MediaStore.Video.Media.DURATION));
-                    EMLog.d(TAG, "duration:" + duration);
-                }
-                if (cursor != null) {
-                    cursor.close();
-                    cursor = null;
-                }
-
-                getActivity().setResult(Activity.RESULT_OK, getActivity().getIntent().putExtra("path", filePath).putExtra("dur", duration));
-                getActivity().finish();
-
+            if (cursor.moveToFirst()) {
+                // 路径：MediaStore.Audio.Media.DATA
+                filePath = cursor.getString(cursor
+                        .getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+                // 总播放时长：MediaStore.Audio.Media.DURATION
+                duration = cursor
+                        .getInt(cursor
+                                .getColumnIndexOrThrow(MediaStore.Video.Media.DURATION));
+                EMLog.d(TAG, "duration:" + duration);
             }
+            if (cursor != null) {
+                cursor.close();
+                cursor = null;
+            }
+
+            getActivity().setResult(Activity.RESULT_OK, getActivity().getIntent().putExtra("path", filePath).putExtra("dur", duration));
+            getActivity().finish();
         }
 
     }
