@@ -71,66 +71,6 @@ class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGe
 
 	private boolean mAllowParentInterceptOnEdge = true;
 
-	// private static void checkZoomLevels(float minZoom, float midZoom,
-	// float maxZoom) {
-	// if (minZoom >= midZoom) {
-	// throw new IllegalArgumentException(
-	// "MinZoom should be less than MidZoom");
-	// } else if (midZoom >= maxZoom) {
-	// throw new IllegalArgumentException(
-	// "MidZoom should be less than MaxZoom");
-	// }
-	// }
-
-	private static void checkZoomLevels(float minZoom,float maxZoom) {
-		if (minZoom >= maxZoom) {
-			throw new IllegalArgumentException("MinZoom should be less than maxZoom");
-		} /*else if (midZoom >= maxZoom) {
-			throw new IllegalArgumentException("MidZoom should be less than MaxZoom");
-		}*/
-	}
-
-	/**
-	 * @return true if the ImageView exists, and it's Drawable existss
-	 */
-	private static boolean hasDrawable(ImageView imageView) {
-		return null != imageView && null != imageView.getDrawable();
-	}
-
-	/**
-	 * @return true if the ScaleType is supported.
-	 */
-	private static boolean isSupportedScaleType(final ScaleType scaleType) {
-		if (null == scaleType) {
-			return false;
-		}
-
-		switch (scaleType) {
-		case MATRIX:
-			throw new IllegalArgumentException(scaleType.name() + " is not supported in PhotoView");
-
-		default:
-			return true;
-		}
-	}
-
-	/**
-	 * Set's the ImageView's ScaleType to Matrix.
-	 */
-	private static void setImageViewScaleTypeMatrix(ImageView imageView) {
-		if (null != imageView) {
-			if (imageView instanceof EasePhotoView) {
-				/**
-				 * PhotoView sets it's own ScaleType to Matrix, then diverts all
-				 * calls setScaleType to this.setScaleType. Basically we don't
-				 * need to do anything here
-				 */
-			} else {
-				imageView.setScaleType(ScaleType.MATRIX);
-			}
-		}
-	}
-
 	private WeakReference<ImageView> mImageView;
 	private ViewTreeObserver mViewTreeObserver;
 
@@ -189,6 +129,66 @@ class PhotoViewAttacher implements IPhotoView, View.OnTouchListener, VersionedGe
 
 			// Finally, update the UI so that we're zoomable
 			setZoomable(true);
+		}
+	}
+
+	// private static void checkZoomLevels(float minZoom, float midZoom,
+	// float maxZoom) {
+	// if (minZoom >= midZoom) {
+	// throw new IllegalArgumentException(
+	// "MinZoom should be less than MidZoom");
+	// } else if (midZoom >= maxZoom) {
+	// throw new IllegalArgumentException(
+	// "MidZoom should be less than MaxZoom");
+	// }
+	// }
+
+	private static void checkZoomLevels(float minZoom,float maxZoom) {
+		if (minZoom >= maxZoom) {
+			throw new IllegalArgumentException("MinZoom should be less than maxZoom");
+		} /*else if (midZoom >= maxZoom) {
+			throw new IllegalArgumentException("MidZoom should be less than MaxZoom");
+		}*/
+	}
+
+	/**
+	 * @return true if the ImageView exists, and it's Drawable existss
+	 */
+	private static boolean hasDrawable(ImageView imageView) {
+		return null != imageView && null != imageView.getDrawable();
+	}
+
+	/**
+	 * @return true if the ScaleType is supported.
+	 */
+	private static boolean isSupportedScaleType(final ScaleType scaleType) {
+		if (null == scaleType) {
+			return false;
+		}
+
+		switch (scaleType) {
+		case MATRIX:
+			throw new IllegalArgumentException(scaleType.name() + " is not supported in PhotoView");
+
+		default:
+			return true;
+		}
+	}
+
+	/**
+	 * Set's the ImageView's ScaleType to Matrix.
+	 */
+	private static void setImageViewScaleTypeMatrix(ImageView imageView) {
+		if (null != imageView) {
+			if (imageView instanceof EasePhotoView) {
+				/**
+				 * PhotoView sets it's own ScaleType to Matrix, then diverts all
+				 * calls setScaleType to this.setScaleType. Basically we don't
+				 * need to do anything here
+				 */
+			} else {
+				imageView.setScaleType(ScaleType.MATRIX);
+			}
 		}
 	}
 

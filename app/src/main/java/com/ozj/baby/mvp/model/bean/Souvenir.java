@@ -22,6 +22,18 @@ public class Souvenir extends AVObject implements Parcelable {
     private String AuthorId;
     private String ohterUserId;
 
+    public static final Parcelable.Creator<Souvenir> CREATOR = new Parcelable.Creator<Souvenir>() {
+        @Override
+        public Souvenir createFromParcel(Parcel source) {
+            return new Souvenir(source);
+        }
+
+        @Override
+        public Souvenir[] newArray(int size) {
+            return new Souvenir[size];
+        }
+    };
+
 //    public Souvenir(AVObject object, User avUser) {
 //        this.Content = object.getString(SouvenirDao.SOUVENIR_CONTENT);
 //        if (object.getCreatedAt() != null) {
@@ -38,6 +50,17 @@ public class Souvenir extends AVObject implements Parcelable {
 
     public Souvenir() {
 
+    }
+
+    public Souvenir(Parcel in) {
+        this.Content = in.readString();
+        this.Picture = in.readString();
+        this.Author = in.readParcelable(User.class.getClassLoader());
+        this.IsLikedMine = in.readByte() != 0;
+        this.objectId = in.readString();
+        this.IsLikedOther = in.readByte() != 0;
+        this.AuthorId = in.readString();
+        this.ohterUserId = in.readString();
     }
 
     public String getContent() {
@@ -133,26 +156,4 @@ public class Souvenir extends AVObject implements Parcelable {
         dest.writeString(this.ohterUserId);
     }
 
-    public Souvenir(Parcel in) {
-        this.Content = in.readString();
-        this.Picture = in.readString();
-        this.Author = in.readParcelable(User.class.getClassLoader());
-        this.IsLikedMine = in.readByte() != 0;
-        this.objectId = in.readString();
-        this.IsLikedOther = in.readByte() != 0;
-        this.AuthorId = in.readString();
-        this.ohterUserId = in.readString();
-    }
-
-    public static final Parcelable.Creator<Souvenir> CREATOR = new Parcelable.Creator<Souvenir>() {
-        @Override
-        public Souvenir createFromParcel(Parcel source) {
-            return new Souvenir(source);
-        }
-
-        @Override
-        public Souvenir[] newArray(int size) {
-            return new Souvenir[size];
-        }
-    };
 }

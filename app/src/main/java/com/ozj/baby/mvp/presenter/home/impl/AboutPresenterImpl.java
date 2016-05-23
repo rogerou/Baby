@@ -48,13 +48,12 @@ public class AboutPresenterImpl implements IAboutPresenter {
 
 
     private Context mContext;
+    IAboutView mAboutView;
 
     @Inject
     public AboutPresenterImpl(@ContextLife("Activity") Context context) {
         mContext = context;
     }
-
-    IAboutView mAboutView;
 
     @Override
     public void checkVersion() {

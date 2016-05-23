@@ -68,8 +68,35 @@ public class EaseContactListFragment extends EaseBaseFragment {
     protected FrameLayout contentContainer;
     
     private Map<String, EaseUser> contactsMap;
+    private EaseContactListItemClickListener listItemClickListener;
 
-    
+    protected EMConnectionListener connectionListener = new EMConnectionListener() {
+
+        @Override
+        public void onDisconnected(int error) {
+            if (error == EMError.USER_REMOVED || error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
+                isConflict = true;
+            } else {
+                getActivity().runOnUiThread(new Runnable() {
+                    public void run() {
+                        onConnectionDisconnected();
+                    }
+
+                });
+            }
+        }
+
+        @Override
+        public void onConnected() {
+            getActivity().runOnUiThread(new Runnable() {
+                public void run() {
+                    onConnectionConnected();
+                }
+
+            });
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.ease_fragment_contact_list, container, false);
@@ -276,38 +303,7 @@ public class EaseContactListFragment extends EaseBaseFragment {
         });
 
     }
-    
-    
-    
-    protected EMConnectionListener connectionListener = new EMConnectionListener() {
-        
-        @Override
-        public void onDisconnected(int error) {
-            if (error == EMError.USER_REMOVED || error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
-                isConflict = true;
-            } else {
-                getActivity().runOnUiThread(new Runnable() {
-                    public void run() {
-                        onConnectionDisconnected();
-                    }
 
-                });
-            }
-        }
-        
-        @Override
-        public void onConnected() {
-            getActivity().runOnUiThread(new Runnable() {
-                public void run() {
-                    onConnectionConnected();
-                }
-
-            });
-        }
-    };
-    private EaseContactListItemClickListener listItemClickListener;
-    
-    
     protected void onConnectionDisconnected() {
         
     }

@@ -17,7 +17,9 @@ import android.graphics.Bitmap;
 import android.support.v4.util.LruCache;
 
 public class EaseImageCache {
-	
+	private static EaseImageCache imageCache = null;
+	private LruCache<String, Bitmap> cache = null;
+
 	private EaseImageCache() {
 		// use 1/8 of available heap size
 		cache = new LruCache<String, Bitmap>((int) (Runtime.getRuntime().maxMemory() / 8)) {
@@ -28,8 +30,6 @@ public class EaseImageCache {
           };
 	}
 
-	private static EaseImageCache imageCache = null;
-
 	public static synchronized EaseImageCache getInstance() {
 		if (imageCache == null) {
 			imageCache = new EaseImageCache();
@@ -37,8 +37,7 @@ public class EaseImageCache {
 		return imageCache;
 
 	}
-	private LruCache<String, Bitmap> cache = null;
-	
+
 	/**
 	 * put bitmap to image cache
 	 * @param key

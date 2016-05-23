@@ -39,11 +39,7 @@ public class EaseSidebar extends View{
 	private Context context;
 	
 	private SectionIndexer sectionIndexter = null;
-	
-	public void setListView(ListView listView){
-		mListView = listView;
-	}
-	
+	private String[] sections;
 
 	public EaseSidebar(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -51,7 +47,9 @@ public class EaseSidebar extends View{
 		init();
 	}
 
-	private String[] sections; 
+	public void setListView(ListView listView){
+		mListView = listView;
+	}
 
 	private void init(){
 	    String st = context.getString(R.string.search_new);

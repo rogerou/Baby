@@ -35,7 +35,24 @@ public class EaseConversationList extends ListView {
     protected EaseConversationAdapater adapter;
     protected List<EMConversation> conversations = new ArrayList<EMConversation>();
     protected List<EMConversation> passedListRef = null;
-    
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message message) {
+            switch (message.what) {
+                case MSG_REFRESH_ADAPTER_DATA:
+                    if (adapter != null) {
+                        adapter.clear();
+                        conversations.clear();
+                        conversations.addAll(passedListRef);
+                        adapter.notifyDataSetChanged();
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+    };
     
     public EaseConversationList(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -75,25 +92,6 @@ public class EaseConversationList extends ListView {
         adapter.setTimeSize(timeSize);
         setAdapter(adapter);
     }
-    
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message message) {
-            switch (message.what) {
-            case MSG_REFRESH_ADAPTER_DATA:
-                if (adapter != null) {
-                	adapter.clear();
-                    conversations.clear();
-                    conversations.addAll(passedListRef);
-                    adapter.notifyDataSetChanged();
-                }
-                break;
-            default:
-                break;
-            }
-        }
-    };
-    
 
     /**
      * 获取所有会话

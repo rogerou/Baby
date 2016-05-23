@@ -78,15 +78,14 @@ abstract class VersionedGestureDetector {
 		float mLastTouchY;
 		final float mTouchSlop;
 		final float mMinimumVelocity;
+		private VelocityTracker mVelocityTracker;
+		private boolean mIsDragging;
 
 		public CupcakeDetector(Context context) {
 			final ViewConfiguration configuration = ViewConfiguration.get(context);
 			mMinimumVelocity = configuration.getScaledMinimumFlingVelocity();
 			mTouchSlop = configuration.getScaledTouchSlop();
 		}
-
-		private VelocityTracker mVelocityTracker;
-		private boolean mIsDragging;
 
 		float getActiveX(MotionEvent ev) {
 			return ev.getX();

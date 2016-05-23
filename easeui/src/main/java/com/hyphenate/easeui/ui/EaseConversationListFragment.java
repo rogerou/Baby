@@ -49,7 +49,8 @@ public class EaseConversationListFragment extends EaseBaseFragment{
     protected FrameLayout errorItemContainer;
 
     protected boolean isConflict;
-    
+    private EaseConversationListItemClickListener listItemClickListener;
+
     protected EMConversationListener convListener = new EMConversationListener(){
 
 		@Override
@@ -58,7 +59,47 @@ public class EaseConversationListFragment extends EaseBaseFragment{
 		}
     	
     };
-    
+
+    protected EMConnectionListener connectionListener = new EMConnectionListener() {
+
+        @Override
+        public void onDisconnected(int error) {
+            if (error == EMError.USER_REMOVED || error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
+                isConflict = true;
+            } else {
+                handler.sendEmptyMessage(0);
+            }
+        }
+
+        @Override
+        public void onConnected() {
+            handler.sendEmptyMessage(1);
+        }
+    };
+
+    protected Handler handler = new Handler(){
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case 0:
+                    onConnectionDisconnected();
+                    break;
+                case 1:
+                    onConnectionConnected();
+                    break;
+
+                case MSG_REFRESH:
+                {
+                    conversationList.clear();
+                    conversationList.addAll(loadConversationList());
+                    conversationListView.refresh();
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    };
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.ease_fragment_conversation_list, container, false);
@@ -134,49 +175,7 @@ public class EaseConversationListFragment extends EaseBaseFragment{
             }
         });
     }
-    
-    
-    protected EMConnectionListener connectionListener = new EMConnectionListener() {
-        
-        @Override
-        public void onDisconnected(int error) {
-            if (error == EMError.USER_REMOVED || error == EMError.USER_LOGIN_ANOTHER_DEVICE) {
-                isConflict = true;
-            } else {
-               handler.sendEmptyMessage(0);
-            }
-        }
-        
-        @Override
-        public void onConnected() {
-            handler.sendEmptyMessage(1);
-        }
-    };
-    private EaseConversationListItemClickListener listItemClickListener;
-    
-    protected Handler handler = new Handler(){
-        public void handleMessage(android.os.Message msg) {
-            switch (msg.what) {
-            case 0:
-                onConnectionDisconnected();
-                break;
-            case 1:
-                onConnectionConnected();
-                break;
-            
-            case MSG_REFRESH:
-	            {
-	            	conversationList.clear();
-	                conversationList.addAll(loadConversationList());
-	                conversationListView.refresh();
-	                break;
-	            }
-            default:
-                break;
-            }
-        }
-    };
-    
+
     /**
      * 连接到服务器
      */

@@ -15,15 +15,6 @@ public class AddSouvenirEvent {
 
     private boolean isRefresh;
 
-    public boolean isList() {
-        return isList;
-    }
-
-
-    public void setList(boolean list) {
-        isList = list;
-    }
-
     private boolean isList;
 
     public AddSouvenirEvent(boolean isRefresh, boolean isList, Souvenir souvenir) {
@@ -61,4 +52,13 @@ public class AddSouvenirEvent {
     public void setRefresh(boolean refresh) {
         isRefresh = refresh;
     }
+
+    public void setList(boolean list) {
+        isList = list;
+    }
+
+    public boolean isList() {
+        return isList;
+    }
+
 }
