@@ -148,18 +148,15 @@ public class EaseChatRowImage extends EaseChatRowFile{
                     if (image != null) {
                         iv.setImageBitmap(image);
                         EaseImageCache.getInstance().put(thumbernailPath, image);
-                    } else {
-                        if (message.status() == EMMessage.Status.FAIL) {
-                            if (EaseCommonUtils.isNetWorkConnected(activity)) {
-                                new Thread(new Runnable() {
+                    } else if (message.status() == EMMessage.Status.FAIL
+                            && EaseCommonUtils.isNetWorkConnected(activity)) {
+                        new Thread(new Runnable() {
 
-                                    @Override
-                                    public void run() {
-                                        EMClient.getInstance().chatManager().downloadThumbnail(message);
-                                    }
-                                }).start();
+                            @Override
+                            public void run() {
+                                EMClient.getInstance().chatManager().downloadThumbnail(message);
                             }
-                        }
+                        }).start();
 
                     }
                 }

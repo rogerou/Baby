@@ -291,12 +291,9 @@ public class RecorderVideoActivity extends EaseBaseActivity implements
 
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
-        if (mCamera == null) {
-            if (!initCamera()) {
-                showFailDialog();
-                return;
-            }
-
+        if (mCamera == null && !initCamera()) {
+            showFailDialog();
+            return;
         }
         try {
             mCamera.setPreviewDisplay(mSurfaceHolder);
@@ -314,9 +311,8 @@ public class RecorderVideoActivity extends EaseBaseActivity implements
     }
 
     public boolean startRecording() {
-        if (mediaRecorder == null) {
-            if (!initRecorder())
-                return false;
+        if (mediaRecorder == null && !initRecorder()) {
+            return false;
         }
         mediaRecorder.setOnInfoListener(this);
         mediaRecorder.setOnErrorListener(this);
@@ -331,11 +327,9 @@ public class RecorderVideoActivity extends EaseBaseActivity implements
             return false;
         }
 
-        if (mCamera == null) {
-            if (!initCamera()) {
-                showFailDialog();
-                return false;
-            }
+        if (mCamera == null && !initCamera()) {
+            showFailDialog();
+            return false;
         }
         mVideoView.setVisibility(View.VISIBLE);
         // TODO init button

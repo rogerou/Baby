@@ -156,12 +156,9 @@ public class EaseChatRowVideo extends EaseChatRowFile{
                         EaseImageCache.getInstance().put(localThumb, result);
                         iv.setImageBitmap(result);
 
-                    } else {
-                        if (message.status() == EMMessage.Status.FAIL) {
-                            if (EaseCommonUtils.isNetWorkConnected(activity)) {
-                                EMClient.getInstance().chatManager().downloadThumbnail(message);
-                            }
-                        }
+                    } else if (message.status() == EMMessage.Status.FAIL
+                            && EaseCommonUtils.isNetWorkConnected(activity)) {
+                        EMClient.getInstance().chatManager().downloadThumbnail(message);
 
                     }
                 }

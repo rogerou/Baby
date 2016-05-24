@@ -252,12 +252,10 @@ public class EaseNotifier {
 
             PendingIntent pendingIntent = PendingIntent.getActivity(appContext, notifyID, msgIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-            if (numIncrease) {
-                // prepare latest event info section
-                if (!isForeground) {
-                    notificationNum++;
-                    fromUsers.add(message.getFrom());
-                }
+            // prepare latest event info section
+            if (numIncrease && !isForeground) {
+                notificationNum++;
+                fromUsers.add(message.getFrom());
             }
 
             int fromUsersNum = fromUsers.size();
@@ -301,10 +299,8 @@ public class EaseNotifier {
      * 手机震动和声音提示
      */
     public void viberateAndPlayTone(EMMessage message) {
-        if (message != null) {
-            if (EMClient.getInstance().chatManager().isSlientMessage(message)) {
-                return;
-            }
+        if (message != null && EMClient.getInstance().chatManager().isSlientMessage(message)) {
+            return;
         }
 
 

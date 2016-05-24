@@ -274,12 +274,11 @@ public class ChatFragment extends EaseChatFragment implements EaseChatFragmentLi
 
         @Override
         public EaseChatRow getCustomChatRow(EMMessage message, int position, BaseAdapter adapter) {
-            if (message.getType() == EMMessage.Type.TXT) {
-                // 语音通话,  视频通话
-                if (message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_VOICE_CALL, false) ||
-                        message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_VIDEO_CALL, false)) {
-                    return new ChatRowVoiceCall(getActivity(), message, position, adapter);
-                }
+            // 语音通话,  视频通话
+            if (message.getType() == EMMessage.Type.TXT &&
+                    (message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_VOICE_CALL, false) ||
+                    message.getBooleanAttribute(EaseConstant.MESSAGE_ATTR_IS_VIDEO_CALL, false)) ) {
+                return new ChatRowVoiceCall(getActivity(), message, position, adapter);
             }
             return null;
         }

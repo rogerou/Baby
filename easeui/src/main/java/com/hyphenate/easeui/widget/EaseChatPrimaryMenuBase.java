@@ -62,9 +62,10 @@ public abstract class EaseChatPrimaryMenuBase extends RelativeLayout{
      * 隐藏软键盘
      */
     public void hideKeyboard() {
-        if (activity.getWindow().getAttributes().softInputMode != WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN) {
-            if (activity.getCurrentFocus() != null)
-                inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        if (activity.getWindow().getAttributes().softInputMode !=
+                WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN && activity.getCurrentFocus() != null) {
+            inputManager.hideSoftInputFromWindow(activity.getCurrentFocus().getWindowToken(),
+                    InputMethodManager.HIDE_NOT_ALWAYS);
         }
     }
     

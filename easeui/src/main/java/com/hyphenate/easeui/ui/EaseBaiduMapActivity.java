@@ -228,12 +228,12 @@ public class EaseBaiduMapActivity extends EaseBaseActivity {
                 progressDialog.dismiss();
             }
 
-            if (lastLocation != null) {
-                if (lastLocation.getLatitude() == location.getLatitude() && lastLocation.getLongitude() == location.getLongitude()) {
-                    Log.d("map", "same location, skip refresh");
-                    // mMapView.refresh(); //need this refresh?
-                    return;
-                }
+            if (lastLocation != null
+                    && lastLocation.getLatitude() == location.getLatitude()
+                    && lastLocation.getLongitude() == location.getLongitude()) {
+                Log.d("map", "same location, skip refresh");
+                // mMapView.refresh(); //need this refresh?
+                return;
             }
             lastLocation = location;
             mBaiduMap.clear();
