@@ -24,7 +24,7 @@ public class EaseEmojiconPagerView extends ViewPager{
 
     private Context context;
     private List<EaseEmojiconGroupEntity> groupEntities;
-    private List<EaseEmojicon> totalEmojiconList = new ArrayList<EaseEmojicon>();
+    private List<EaseEmojicon> totalEmojiconList = new ArrayList<>();
     
     private PagerAdapter pagerAdapter;
     
@@ -124,7 +124,7 @@ public class EaseEmojiconPagerView extends ViewPager{
             }else{
                 gv.setNumColumns(emojiconColumns);
             }
-            List<EaseEmojicon> list = new ArrayList<EaseEmojicon>();
+            List<EaseEmojicon> list = new ArrayList<>();
             if(i != pageSize -1){
                 list.addAll(emojiconList.subList(i * itemSize, (i+1) * itemSize));
             }else{

@@ -44,7 +44,7 @@ public class EaseConversationListFragment extends EaseBaseFragment{
     protected EditText query;
     protected ImageButton clearSearch;
     protected boolean hidden;
-    protected List<EMConversation> conversationList = new ArrayList<EMConversation>();
+    protected List<EMConversation> conversationList = new ArrayList<>();
     protected EaseConversationList conversationListView;
     protected FrameLayout errorItemContainer;
 
@@ -232,7 +232,7 @@ public class EaseConversationListFragment extends EaseBaseFragment{
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<EMConversation> list = new ArrayList<EMConversation>();
+        List<EMConversation> list = new ArrayList<>();
         for (Pair<Long, EMConversation> sortItem : sortList) {
             list.add(sortItem.second);
         }

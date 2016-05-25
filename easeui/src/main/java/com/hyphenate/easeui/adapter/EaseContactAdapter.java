@@ -44,7 +44,7 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
         super(context, resource, objects);
         this.res = resource;
         this.userList = objects;
-        copyUserList = new ArrayList<EaseUser>();
+        copyUserList = new ArrayList<>();
         copyUserList.addAll(objects);
         layoutInflater = LayoutInflater.from(context);
     }
@@ -130,7 +130,7 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
         positionOfSection = new SparseIntArray();
         sectionOfPosition = new SparseIntArray();
         int count = getCount();
-        list = new ArrayList<String>();
+        list = new ArrayList<>();
         list.add(getContext().getString(R.string.search_header));
         positionOfSection.put(0, 0);
         sectionOfPosition.put(0, 0);
@@ -167,7 +167,7 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
         protected synchronized FilterResults performFiltering(CharSequence prefix) {
             FilterResults results = new FilterResults();
             if(mOriginalList==null){
-                mOriginalList = new ArrayList<EaseUser>();
+                mOriginalList = new ArrayList<>();
             }
             EMLog.d(TAG, "contacts original size: " + mOriginalList.size());
             EMLog.d(TAG, "contacts copy size: " + copyUserList.size());
@@ -178,7 +178,7 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
             }else{
                 String prefixString = prefix.toString();
                 final int count = mOriginalList.size();
-                final ArrayList<EaseUser> newValues = new ArrayList<EaseUser>();
+                final ArrayList<EaseUser> newValues = new ArrayList<>();
                 for(int i=0;i<count;i++){
                     final EaseUser user = mOriginalList.get(i);
 //                    String username = user.getNick();

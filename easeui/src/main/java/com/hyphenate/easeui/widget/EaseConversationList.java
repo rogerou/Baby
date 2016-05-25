@@ -33,7 +33,7 @@ public class EaseConversationList extends ListView {
     
     protected Context context;
     protected EaseConversationAdapater adapter;
-    protected List<EMConversation> conversations = new ArrayList<EMConversation>();
+    protected List<EMConversation> conversations = new ArrayList<>();
     protected List<EMConversation> passedListRef = null;
 
     Handler handler = new Handler() {
@@ -123,7 +123,7 @@ public class EaseConversationList extends ListView {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        List<EMConversation> list = new ArrayList<EMConversation>();
+        List<EMConversation> list = new ArrayList<>();
         for (Pair<Long, EMConversation> sortItem : sortList) {
             list.add(sortItem.second);
         }
