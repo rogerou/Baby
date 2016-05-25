@@ -12,6 +12,7 @@ import com.orhanobut.logger.Logger;
 import com.ozj.baby.di.component.ApplicationComponet;
 import com.ozj.baby.di.component.DaggerApplicationComponet;
 import com.ozj.baby.di.module.ApplicationModule;
+import com.ozj.baby.mvp.model.bean.Comment;
 import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.bean.Souvenir;
 import com.hyphenate.easeui.domain.User;
@@ -38,6 +39,7 @@ public class BabyApplication extends Application {
         AVUser.alwaysUseSubUserClass(User.class);
         AVObject.registerSubclass(Gallery.class);
         AVObject.registerSubclass(Souvenir.class);
+        AVObject.registerSubclass(Comment.class);
         AVOSCloud.initialize(this, "GpLTBKYub2ekB1GG2UUDdpmu-gzGzoHsz", "IjkswTLu60dF1rnnAHNoLM98");
         AVAnalytics.enableCrashReport(this, true);
         initComponet();

@@ -28,8 +28,6 @@ public class DetailFragment extends Fragment implements RequestListener<String, 
 
     @Bind(R.id.iv_photo)
     ImageView ivPhoto;
-    //    @Bind(R.id.tv_time)
-//    TextView tvTime;
     private String imgurl;
 
 
@@ -75,10 +73,6 @@ public class DetailFragment extends Fragment implements RequestListener<String, 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this, view);
-        getActivity().supportStartPostponedEnterTransition();
-
-
     }
 
     @Override

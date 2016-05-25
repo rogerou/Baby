@@ -99,4 +99,10 @@ public class DetailImageActivity extends BaseActivity {
 
     }
 
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mList.clear();
+    }
 }
