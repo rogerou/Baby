@@ -78,6 +78,7 @@ public class DetailFragment extends Fragment implements RequestListener<String, 
         ButterKnife.bind(this, view);
         getActivity().supportStartPostponedEnterTransition();
 
+
     }
 
     @Override
@@ -88,7 +89,6 @@ public class DetailFragment extends Fragment implements RequestListener<String, 
     @Override
     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
         ivPhoto.setImageDrawable(resource);
-//    
 
         return true;
     }

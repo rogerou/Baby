@@ -69,26 +69,14 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
         mFetchAllPicture = mRxleanCloud.FetchAllPicture(mPreferenceManager.getCurrentUserId(), mPreferenceManager.GetLoverID(), isFirst, size, page)
                 .observeOn(Schedulers.io())
                 .map(new Func1<List<Gallery>, List<Gallery>>() {
-
-
                     @Override
                     public List<Gallery> call(List<Gallery> galleries) {
-                        try {
-                            for (Gallery g :
-                                    galleries) {
-                                Bitmap bitmap = Glide.with(mContext).load(g.getImgUrl()).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
-                                if (bitmap != null) {
-                                    g.setHeight(bitmap.getHeight());
-                                    g.setWidth(bitmap.getWidth());
-                                } else {
-                                    g.setHeight(0);
-                                    g.setWidth(0);
-                                }
-
+                        for (Gallery g : galleries) {
+                            //如果是已经上传了高度和宽就直接跳过，加载相册速度会提高很多。
+                            if (g.getHeight() != 0 && g.getWidth() != 0) {
+                                continue;
                             }
-
-                        } catch (InterruptedException | ExecutionException e) {
-                            e.printStackTrace();
+                            getHeightAndWidth(g.getImgUrl(), g, true);
                         }
                         return galleries;
                     }
@@ -117,7 +105,7 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
     }
 
     @Override
-    public void UploadPhoto(Uri uri) {
+    public void UploadPhoto(final Uri uri) {
         mGalleryView.showUpdating();
         AVFile file = null;
         try {
@@ -126,8 +114,7 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
             e.printStackTrace();
         }
         mRxleanCloud.UploadPicture(file)
-                .observeOn(Schedulers.io()
-                )
+                .observeOn(Schedulers.io())
                 .flatMap(new Func1<String, Observable<Gallery>>() {
                     @Override
                     public Observable<Gallery> call(String s) {
@@ -135,21 +122,7 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
                         gallery.setImgUrl(s);
                         gallery.setUser(User.getCurrentUser(User.class));
                         gallery.setAuthorId(mPreferenceManager.getCurrentUserId());
-                        Bitmap bitmap = null;
-                        try {
-                            bitmap = Glide.with(mContext).load(s).asBitmap().diskCacheStrategy(DiskCacheStrategy.NONE).into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
-                        } catch (InterruptedException | ExecutionException e) {
-                            e.printStackTrace();
-                        }
-                        if (bitmap != null) {
-                            gallery.setHeight(bitmap.getHeight());
-                            gallery.setWidth(bitmap.getWidth());
-                        } else {
-                            gallery.setHeight(0);
-                            gallery.setWidth(0);
-                        }
-
-                        return mRxleanCloud.saveGallery(gallery);
+                        return mRxleanCloud.saveGallery(getHeightAndWidth(uri.toString(), gallery, false));
                     }
                 }).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Func1<Gallery, Observable<Boolean>>() {
@@ -181,10 +154,33 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
         });
     }
 
+
     @Override
     public boolean isHavedLover() {
 
         return !TextUtils.isEmpty(mPreferenceManager.GetLoverID());
+    }
+
+    @Override
+    public Gallery getHeightAndWidth(String url, Gallery gallery, boolean isUploaded) {
+        Bitmap bitmap = null;
+        try {
+            bitmap = Glide.with(mContext).load(url).asBitmap().diskCacheStrategy(DiskCacheStrategy.ALL).into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL).get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        if (bitmap != null) {
+            gallery.setHeight(bitmap.getHeight());
+            gallery.setWidth(bitmap.getWidth());
+            if (isUploaded) {
+                gallery.saveInBackground();
+            }
+            bitmap.recycle();
+        } else {
+            gallery.setHeight(0);
+            gallery.setWidth(0);
+        }
+        return gallery;
     }
 
 

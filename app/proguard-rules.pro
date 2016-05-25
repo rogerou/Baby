@@ -21,6 +21,7 @@
 -verbose                # 混淆时是否记录日志
 -dontskipnonpubliclibraryclasses  
 -ignorewarnings     
+-keepattributes EnclosingMethod
 -dontwarn com.umeng.**  
 -dontwarn javax.naming.**
 -keepattributes InnerClasses,LineNumberTable
@@ -49,7 +50,9 @@
 -keep public class android.support.v7.widget.** { *; }
 -keep public class android.support.v7.internal.widget.** { *; }
 -keep public class android.support.v7.internal.view.menu.** { *; }
-
+-keepattributes InnerClasses
+-dontoptimize
+-optimizations optimization_filter 
 -keep public class * extends android.support.v4.view.ActionProvider {
     public <init>(android.content.Context);
 }
@@ -63,8 +66,6 @@
 -keep public class * extends android.app.backup.BackupAgentHelper # 保持哪些类不被混淆
 -keep public class * extends android.preference.Preference        # 保持哪些类不被混淆
 -keep public class com.android.vending.licensing.ILicensingService    # 保持哪些类不被混淆
-# Keep the BuildConfig
--keep class cn.persomed.YouYibiling.BuildConfig { *; }
 # Keep the support library
 -keep class android.support.v4.** { *; }
 
@@ -119,37 +120,9 @@
 -keep class * implements android.os.Parcelable { # 保持 Parcelable 不被混淆 
  public static final android.os.Parcelable$Creator *;
 }
-#-keep class cn.sharesdk.onekeyshare.**{*;}
-#-keep class com.alipay.** {*;}
-#-keep class com.baidu.**{*;}
-#-keep class vi.com.gdi.bgl.android.**{*;}
-#-keep class com.mob.tools.**{*;}
-#-keep class **.R$* {*;}
-#-keep class **.R{*;}
-#-keep class android.net.http.SslError
-#-keep class android.webkit.**{*;}
-#-keep class cn.sharesdk.**{*;}
-#-keep class com.sina.**{*;}
-#-keep class com.alipay.share.sdk.**{*;}
 
-#-dontwarn **.R$*
-#-dontwarn cn.sharesdk.onekeyshare.**
-#-dontwarn cn.sharesdk.**
-#-dontwarn com.mob.tools.**
-#-dontwarn com.alipay.**
-#-dontwarn com.alipay.sdk.**
-#-dontwarn com.baidu.**
-#-keep class com.easemob.** {*;}
-#-keep class org.jivesoftware.** {*;}
-#-keep class org.apache.** {*;}
-#-dontwarn  com.easemob.**
-#2.0.9后的不需要加下面这个keep
-#-keep class org.xbill.DNS.** {*;}
-#另外，demo中发送表情的时候使用到反射，需要keep SmileUtils
-#-keep class com.easemob.chatuidemo.utils.SmileUtils {*;}
-##注意前面的包名，如果把这个类复制到自己的项目底下，比如放在com.example.utils底下，应该这么写(实际要去掉#)
-#-keep com.hyphenate.easeui.utils.EaseSmileUtils{*;}
-#如果使用easeui库，需要这么写
+
+
 -keep class com.hyphenate.easeui.utils.EaseSmileUtils {*;}
 
 #2.0.9后加入语音通话功能，如需使用此功能的api，加入以下keep
@@ -331,8 +304,11 @@
 -keep class com.squareup.haha.** { *; }
 -keep class com.squareup.leakcanary.** { *; }
 
-# Marshmallow removed Notification.setLatestEventInfo()
 -dontwarn android.app.Notification
+
 -keep class com.baidu.** {*;}
 -keep class vi.com.** {*;}    
+-keep class vi.com.gdi.bgl.android.**{*;}
+-keep class com.baidu.** { *; }
+-keep class vi.com.** {*;}
 -dontwarn com.baidu.**

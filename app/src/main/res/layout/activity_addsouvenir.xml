@@ -11,7 +11,7 @@
         android:layout_height="?attr/actionBarSize"
         android:background="@color/colorPrimary"
         toolbar:navigationIcon="@drawable/ic_arrow_back_white_24dp"
-        toolbar:title="新建日记" />
+        toolbar:title="新建Moment" />
 
     <ScrollView
         android:layout_width="match_parent"
