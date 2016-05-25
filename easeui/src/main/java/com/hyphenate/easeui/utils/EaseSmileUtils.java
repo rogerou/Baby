@@ -73,7 +73,7 @@ public class EaseSmileUtils {
 	private static final Factory spannableFactory = Factory
 	        .getInstance();
 	
-	private static final Map<Pattern, Object> emoticons = new HashMap<Pattern, Object>();
+	private static final Map<Pattern, Object> emoticons = new HashMap<>();
 	
 
 	static {

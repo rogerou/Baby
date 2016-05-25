@@ -26,7 +26,7 @@ import com.hyphenate.util.DensityUtil;
 public class EaseChatExtendMenu extends GridView{
 
     protected Context context;
-    private List<ChatMenuItemModel> itemModels = new ArrayList<ChatMenuItemModel>();
+    private List<ChatMenuItemModel> itemModels = new ArrayList<>();
 
     public EaseChatExtendMenu(Context context, AttributeSet attrs, int defStyle) {
         this(context, attrs);

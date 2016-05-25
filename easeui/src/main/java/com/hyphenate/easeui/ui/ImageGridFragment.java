@@ -64,7 +64,7 @@ public class ImageGridFragment extends android.support.v4.app.Fragment implement
                 R.dimen.image_thumbnail_size);
         mImageThumbSpacing = getResources().getDimensionPixelSize(
                 R.dimen.image_thumbnail_spacing);
-        mList = new ArrayList<VideoEntity>();
+        mList = new ArrayList<>();
         getVideoFile();
         mAdapter = new ImageAdapter(getActivity());
 

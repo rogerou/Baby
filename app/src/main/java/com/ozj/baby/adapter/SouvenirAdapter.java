@@ -75,7 +75,7 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, DetailImageActivity.class);
-                ArrayList<String> list = new ArrayList<String>();
+                ArrayList<String> list = new ArrayList<>();
                 list.add(mList.get(holder.getAdapterPosition()).getPicture());
                 intent.putStringArrayListExtra("imgurl", list);
                 intent.putExtra("index", holder.getAdapterPosition());

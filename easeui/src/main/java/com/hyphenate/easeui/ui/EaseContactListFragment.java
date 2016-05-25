@@ -127,7 +127,7 @@ public class EaseContactListFragment extends EaseBaseFragment {
         EMClient.getInstance().addConnectionListener(connectionListener);
         
         //黑名单列表
-        contactList = new ArrayList<EaseUser>();
+        contactList = new ArrayList<>();
         // 获取设置contactlist
         getContactList();
         //init list

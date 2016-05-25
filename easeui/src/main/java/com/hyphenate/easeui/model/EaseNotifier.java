@@ -62,7 +62,7 @@ public class EaseNotifier {
 
     protected NotificationManager notificationManager = null;
 
-    protected HashSet<String> fromUsers = new HashSet<String>();
+    protected HashSet<String> fromUsers = new HashSet<>();
     protected int notificationNum = 0;
 
     protected Context appContext;
