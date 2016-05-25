@@ -25,5 +25,6 @@ dependencies {
     compile 'com.android.support:support-v4:23.3.0'
     compile 'jp.wasabeef:glide-transformations:2.0.0'
     compile 'com.jaeger.statusbaruitl:library:1.0.0'
+    compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'
     
 }

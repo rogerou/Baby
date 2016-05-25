@@ -12,4 +12,5 @@ public class SouvenirDao {
     public final static String SOUVENIR_ISLIKEOTHER = "islikedother";
     public final static String SOUVENIR_AUTHOR = "author";
     public final static String SOUVENIR_OTHERUSERID = "otheruserid";
+    public final static String SOUVENIR_COMMENTCOUNT = "commentcount";
 }

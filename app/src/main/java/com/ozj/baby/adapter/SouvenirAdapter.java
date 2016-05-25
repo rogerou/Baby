@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,7 +61,14 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.tvContent.setText(mList.get(position).getContent());
         holder.tvAuthor.setText(mList.get(position).getAuthor().getString(UserDao.NICK));
-        holder.txtTime.setText(getTime(mList.get(position).getCreatedAt()));
+        holder.txtTime.setText(mList.get(position).getCreatedAt().toString());
+        holder.tv_comment.setText(mList.get(position).getCommentcount());
+        holder.tv_comment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
         Glide.with(mContext).load(mList.get(position).getPicture()).diskCacheStrategy(DiskCacheStrategy.ALL).crossFade().into(holder.ivSouvenirPic);
         Glide.with(mContext).load(mList.get(position).getAuthor().getString(UserDao.AVATARURL)).bitmapTransform(new CropCircleTransformation(mContext)).diskCacheStrategy(DiskCacheStrategy.ALL).into(holder.ivSpeaker);
         holder.ivSouvenirPic.setOnClickListener(new View.OnClickListener() {
@@ -112,6 +120,7 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
             }
         });
 
+
     }
 
 
@@ -159,7 +168,8 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
         TextView tvAuthor;
         @Bind(R.id.like_button)
         LikeButton likeButton;
-
+        @Bind(R.id.tv_comment)
+        TextView tv_comment;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -169,8 +179,8 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
 
     }
 
-    private String getTime(Date timestamp) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-        return simpleDateFormat.format(timestamp);
-    }
+//    private String getTime(Date timestamp) {
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+//        return simpleDateFormat.format(timestamp);
+//    }
 }

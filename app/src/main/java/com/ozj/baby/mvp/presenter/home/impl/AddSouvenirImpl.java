@@ -69,6 +69,7 @@ public class AddSouvenirImpl implements IAddSouvenirPresenter {
                             object.setLikedOther(false);
                             object.setOhterUserId(manager.GetLoverID());
                             object.setPicture(s);
+                            object.setCommentcount(0);
                             return mRxLeanCloud.SaveSouvenirByLeanCloud(object);
 
                         }

@@ -10,20 +10,15 @@ import com.ozj.baby.mvp.model.bean.Souvenir;
 import java.util.List;
 
 /**
- * Created by Seveb on 2016/5/25.
+ * Created by Rogerou on 2016/5/25.
  * <p>
- * 评论界面根据Type来判断的的Adapter
  */
 public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private static final int TYPE_HEADER = 0;
-    private static final int TYPE_ITEM = 1;
     List<Comment> mList;
-    Souvenir mSouvenir;
     Context mContext;
 
-    public CommentAdapter(List<Comment> comments, Souvenir souvenir, Context context) {
+    public CommentAdapter(List<Comment> comments, Context context) {
         this.mList = comments;
-        this.mSouvenir = souvenir;
         this.mContext = context;
     }
 
@@ -37,25 +32,14 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (isPositionHeader(position)) {
-            return TYPE_HEADER;
-        }
-        return TYPE_ITEM;
-    }
-
-    private boolean isPositionHeader(int position) {
-        return position == 0;
-    }
 
     private Comment getItem(int position) {
-        return mList.get(position - 1);
+        return mList.get(position);
     }
 
     @Override
     public int getItemCount() {
-        return mList.size() + 1;
+        return mList.size();
     }
 
 

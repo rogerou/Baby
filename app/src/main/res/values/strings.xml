@@ -29,6 +29,7 @@
     <string name="introduce">这个项目的初衷是方便情侣间的交流的，逃离臃肿的微信社交关系，在此更方便的私密的交流让别人无从打扰，想怎么秀就怎么秀，当然也是因为是两个人的私密社交，所以在使用上可能会产生没有另一半就无法使用的困扰，在此衷心祝福你能尽快地找到另一半并愉快地使用Baby,如果你有什么好的建议，可以在反馈的页面提交，此项目是开源的，地址在下面，感谢你的使用。</string>
     <string name="roger_ou">作者：<u>Roger ou</u></string>
     <string name="github"><u>https://github.com/rogerou/Baby</u></string>
+    <string name="add_comment">添加评论</string>
 
 
 </resources>

@@ -11,6 +11,7 @@ import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.views.home.activity.AboutActivity;
 import com.ozj.baby.mvp.views.home.activity.AddSouvenirActivity;
+import com.ozj.baby.mvp.views.home.activity.CommentActivity;
 import com.ozj.baby.mvp.views.home.activity.MainActivity;
 import com.ozj.baby.mvp.views.home.activity.ProfileActivity;
 import com.ozj.baby.mvp.views.login.activity.SplashActivity;
@@ -50,4 +51,6 @@ public interface ActivityComponet {
     void inject(AddSouvenirActivity activity);
 
     void inject(AboutActivity activity);
+
+    void inject(CommentActivity activity);
 }

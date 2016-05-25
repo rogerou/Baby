@@ -5,9 +5,11 @@ import android.content.Context;
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVInstallation;
+import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVPush;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.CountCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SaveCallback;
@@ -18,9 +20,11 @@ import com.hyphenate.chat.EMClient;
 import com.hyphenate.exceptions.HyphenateException;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.di.scope.ContextLife;
+import com.ozj.baby.mvp.model.bean.Comment;
 import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.bean.Souvenir;
 import com.hyphenate.easeui.domain.User;
+import com.ozj.baby.mvp.model.dao.CommentDao;
 import com.ozj.baby.mvp.model.dao.GalleryDao;
 import com.ozj.baby.mvp.model.dao.NewsDao;
 import com.ozj.baby.mvp.model.dao.SouvenirDao;
@@ -446,5 +450,52 @@ public class RxLeanCloud {
             }
         });
 
+    }
+
+    public Observable<List<Comment>> getComments(final Souvenir souvenir, final int page, final int size) {
+
+        return Observable.create(new Observable.OnSubscribe<List<Comment>>() {
+            @Override
+            public void call(final Subscriber<? super List<Comment>> subscriber) {
+                AVQuery<Comment> query = AVObject.getQuery(Comment.class);
+                query.whereEqualTo(CommentDao.SOUVENIR, souvenir);
+                query.setLimit(size);
+                query.setSkip(page * size);
+                query.findInBackground(new FindCallback<Comment>() {
+                    @Override
+                    public void done(List<Comment> list, AVException e) {
+                        if (e == null) {
+                            subscriber.onNext(list);
+                        } else {
+                            subscriber.onError(e);
+                        }
+                        subscriber.onCompleted();
+                    }
+                });
+            }
+        });
+    }
+
+    public Observable<Comment> createComment(final Comment comment) {
+
+        return Observable.create(new Observable.OnSubscribe<Comment>() {
+            @Override
+            public void call(final Subscriber<? super Comment> subscriber) {
+                comment.setFetchWhenSave(true);
+                comment.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(AVException e) {
+                        if (e == null) {
+                            subscriber.onNext(comment);
+
+                        } else {
+                            subscriber.onError(e);
+                        }
+
+                        subscriber.onCompleted();
+                    }
+                });
+            }
+        });
     }
 }

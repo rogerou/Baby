@@ -11,14 +11,17 @@ import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.home.ISouvenirPresenter;
 import com.ozj.baby.mvp.views.home.ISouvenirVIew;
 import com.ozj.baby.util.PreferenceManager;
+import com.ozj.baby.util.SchedulersCompat;
 
 import java.util.List;
 
 import javax.inject.Inject;
 
+import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 
 /**
  * Created by Roger on 2016/4/20.
@@ -51,7 +54,8 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
     public void LoadingDataFromNet(final boolean isFresh, final int size, final int page) {
         mSouvenirView.showRefreshingLoading();
         getAllSouvenir = mRxleanCloud.GetALlSouvenirByLeanCloud(mPreferencepManager.getCurrentUserId(), mPreferencepManager.GetLoverID(), size, page)
-                .observeOn(AndroidSchedulers.mainThread())
+               
+                .compose(SchedulersCompat.<List<Souvenir>>applyIoSchedulers())
                 .subscribe(new Observer<List<Souvenir>>() {
                     @Override
                     public void onCompleted() {
