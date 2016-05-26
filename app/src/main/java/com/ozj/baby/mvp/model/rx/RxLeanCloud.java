@@ -113,31 +113,6 @@ public class RxLeanCloud {
 
     }
 
-    public Observable<AVUser> GetUserByLeanCloud(final String objectId) {
-
-        return Observable.create(new Observable.OnSubscribe<AVUser>() {
-            @Override
-            public void call(Subscriber<? super AVUser> subscriber) {
-
-                AVQuery<AVUser> query = AVUser.getQuery();
-
-                try {
-                    AVUser user = query.include(UserDao.AVATARURL).get(objectId);
-                    subscriber.onNext(user);
-
-                } catch (AVException e) {
-                    e.printStackTrace();
-                    subscriber.onError(e);
-
-                }
-                subscriber.onCompleted();
-
-
-            }
-        }).subscribeOn(Schedulers.io());
-
-    }
-
     public Observable<AVUser> GetUserByUsername(final String username) {
         return Observable.create(new Observable.OnSubscribe<AVUser>() {
             @Override
@@ -191,27 +166,6 @@ public class RxLeanCloud {
                 });
             }
         }).subscribeOn(AndroidSchedulers.mainThread());
-
-    }
-
-    public Observable<AVFile> UploadFile(final AVFile file) {
-        return Observable.create(new Observable.OnSubscribe<AVFile>() {
-            @Override
-            public void call(final Subscriber<? super AVFile> subscriber) {
-                file.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(AVException e) {
-                        if (e == null) {
-                            subscriber.onNext(file);
-                        } else {
-                            subscriber.onError(e);
-                        }
-                        subscriber.onCompleted();
-
-                    }
-                });
-            }
-        });
 
     }
 
@@ -318,8 +272,6 @@ public class RxLeanCloud {
                 push.setMessage(content);
                 push.setCloudQuery("select * from _Installation where installationId ='" + installationId
                         + "'");
-//                push.setCloudQuery("select * from _Installation where installationId ='" + installationId
-//                        + "'");
                 push.sendInBackground(new SendCallback() {
                     @Override
                     public void done(AVException e) {
@@ -461,6 +413,9 @@ public class RxLeanCloud {
                 query.whereEqualTo(CommentDao.SOUVENIR, souvenir);
                 query.setLimit(size);
                 query.setSkip(page * size);
+                query.orderByDescending("createdAt");
+                query.include(CommentDao.REPLYTO);
+                query.include(CommentDao.AUTHOR);
                 query.findInBackground(new FindCallback<Comment>() {
                     @Override
                     public void done(List<Comment> list, AVException e) {
@@ -481,21 +436,43 @@ public class RxLeanCloud {
         return Observable.create(new Observable.OnSubscribe<Comment>() {
             @Override
             public void call(final Subscriber<? super Comment> subscriber) {
-                comment.setFetchWhenSave(true);
                 comment.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(AVException e) {
                         if (e == null) {
                             subscriber.onNext(comment);
-
                         } else {
                             subscriber.onError(e);
                         }
-
                         subscriber.onCompleted();
                     }
                 });
+
             }
         });
+    }
+
+
+    public Observable<Integer> incrementComments(final Souvenir souvenir) {
+        return Observable.create(new Observable.OnSubscribe<Integer>() {
+            @Override
+            public void call(final Subscriber<? super Integer> subscriber) {
+                souvenir.setFetchWhenSave(true);
+                souvenir.increment(SouvenirDao.SOUVENIR_COMMENTCOUNT);
+                souvenir.saveInBackground(new SaveCallback() {
+                    @Override
+                    public void done(AVException e) {
+                        if (e == null) {
+                            subscriber.onNext(souvenir.getCommentcount());
+                        } else {
+                            subscriber.onError(e);
+                        }
+                        subscriber.onCompleted();
+                    }
+                });
+
+            }
+        });
+
     }
 }

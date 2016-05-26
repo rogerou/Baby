@@ -24,6 +24,7 @@ import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.mvp.model.bean.Souvenir;
 import com.hyphenate.easeui.domain.UserDao;
+import com.ozj.baby.mvp.views.home.activity.CommentActivity;
 import com.ozj.baby.mvp.views.home.activity.DetailImageActivity;
 
 import java.text.SimpleDateFormat;
@@ -61,12 +62,15 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.tvContent.setText(mList.get(position).getContent());
         holder.tvAuthor.setText(mList.get(position).getAuthor().getString(UserDao.NICK));
-        holder.txtTime.setText(mList.get(position).getCreatedAt().toString());
-        holder.tv_comment.setText(mList.get(position).getCommentcount());
+        holder.txtTime.setText(com.hyphenate.util.DateUtils.getTimestampString(mList.get(position).getCreatedAt()));
+        holder.tv_comment.setText(String.valueOf(mList.get(position).getCommentcount()));
         holder.tv_comment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Intent intent = new Intent(mContext, CommentActivity.class);
+                intent.putExtra("moment", mList.get(holder.getAdapterPosition()));
+                intent.putExtra("position", holder.getAdapterPosition());
+                mContext.startActivity(intent);
             }
         });
         Glide.with(mContext).load(mList.get(position).getPicture()).diskCacheStrategy(DiskCacheStrategy.ALL).crossFade().into(holder.ivSouvenirPic);
@@ -179,8 +183,4 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
 
     }
 
-//    private String getTime(Date timestamp) {
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
-//        return simpleDateFormat.format(timestamp);
-//    }
 }

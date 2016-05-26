@@ -67,6 +67,11 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     }
 
     @Override
+    protected void initData() {
+        
+    }
+
+    @Override
     public void initDagger() {
         mActivityComponet.inject(this);
     }

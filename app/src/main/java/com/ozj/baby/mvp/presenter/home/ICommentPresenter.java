@@ -11,7 +11,6 @@ public interface ICommentPresenter extends BasePresenter {
 
     void fetchAllComments(Souvenir souvenir, int page, int size);
 
-
-    void Comment(Comment comment);
+    void Comment(Comment comment, int position);
 
 }

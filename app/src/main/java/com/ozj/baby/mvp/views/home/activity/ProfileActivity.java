@@ -51,6 +51,11 @@ public class ProfileActivity extends BaseActivity implements IProfileView {
     TextInputLayout loverInput;
 
     @Override
+    protected void initData() {
+        mProfilePresenterImpl.initData(ivAvatar, nickInput, loverInput, cityInput, sexInput);
+    }
+
+    @Override
     public void initDagger() {
         mActivityComponet.inject(this);
     }
@@ -64,7 +69,7 @@ public class ProfileActivity extends BaseActivity implements IProfileView {
     @Override
     public void initViewsAndListener() {
 
-        mProfilePresenterImpl.initData(ivAvatar, nickInput, loverInput, cityInput, sexInput);
+
     }
 
     @Override

@@ -37,6 +37,11 @@ public class AboutActivity extends BaseActivity implements IAboutView {
     TextView tvGithub;
 
     @Override
+    protected void initData() {
+        
+    }
+
+    @Override
     public void initDagger() {
         mActivityComponet.inject(this);
     }
@@ -44,7 +49,7 @@ public class AboutActivity extends BaseActivity implements IAboutView {
     @Override
     public void initContentView() {
         setContentView(R.layout.activity_about);
-        StatusBarUtil.setColor(this, R.color.colorPrimary);
+        StatusBarUtil.setColorNoTranslucent(this, getResources().getColor(R.color.colorPrimary));
     }
 
     @Override

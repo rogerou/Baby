@@ -101,6 +101,13 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
+    protected void initData() {
+        mMainPersenter.initData(iv_avatar, tv_nick, ivAlbum);
+
+
+    }
+
+    @Override
     public void initDagger() {
         mActivityComponet.inject(this);
     }
@@ -134,7 +141,6 @@ public class MainActivity extends BaseActivity
                 toProfileActivity();
             }
         });
-        mMainPersenter.initData(iv_avatar, tv_nick, ivAlbum);
         navView.getMenu().getItem(0).setChecked(true);
         souvenirFragment = SouvenirFragment.newInsatance();
         mMainPersenter.replaceFragment(souvenirFragment, "Moment", true);
@@ -357,6 +363,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mMainPersenter.detachView();
     }
 }
 

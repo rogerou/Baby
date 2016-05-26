@@ -4,7 +4,8 @@
 
     <item
         android:id="@+id/cancel_comment"
-        android:title="取消回复"
-        app:showAsAction="withText"
+        android:icon="@drawable/ic_cancel_white_24dp"
+        android:title="@string/cancelreply"
+        app:showAsAction="always"
         />
 </menu>

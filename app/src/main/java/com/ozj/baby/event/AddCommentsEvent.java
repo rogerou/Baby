@@ -11,10 +11,20 @@ public class AddCommentsEvent {
 
     public List<Comment> mCommentList;
     public boolean isRefresh;
+    public boolean isList;
+    public Comment mComment;
 
-    public AddCommentsEvent(List<Comment> commentList, boolean isRefresh) {
+    public AddCommentsEvent(Comment comment, boolean isRefresh, boolean isList) {
+        this.isRefresh = isRefresh;
+        mComment = comment;
+        this.isList = isList;
+    }
+
+    public AddCommentsEvent(List<Comment> commentList, boolean isRefresh, boolean isList) {
         this.mCommentList = commentList;
         this.isRefresh = isRefresh;
+        this.isList = isList;
+
     }
 
 }

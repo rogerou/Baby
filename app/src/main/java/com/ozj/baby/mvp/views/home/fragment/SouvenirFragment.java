@@ -11,7 +11,9 @@ import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.adapter.SouvenirAdapter;
 import com.ozj.baby.base.BaseFragment;
+import com.ozj.baby.event.AddCommentsEvent;
 import com.ozj.baby.event.AddSouvenirEvent;
+import com.ozj.baby.event.IncrementEvent;
 import com.ozj.baby.mvp.model.bean.Souvenir;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.SouvenirPresenterImpl;
@@ -29,9 +31,11 @@ import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
- * Created by Administrator on 2016/4/19.
+ * Created by Rogerou on 2016/4/19.
+ * 
  */
 public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, SwipeRefreshLayout.OnRefreshListener {
     @Inject
@@ -44,6 +48,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     @Bind(R.id.swipeFreshLayout)
     SwipeRefreshLayout swipeFreshLayout;
     Subscription mSubscription;
+    Subscription mIncrement;
 
     int page = 0;
     int size = 15;
@@ -136,13 +141,21 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
                                         mAdapter.notifyItemInserted(mList.size() - 1);
                                     }
                                 }
-
                             }
                         } else {
                             mList.add(0, addSouvenirEvent.getSouvenir());
                             mAdapter.notifyItemInserted(0);
                         }
 
+                    }
+                });
+        mIncrement = mRxbus.toObservable(IncrementEvent.class)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<IncrementEvent>() {
+                    @Override
+                    public void call(IncrementEvent IncrementEvent) {
+                        mList.get(IncrementEvent.position).setCommentcount(IncrementEvent.count);
+                        mAdapter.notifyItemChanged(IncrementEvent.position);
                     }
                 });
 
@@ -204,6 +217,9 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
         super.onDestroyView();
         if (!mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
+        }
+        if (mIncrement != null && mIncrement.isUnsubscribed()) {
+            mIncrement.unsubscribe();
         }
         mSouvenirPresenterImpl.detachView();
     }

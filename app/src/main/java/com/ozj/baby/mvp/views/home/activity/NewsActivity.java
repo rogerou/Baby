@@ -20,8 +20,14 @@ public class NewsActivity extends BaseActivity {
     RecyclerView ryNews;
     @Bind(R.id.swipeFreshLayout)
     SwipeRefreshLayout swipeFreshLayout;
-    
-    
+
+
+    @Override
+    protected void initData() {
+        
+        
+    }
+
     @Override
     public void initDagger() {
 

@@ -1,5 +1,7 @@
 package com.ozj.baby.mvp.views.home.activity;
 
+import android.content.Context;
+import android.hardware.input.InputManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -10,9 +12,12 @@ import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.hyphenate.easeui.domain.User;
+import com.jaeger.library.StatusBarUtil;
 import com.ozj.baby.R;
 import com.ozj.baby.adapter.CommentAdapter;
 import com.ozj.baby.base.BaseActivity;
@@ -22,6 +27,7 @@ import com.ozj.baby.mvp.model.bean.Souvenir;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.CommentPresenterImpl;
 import com.ozj.baby.mvp.views.ICommentView;
+import com.ozj.baby.util.OnItemClickListener;
 import com.ozj.baby.util.SchedulersCompat;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
@@ -34,7 +40,10 @@ import butterknife.Bind;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 
 /**
  * Created by Rogerou on 2016/5/25.
@@ -63,6 +72,20 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
     Souvenir mSouvenir;
     List<Comment> mList;
     CommentAdapter mAdapter;
+    Comment mComment;
+    int position;
+    InputMethodManager inputMethodManager;
+
+    @Override
+    protected void initData() {
+        mSouvenir = (Souvenir) getIntent().getExtras().get("moment");
+        position = getIntent().getExtras().getInt("position");
+        mCommentPresenter.fetchAllComments(mSouvenir, page, size);
+        mSubscription = RegisterEvent();
+        mComment = new Comment();
+        mComment.setSouvenir(mSouvenir);
+        inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+    }
 
     @Override
     public void initDagger() {
@@ -72,35 +95,27 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
     @Override
     public void initContentView() {
         setContentView(R.layout.activity_comment);
-        mSouvenir = (Souvenir) getIntent().getExtras().get("moment");
-        mSubscription = RegisterEvent();
+        StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary));
     }
 
     private Subscription RegisterEvent() {
         return mRxBus.toObservable(AddCommentsEvent.class)
-                .compose(SchedulersCompat.<AddCommentsEvent>observeOnMainThread())
-                .subscribe(new Observer<AddCommentsEvent>() {
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action1<AddCommentsEvent>() {
                     @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        showToast("出错啦，请稍后再试");
-                    }
-
-                    @Override
-                    public void onNext(AddCommentsEvent addCommentsEvent) {
-                        if (addCommentsEvent.isRefresh && addCommentsEvent.mCommentList.size() != 0) {
-                            mList.clear();
-                            mAdapter.notifyItemRangeRemoved(0, mAdapter.getItemCount());
-                            mList.addAll(addCommentsEvent.mCommentList);
-                            mAdapter.notifyItemRangeInserted(0, addCommentsEvent.mCommentList.size());
+                    public void call(AddCommentsEvent addCommentsEvent) {
+                        if (addCommentsEvent.isList) {
+                            if (addCommentsEvent.isRefresh) {
+                                mList.clear();
+                                mList.addAll(addCommentsEvent.mCommentList);
+                            } else {
+                                int size = mAdapter.getItemCount();
+                                mList.addAll(addCommentsEvent.mCommentList);
+                            }
+                            mAdapter.notifyDataSetChanged();
                         } else {
-                            int size = mAdapter.getItemCount();
-                            mList.addAll(addCommentsEvent.mCommentList);
-                            mAdapter.notifyItemRangeInserted(size - 1, addCommentsEvent.mCommentList.size());
+                            mList.add(0, addCommentsEvent.mComment);
+                            mAdapter.notifyItemInserted(0);
                         }
                     }
                 });
@@ -127,6 +142,7 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
                 }
             }
         });
+        mRyComment.setAdapter(mAdapter);
         mEtComment.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -147,7 +163,22 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
                 }
             }
         });
-        mCommentPresenter.fetchAllComments(mSouvenir, page, size);
+        mAdapter.setItemOnclicklistener(new OnItemClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                if (mList.get(position).getAuhtor().equals(User.getCurrentUser(User.class))) {
+                    showToast("不自己回复自己");
+                    return;
+                }
+                mEtComment.setHint(String.format("回复 %s 的评论:", mList.get(position).getAuhtor().getNick()));
+                mEtComment.requestFocus();
+                inputMethodManager.showSoftInput(mEtComment, InputMethodManager.RESULT_UNCHANGED_SHOWN);
+                mComment.setReply(mList.get(position).getAuhtor());
+                isReplied = true;
+                invalidateOptionsMenu();
+            }
+        });
+
     }
 
 
@@ -172,7 +203,10 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if (item.getItemId() == R.id.cancel_comment) {
-
+            mEtComment.setHint(getString(R.string.add_comment));
+            mComment.setReply(null);
+            isReplied = false;
+            invalidateOptionsMenu();
         }
         return true;
     }
@@ -200,18 +234,24 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
 
     @Override
     public void hideLoading() {
-        mSwipeFreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mSwipeFreshLayout.setRefreshing(false);
-            }
-        }, 1000);
+        if (mSwipeFreshLayout != null)
+            mSwipeFreshLayout.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    mSwipeFreshLayout.setRefreshing(false);
+                }
+            }, 1000);
     }
 
 
     @OnClick(R.id.btn_send)
     public void onClick() {
-
+        mComment.setComment(mEtComment.getText().toString());
+        mComment.setAuhtor(User.getCurrentUser(User.class));
+        mCommentPresenter.Comment(mComment, position);
+        mEtComment.setText("");
+        inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
+                InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override

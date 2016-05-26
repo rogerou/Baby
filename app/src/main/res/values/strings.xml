@@ -30,6 +30,7 @@
     <string name="roger_ou">作者：<u>Roger ou</u></string>
     <string name="github"><u>https://github.com/rogerou/Baby</u></string>
     <string name="add_comment">添加评论</string>
+    <string name="cancelreply">取消回复</string>
 
 
 </resources>

@@ -30,6 +30,11 @@ public class DetailImageActivity extends BaseActivity {
     DetailPageAdapter mAdapter;
 
     @Override
+    protected void initData() {
+        
+    }
+
+    @Override
     public void initDagger() {
 
     }

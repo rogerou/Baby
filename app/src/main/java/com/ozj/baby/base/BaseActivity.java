@@ -37,7 +37,10 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         initPresenter();
         initToolbar();
         initViewsAndListener();
+        initData();
     }
+
+    protected abstract void initData();
 
     public abstract void initDagger();
 
