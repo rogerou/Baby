@@ -6,6 +6,7 @@ import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
+import com.hyphenate.easeui.domain.User;
 import com.orhanobut.logger.AndroidLogTool;
 import com.orhanobut.logger.LogLevel;
 import com.orhanobut.logger.Logger;
@@ -15,9 +16,7 @@ import com.ozj.baby.di.module.ApplicationModule;
 import com.ozj.baby.mvp.model.bean.Comment;
 import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.bean.Souvenir;
-import com.hyphenate.easeui.domain.User;
 import com.squareup.leakcanary.LeakCanary;
-
 
 import im.fir.sdk.FIR;
 

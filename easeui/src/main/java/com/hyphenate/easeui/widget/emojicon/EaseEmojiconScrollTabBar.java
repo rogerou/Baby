@@ -1,12 +1,5 @@
 package com.hyphenate.easeui.widget.emojicon;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.hyphenate.easeui.R;
-import com.hyphenate.util.DensityUtil;
-
-import android.R.integer;
 import android.content.Context;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
@@ -16,6 +9,12 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+
+import com.hyphenate.easeui.R;
+import com.hyphenate.util.DensityUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EaseEmojiconScrollTabBar extends RelativeLayout{
 

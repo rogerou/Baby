@@ -1,8 +1,5 @@
 package com.hyphenate.easeui.utils;
 
-import java.util.Comparator;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.hardware.Camera;
 import android.hardware.Camera.Parameters;
@@ -12,6 +9,9 @@ import android.os.Build.VERSION_CODES;
 import android.os.StrictMode;
 
 import com.hyphenate.easeui.ui.ImageGridActivity;
+
+import java.util.Comparator;
+import java.util.List;
 
 
 public class Utils {

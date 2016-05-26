@@ -1,7 +1,5 @@
 package com.hyphenate.easeui.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +12,8 @@ import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.domain.EaseEmojicon;
 import com.hyphenate.easeui.domain.EaseEmojicon.Type;
 import com.hyphenate.easeui.utils.EaseSmileUtils;
+
+import java.util.List;
 
 public class EmojiconGridAdapter extends ArrayAdapter<EaseEmojicon>{
 

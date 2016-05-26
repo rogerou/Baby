@@ -1,9 +1,11 @@
 package com.hyphenate.easeui.controller;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.util.Log;
 
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
@@ -19,12 +21,10 @@ import com.hyphenate.easeui.ui.VoiceCallActivity;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
 import com.hyphenate.exceptions.HyphenateException;
 
-import android.app.Activity;
-import android.app.ActivityManager;
-import android.content.Context;
-import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.util.Log;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 public final class EaseUI {
     private static final String TAG = EaseUI.class.getSimpleName();

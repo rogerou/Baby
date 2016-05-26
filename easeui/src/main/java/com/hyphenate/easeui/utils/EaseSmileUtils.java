@@ -13,13 +13,6 @@
  */
 package com.hyphenate.easeui.utils;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import android.content.Context;
 import android.net.Uri;
 import android.text.Spannable;
@@ -30,6 +23,13 @@ import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.controller.EaseUI.EaseEmojiconInfoProvider;
 import com.hyphenate.easeui.domain.EaseEmojicon;
 import com.hyphenate.easeui.model.EaseDefaultEmojiconDatas;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class EaseSmileUtils {
     public static final String DELETE_KEY = "em_delete_delete_expression";

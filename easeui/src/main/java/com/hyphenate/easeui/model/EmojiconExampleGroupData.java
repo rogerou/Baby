@@ -1,11 +1,11 @@
 package com.hyphenate.easeui.model;
 
-import java.util.Arrays;
-
+import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.domain.EaseEmojicon;
 import com.hyphenate.easeui.domain.EaseEmojicon.Type;
-import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.domain.EaseEmojiconGroupEntity;
+
+import java.util.Arrays;
 
 public class EmojiconExampleGroupData {
 

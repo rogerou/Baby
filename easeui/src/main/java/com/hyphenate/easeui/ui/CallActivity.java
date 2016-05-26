@@ -1,5 +1,15 @@
 package com.hyphenate.easeui.ui;
 
+import android.content.Context;
+import android.media.AudioManager;
+import android.media.Ringtone;
+import android.media.SoundPool;
+import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
+import android.widget.Toast;
+
 import com.hyphenate.chat.EMCallStateChangeListener;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMMessage;
@@ -12,16 +22,6 @@ import com.hyphenate.media.EMLocalSurfaceView;
 import com.hyphenate.media.EMOppositeSurfaceView;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.NetUtils;
-
-import android.content.Context;
-import android.media.AudioManager;
-import android.media.Ringtone;
-import android.media.SoundPool;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.HandlerThread;
-import android.os.Message;
-import android.widget.Toast;
 
 public class CallActivity extends EaseBaseActivity {
     protected final int MSG_CALL_MAKE_VIDEO = 0;

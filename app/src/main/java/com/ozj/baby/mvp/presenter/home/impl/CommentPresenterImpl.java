@@ -3,7 +3,6 @@ package com.ozj.baby.mvp.presenter.home.impl;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.event.AddCommentsEvent;
@@ -27,7 +26,6 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.functions.Func1;
-import rx.functions.Func2;
 
 /**
  * Created by RogerOu on 2016/5/25.

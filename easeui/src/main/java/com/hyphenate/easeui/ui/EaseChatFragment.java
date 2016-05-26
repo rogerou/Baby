@@ -1,39 +1,5 @@
 package com.hyphenate.easeui.ui;
 
-import java.io.File;
-import java.util.List;
-
-import com.hyphenate.EMChatRoomChangeListener;
-import com.hyphenate.EMMessageListener;
-import com.hyphenate.EMValueCallBack;
-import com.hyphenate.chat.EMChatRoom;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMConversation;
-import com.hyphenate.chat.EMGroup;
-import com.hyphenate.chat.EMImageMessageBody;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMMessage.ChatType;
-import com.hyphenate.chat.EMTextMessageBody;
-import com.hyphenate.easeui.EaseConstant;
-import com.hyphenate.easeui.R;
-import com.hyphenate.easeui.controller.EaseUI;
-import com.hyphenate.easeui.domain.EaseEmojicon;
-import com.hyphenate.easeui.utils.EaseCommonUtils;
-import com.hyphenate.easeui.utils.EaseImageUtils;
-import com.hyphenate.easeui.utils.EaseSmileUtils;
-import com.hyphenate.easeui.utils.EaseUserUtils;
-import com.hyphenate.easeui.widget.EaseAlertDialog;
-import com.hyphenate.easeui.widget.EaseAlertDialog.AlertDialogUser;
-import com.hyphenate.easeui.widget.EaseChatExtendMenu;
-import com.hyphenate.easeui.widget.EaseChatInputMenu;
-import com.hyphenate.easeui.widget.EaseChatInputMenu.ChatInputMenuListener;
-import com.hyphenate.easeui.widget.EaseChatMessageList;
-import com.hyphenate.easeui.widget.EaseVoiceRecorderView;
-import com.hyphenate.easeui.widget.EaseVoiceRecorderView.EaseVoiceRecorderCallback;
-import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
-import com.hyphenate.util.EMLog;
-import com.hyphenate.util.PathUtil;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -58,6 +24,37 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.hyphenate.EMChatRoomChangeListener;
+import com.hyphenate.EMMessageListener;
+import com.hyphenate.EMValueCallBack;
+import com.hyphenate.chat.EMChatRoom;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMConversation;
+import com.hyphenate.chat.EMGroup;
+import com.hyphenate.chat.EMImageMessageBody;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessage.ChatType;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.controller.EaseUI;
+import com.hyphenate.easeui.domain.EaseEmojicon;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.easeui.widget.EaseAlertDialog;
+import com.hyphenate.easeui.widget.EaseAlertDialog.AlertDialogUser;
+import com.hyphenate.easeui.widget.EaseChatExtendMenu;
+import com.hyphenate.easeui.widget.EaseChatInputMenu;
+import com.hyphenate.easeui.widget.EaseChatInputMenu.ChatInputMenuListener;
+import com.hyphenate.easeui.widget.EaseChatMessageList;
+import com.hyphenate.easeui.widget.EaseVoiceRecorderView;
+import com.hyphenate.easeui.widget.EaseVoiceRecorderView.EaseVoiceRecorderCallback;
+import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
+import com.hyphenate.util.EMLog;
+import com.hyphenate.util.PathUtil;
+
+import java.io.File;
+import java.util.List;
 
 /**
  * 可以直接new出来使用的聊天对话页面fragment，

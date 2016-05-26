@@ -11,7 +11,6 @@ import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.adapter.SouvenirAdapter;
 import com.ozj.baby.base.BaseFragment;
-import com.ozj.baby.event.AddCommentsEvent;
 import com.ozj.baby.event.AddSouvenirEvent;
 import com.ozj.baby.event.IncrementEvent;
 import com.ozj.baby.mvp.model.bean.Souvenir;

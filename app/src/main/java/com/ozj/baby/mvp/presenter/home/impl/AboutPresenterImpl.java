@@ -1,45 +1,22 @@
 package com.ozj.baby.mvp.presenter.home.impl;
 
-import android.app.DownloadManager;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.os.Environment;
-import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.avos.avoscloud.okhttp.Response;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.mvp.model.bean.UpdateVersion;
 import com.ozj.baby.mvp.presenter.home.IAboutPresenter;
 import com.ozj.baby.mvp.views.home.IAboutView;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-
 import javax.inject.Inject;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import im.fir.sdk.FIR;
 import im.fir.sdk.VersionCheckCallback;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import rx.Observable;
-import rx.Observer;
-import rx.Subscriber;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by YX201603-6 on 2016/5/3.

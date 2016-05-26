@@ -3,9 +3,6 @@ package com.hyphenate.easeui.ui;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
-
-import com.hyphenate.easeui.R;
-
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -30,14 +27,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.domain.VideoEntity;
 import com.hyphenate.easeui.utils.ImageCache;
 import com.hyphenate.easeui.utils.ImageResizer;
+import com.hyphenate.easeui.utils.Utils;
 import com.hyphenate.easeui.widget.RecyclingImageView;
 import com.hyphenate.util.DateUtils;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.TextFormater;
-import com.hyphenate.easeui.utils.Utils;
 
 import java.util.ArrayList;
 import java.util.List;

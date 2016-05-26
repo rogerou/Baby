@@ -1,7 +1,6 @@
 package com.ozj.baby.mvp.views.home.activity;
 
 import android.content.Context;
-import android.hardware.input.InputManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,7 +27,6 @@ import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.CommentPresenterImpl;
 import com.ozj.baby.mvp.views.ICommentView;
 import com.ozj.baby.util.OnItemClickListener;
-import com.ozj.baby.util.SchedulersCompat;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -39,8 +37,6 @@ import javax.inject.Inject;
 import butterknife.Bind;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
-import rx.Observer;
-import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;

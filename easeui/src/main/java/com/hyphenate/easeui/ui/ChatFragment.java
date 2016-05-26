@@ -1,22 +1,5 @@
 package com.hyphenate.easeui.ui;
 
-import java.io.File;
-import java.io.FileOutputStream;
-
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMTextMessageBody;
-import com.hyphenate.easeui.EaseConstant;
-import com.hyphenate.easeui.domain.User;
-import com.hyphenate.easeui.ui.EaseChatFragment.EaseChatFragmentListener;
-import com.hyphenate.easeui.widget.chatrow.ChatRowVoiceCall;
-import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
-import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
-import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenu;
-import com.hyphenate.util.EasyUtils;
-import com.hyphenate.util.PathUtil;
-import com.hyphenate.easeui.model.EmojiconExampleGroupData;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -24,17 +7,30 @@ import android.graphics.Bitmap.CompressFormat;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Build;
-
-import com.hyphenate.easeui.R;
-
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Toast;
+
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMTextMessageBody;
+import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.domain.User;
+import com.hyphenate.easeui.model.EmojiconExampleGroupData;
+import com.hyphenate.easeui.ui.EaseChatFragment.EaseChatFragmentListener;
+import com.hyphenate.easeui.widget.chatrow.ChatRowVoiceCall;
+import com.hyphenate.easeui.widget.chatrow.EaseChatRow;
+import com.hyphenate.easeui.widget.chatrow.EaseCustomChatRowProvider;
+import com.hyphenate.easeui.widget.emojicon.EaseEmojiconMenu;
+import com.hyphenate.util.PathUtil;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 public class ChatFragment extends EaseChatFragment implements EaseChatFragmentListener {
 

@@ -1,14 +1,14 @@
 package com.hyphenate.easeui.widget.chatrow;
 
+import android.content.Context;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import com.hyphenate.chat.EMMessage;
 import com.hyphenate.chat.EMTextMessageBody;
 import com.hyphenate.easeui.EaseConstant;
-
-import android.content.Context;
-import android.widget.BaseAdapter;
 import com.hyphenate.easeui.R;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 public class ChatRowVoiceCall extends EaseChatRow {
 

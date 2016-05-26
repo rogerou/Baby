@@ -1,9 +1,5 @@
 package com.hyphenate.easeui.ui;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,11 +12,14 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.R;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 展示视频内容

@@ -14,8 +14,6 @@
 
 package com.hyphenate.easeui.ui;
 
-import java.util.UUID;
-
 import android.media.AudioManager;
 import android.media.RingtoneManager;
 import android.media.SoundPool;
@@ -44,6 +42,8 @@ import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.domain.User;
 import com.hyphenate.util.EMLog;
 import com.jaeger.library.StatusBarUtil;
+
+import java.util.UUID;
 
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 

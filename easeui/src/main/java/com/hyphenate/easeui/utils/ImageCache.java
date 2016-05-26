@@ -16,15 +16,6 @@
 
 package com.hyphenate.easeui.utils;
 
-import java.io.File;
-import java.lang.ref.SoftReference;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import android.annotation.TargetApi;
 import android.app.FragmentManager;
 import android.content.Context;
@@ -37,6 +28,15 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.util.LruCache;
+
+import java.io.File;
+import java.lang.ref.SoftReference;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 
 /**

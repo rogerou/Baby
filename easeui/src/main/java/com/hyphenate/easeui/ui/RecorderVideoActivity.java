@@ -11,13 +11,6 @@
  */
 package com.hyphenate.easeui.ui;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -51,11 +44,18 @@ import android.widget.ImageView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.easeui.utils.Utils;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.PathUtil;
-import com.hyphenate.easeui.utils.Utils;
-import com.hyphenate.easeui.R;
+
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
 
 public class RecorderVideoActivity extends EaseBaseActivity implements
         OnClickListener, SurfaceHolder.Callback, OnErrorListener,

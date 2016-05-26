@@ -1,23 +1,5 @@
 package com.hyphenate.easeui.widget.chatrow;
 
-import java.util.Date;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.EMError;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMMessage.Direct;
-import com.hyphenate.easeui.R;
-import com.hyphenate.easeui.adapter.EaseMessageAdapter;
-import com.hyphenate.easeui.domain.User;
-import com.hyphenate.easeui.utils.EaseUserUtils;
-import com.hyphenate.easeui.widget.EaseChatMessageList;
-import com.hyphenate.easeui.widget.EaseChatMessageList.MessageListItemClickListener;
-import com.hyphenate.exceptions.HyphenateException;
-import com.hyphenate.util.DateUtils;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -29,7 +11,22 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import jp.wasabeef.glide.transformations.ColorFilterTransformation;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.hyphenate.EMCallBack;
+import com.hyphenate.EMError;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessage.Direct;
+import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.adapter.EaseMessageAdapter;
+import com.hyphenate.easeui.domain.User;
+import com.hyphenate.easeui.widget.EaseChatMessageList.MessageListItemClickListener;
+import com.hyphenate.exceptions.HyphenateException;
+import com.hyphenate.util.DateUtils;
+
+import java.util.Date;
+
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 public abstract class EaseChatRow extends LinearLayout {

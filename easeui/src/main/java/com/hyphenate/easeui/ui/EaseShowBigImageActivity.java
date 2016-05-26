@@ -13,10 +13,6 @@
  */
 package com.hyphenate.easeui.ui;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
@@ -30,7 +26,6 @@ import android.view.View.OnClickListener;
 import android.widget.ProgressBar;
 
 import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.model.EaseImageCache;
@@ -38,7 +33,10 @@ import com.hyphenate.easeui.utils.EaseLoadLocalBigImgTask;
 import com.hyphenate.easeui.widget.photoview.EasePhotoView;
 import com.hyphenate.util.EMLog;
 import com.hyphenate.util.ImageUtils;
-import com.hyphenate.util.PathUtil;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 下载显示大图

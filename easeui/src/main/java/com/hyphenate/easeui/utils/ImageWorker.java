@@ -16,10 +16,6 @@
 
 package com.hyphenate.easeui.utils;
 
-import java.lang.ref.WeakReference;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.res.Resources;
@@ -34,6 +30,10 @@ import android.util.Log;
 import android.widget.ImageView;
 
 import com.jaeger.library.BuildConfig;
+
+import java.lang.ref.WeakReference;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 
 /**

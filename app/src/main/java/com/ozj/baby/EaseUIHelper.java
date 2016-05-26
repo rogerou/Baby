@@ -27,6 +27,7 @@ import java.util.Map;
 
 /**
  * Created by YX201603-6 on 2016/5/4.
+ * 
  */
 public class EaseUIHelper {
     private EaseUI easeUI;

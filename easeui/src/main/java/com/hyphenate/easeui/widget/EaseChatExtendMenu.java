@@ -1,8 +1,5 @@
 package com.hyphenate.easeui.widget;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
@@ -18,6 +15,9 @@ import android.widget.TextView;
 
 import com.hyphenate.easeui.R;
 import com.hyphenate.util.DensityUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 按+按钮出来的扩展按钮

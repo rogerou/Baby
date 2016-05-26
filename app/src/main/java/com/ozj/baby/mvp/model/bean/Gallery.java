@@ -2,7 +2,6 @@ package com.ozj.baby.mvp.model.bean;
 
 import android.os.Parcelable;
 
-
 import com.avos.avoscloud.AVClassName;
 import com.avos.avoscloud.AVObject;
 import com.hyphenate.easeui.domain.User;

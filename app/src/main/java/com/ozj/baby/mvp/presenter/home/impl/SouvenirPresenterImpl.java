@@ -17,11 +17,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 
 /**
  * Created by Roger on 2016/4/20.

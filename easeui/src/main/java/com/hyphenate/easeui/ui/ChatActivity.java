@@ -4,10 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import com.hyphenate.easeui.EaseConstant;
+import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.jaeger.library.StatusBarUtil;
-
-import com.hyphenate.easeui.R;
 
 public class ChatActivity extends EaseBaseActivity {
     public static ChatActivity activityInstance;

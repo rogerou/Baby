@@ -13,12 +13,11 @@ import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVUser;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.hyphenate.easeui.domain.User;
+import com.hyphenate.easeui.domain.UserDao;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
-import com.hyphenate.easeui.domain.User;
-import com.hyphenate.easeui.domain.UserDao;
-import com.ozj.baby.mvp.model.rx.RxBabyRealm;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.home.IProfilePresenter;
 import com.ozj.baby.mvp.views.home.IProfileView;
@@ -48,14 +47,14 @@ public class ProfilePresenterImpl implements IProfilePresenter {
     private Activity mActivity;
     IProfileView mProfileView;
     private RxLeanCloud mRxleanCloud;
-    private RxBabyRealm mRxBabyRealm;
+//    private RxBabyRealm mRxBabyRealm;
     private PreferenceManager mPreferenceManager;
 
     @Inject
-    public ProfilePresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxLeanCloud rxLeanCloud, RxBabyRealm rxBabyRealm, PreferenceManager preferenmanager) {
+    public ProfilePresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxLeanCloud rxLeanCloud,  PreferenceManager preferenmanager) {
         mContext = context;
         mActivity = activity;
-        mRxBabyRealm = rxBabyRealm;
+//        mRxBabyRealm = rxBabyRealm;
         mRxleanCloud = rxLeanCloud;
         mPreferenceManager = preferenmanager;
         Logger.init(this.getClass().getSimpleName());

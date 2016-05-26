@@ -5,11 +5,11 @@ import android.text.TextUtils;
 
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVUser;
+import com.hyphenate.easeui.domain.User;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.event.AddSouvenirEvent;
 import com.ozj.baby.mvp.model.bean.Souvenir;
-import com.hyphenate.easeui.domain.User;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.home.IAddSouvenirPresenter;

@@ -1,8 +1,5 @@
 package com.hyphenate.easeui.adapter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -22,6 +19,9 @@ import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.utils.EaseUserUtils;
 import com.hyphenate.util.EMLog;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements SectionIndexer{
     private static final String TAG = "ContactAdapter";

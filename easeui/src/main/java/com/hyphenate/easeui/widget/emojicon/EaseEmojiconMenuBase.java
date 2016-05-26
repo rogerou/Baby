@@ -1,11 +1,11 @@
 package com.hyphenate.easeui.widget.emojicon;
 
-import com.hyphenate.easeui.domain.EaseEmojicon;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.LinearLayout;
+
+import com.hyphenate.easeui.domain.EaseEmojicon;
 
 public class EaseEmojiconMenuBase extends LinearLayout{
     protected EaseEmojiconMenuListener listener;

@@ -1,6 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'//添加apt命令
-apply plugin: 'realm-android'
+//apply plugin: 'realm-android'
 def cfg = rootProject.ext.configuration
 
 android {

@@ -13,23 +13,6 @@
  */
 package com.hyphenate.easeui.ui;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
-import com.hyphenate.EMConnectionListener;
-import com.hyphenate.EMError;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.easeui.R;
-import com.hyphenate.easeui.domain.EaseUser;
-import com.hyphenate.easeui.utils.EaseCommonUtils;
-import com.hyphenate.easeui.widget.EaseContactList;
-import com.hyphenate.exceptions.HyphenateException;
-
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,6 +31,23 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.hyphenate.EMConnectionListener;
+import com.hyphenate.EMError;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.domain.EaseUser;
+import com.hyphenate.easeui.utils.EaseCommonUtils;
+import com.hyphenate.easeui.widget.EaseContactList;
+import com.hyphenate.exceptions.HyphenateException;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * 联系人列表页

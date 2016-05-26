@@ -7,8 +7,6 @@ import android.widget.TextView;
 
 import com.ozj.baby.base.BasePresenter;
 
-import java.io.File;
-
 /**
  * Created by Administrator on 2016/4/20.
  */

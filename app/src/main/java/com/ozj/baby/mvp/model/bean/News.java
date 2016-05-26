@@ -1,11 +1,10 @@
 package com.ozj.baby.mvp.model.bean;
 
-import io.realm.RealmObject;
 
 /**
  * Created by Administrator on 2016/4/29.
  */
-public class News extends RealmObject {
+public class News  {
     private String avatarUrl;
     private String title;
     private String installationId;

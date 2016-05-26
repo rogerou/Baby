@@ -13,17 +13,6 @@
  */
 package com.hyphenate.easeui.widget.chatrow;
 
-import java.io.File;
-
-import com.hyphenate.chat.EMChatManager;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.chat.EMMessage;
-import com.hyphenate.chat.EMMessage.ChatType;
-import com.hyphenate.chat.EMVoiceMessageBody;
-import com.hyphenate.easeui.R;
-import com.hyphenate.easeui.controller.EaseUI;
-import com.hyphenate.util.EMLog;
-
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
@@ -34,6 +23,16 @@ import android.view.View;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.chat.EMMessage;
+import com.hyphenate.chat.EMMessage.ChatType;
+import com.hyphenate.chat.EMVoiceMessageBody;
+import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.controller.EaseUI;
+import com.hyphenate.util.EMLog;
+
+import java.io.File;
 
 /**
  * 语音row播放点击事件监听

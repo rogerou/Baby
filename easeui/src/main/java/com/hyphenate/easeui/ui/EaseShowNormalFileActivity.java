@@ -1,20 +1,19 @@
 package com.hyphenate.easeui.ui;
 
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.widget.ProgressBar;
+import android.widget.Toast;
 
 import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMFileMessageBody;
 import com.hyphenate.easeui.R;
 import com.hyphenate.util.FileUtils;
 
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.widget.ProgressBar;
-import android.widget.Toast;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class EaseShowNormalFileActivity extends EaseBaseActivity {
 	private ProgressBar progressBar;

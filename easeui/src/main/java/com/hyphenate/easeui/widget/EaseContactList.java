@@ -1,8 +1,5 @@
 package com.hyphenate.easeui.widget;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
@@ -17,6 +14,9 @@ import android.widget.RelativeLayout;
 import com.hyphenate.easeui.R;
 import com.hyphenate.easeui.adapter.EaseContactAdapter;
 import com.hyphenate.easeui.domain.EaseUser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EaseContactList extends RelativeLayout {
     protected static final String TAG = EaseContactList.class.getSimpleName();

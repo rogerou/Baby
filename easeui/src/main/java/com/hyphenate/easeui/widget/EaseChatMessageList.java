@@ -9,7 +9,6 @@ import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 
-import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMConversation;
 import com.hyphenate.chat.EMMessage;

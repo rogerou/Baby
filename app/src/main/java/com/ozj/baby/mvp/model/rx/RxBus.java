@@ -18,20 +18,21 @@ public class RxBus {
         mSubject = new SerializedSubject<>(PublishSubject.create());
     }
 
-    public static RxBus getDefaultInstance() {
-        RxBus rxBus = defaultInstance;
-        if (rxBus == null) {
-            synchronized (RxBus.class) {
-                rxBus = defaultInstance;
-                if (rxBus == null) {
-                    rxBus = new RxBus();
-                    defaultInstance = rxBus;
-                }
-            }
-        }
-
-        return rxBus;
-    }
+//    public static RxBus getDefaultInstance() {
+//        RxBus rxBus = defaultInstance;
+//        if (rxBus == null) {
+//            synchronized (RxBus.class) {
+//                rxBus = defaultInstance;
+//                if (rxBus == null) {
+//                    rxBus = new RxBus();
+//                    defaultInstance = rxBus;
+//                    
+//                }
+//            }
+//        }
+//
+//        return rxBus;
+//    }
 
     @SuppressWarnings("unchecked")
     public void post(Object o) {

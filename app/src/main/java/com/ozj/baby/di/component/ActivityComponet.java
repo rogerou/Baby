@@ -6,7 +6,6 @@ import android.content.Context;
 import com.ozj.baby.di.module.ActivityModule;
 import com.ozj.baby.di.scope.ActivityScope;
 import com.ozj.baby.di.scope.ContextLife;
-import com.ozj.baby.mvp.model.rx.RxBabyRealm;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.views.home.activity.AboutActivity;
@@ -34,7 +33,7 @@ public interface ActivityComponet {
 
     PreferenceManager getPreferenceManager();
 
-    RxBabyRealm getBabyRealm();
+//    RxBabyRealm getBabyRealm();
 
     Activity getActivity();
 

@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.avos.avoscloud.PushService;
 import com.facebook.shimmer.ShimmerFrameLayout;
 import com.hyphenate.chat.EMClient;
 import com.jaeger.library.StatusBarUtil;

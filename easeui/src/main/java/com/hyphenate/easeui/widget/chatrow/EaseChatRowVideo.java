@@ -1,8 +1,13 @@
 package com.hyphenate.easeui.widget.chatrow;
 
-import java.io.File;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
 
-import com.hyphenate.chat.EMChatManager;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMFileMessageBody;
 import com.hyphenate.chat.EMMessage;
@@ -17,13 +22,7 @@ import com.hyphenate.util.EMLog;
 import com.hyphenate.util.ImageUtils;
 import com.hyphenate.util.TextFormater;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.os.AsyncTask;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.TextView;
+import java.io.File;
 
 public class EaseChatRowVideo extends EaseChatRowFile{
 

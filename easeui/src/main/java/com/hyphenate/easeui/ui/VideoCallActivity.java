@@ -13,20 +13,6 @@
  */
 package com.hyphenate.easeui.ui;
 
-import java.util.UUID;
-
-import com.hyphenate.chat.EMCallManager.EMCameraDataProcessor;
-import com.hyphenate.chat.EMCallManager.EMVideoCallHelper;
-import com.hyphenate.chat.EMCallStateChangeListener;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.easeui.R;
-import com.hyphenate.easeui.controller.EaseUI;
-import com.hyphenate.easeui.domain.User;
-import com.hyphenate.media.EMLocalSurfaceView;
-import com.hyphenate.media.EMOppositeSurfaceView;
-import com.hyphenate.util.PathUtil;
-import com.jaeger.library.StatusBarUtil;
-
 import android.hardware.Camera;
 import android.media.AudioManager;
 import android.media.RingtoneManager;
@@ -49,6 +35,20 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.hyphenate.chat.EMCallManager.EMCameraDataProcessor;
+import com.hyphenate.chat.EMCallManager.EMVideoCallHelper;
+import com.hyphenate.chat.EMCallStateChangeListener;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.R;
+import com.hyphenate.easeui.controller.EaseUI;
+import com.hyphenate.easeui.domain.User;
+import com.hyphenate.media.EMLocalSurfaceView;
+import com.hyphenate.media.EMOppositeSurfaceView;
+import com.hyphenate.util.PathUtil;
+import com.jaeger.library.StatusBarUtil;
+
+import java.util.UUID;
 
 public class VideoCallActivity extends CallActivity implements OnClickListener {
 

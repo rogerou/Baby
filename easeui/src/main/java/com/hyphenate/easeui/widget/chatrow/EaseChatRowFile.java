@@ -1,6 +1,11 @@
 package com.hyphenate.easeui.widget.chatrow;
 
-import java.io.File;
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.view.View;
+import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
@@ -13,12 +18,7 @@ import com.hyphenate.exceptions.HyphenateException;
 import com.hyphenate.util.FileUtils;
 import com.hyphenate.util.TextFormater;
 
-import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.view.View;
-import android.widget.BaseAdapter;
-import android.widget.TextView;
+import java.io.File;
 
 public class EaseChatRowFile extends EaseChatRow{
 
