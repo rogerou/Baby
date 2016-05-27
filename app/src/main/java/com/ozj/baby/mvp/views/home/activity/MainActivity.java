@@ -83,9 +83,9 @@ public class MainActivity extends BaseActivity
     TextView tv_nick;
     SouvenirFragment souvenirFragment;
     GalleryFragment galleryFragment;
-    static final int ChangeProfile = 8;
-    static final int GalleryPhoto = 9;
-    static final int AlbumPhoto = 10;
+    static final int CHANGE_PROFILE = 8;
+    static final int GALLERY_PHOTO = 9;
+    static final int ALBUM_PHOTO = 10;
 
     boolean isAlbum;
 
@@ -263,7 +263,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void toProfileActivity() {
         Intent intent = new Intent(this, ProfileActivity.class);
-        startActivityForResult(intent, ChangeProfile);
+        startActivityForResult(intent, CHANGE_PROFILE);
 
     }
 
@@ -308,7 +308,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == ChangeProfile && resultCode == RESULT_OK) {
+        if (requestCode == CHANGE_PROFILE && resultCode == RESULT_OK) {
             tv_nick.setText(AVUser.getCurrentUser().getString(UserDao.NICK));
             Glide.with(this).load(AVUser.getCurrentUser().getString(UserDao.AVATARURL)).crossFade().diskCacheStrategy(DiskCacheStrategy.ALL).bitmapTransform(new CropCircleTransformation(this)).into(iv_avatar);
         }
@@ -325,11 +325,11 @@ public class MainActivity extends BaseActivity
                 if (isAlbum) {
                     UCrop.of(Uri.fromFile(file), Uri.fromFile(file))
                             .withOptions(options)
-                            .start(MainActivity.this, AlbumPhoto);
+                            .start(MainActivity.this, ALBUM_PHOTO);
                 } else {
                     UCrop.of(Uri.fromFile(file), Uri.fromFile(file))
                             .withOptions(options)
-                            .start(MainActivity.this, GalleryPhoto);
+                            .start(MainActivity.this, GALLERY_PHOTO);
                 }
 
             }
@@ -346,9 +346,9 @@ public class MainActivity extends BaseActivity
             }
         });
 
-        if (resultCode == RESULT_OK && requestCode == GalleryPhoto) {
+        if (resultCode == RESULT_OK && requestCode == GALLERY_PHOTO) {
             mRxbus.post(new UploadPhotoUri(0, UCrop.getOutput(data)));
-        } else if (resultCode == RESULT_OK && requestCode == AlbumPhoto) {
+        } else if (resultCode == RESULT_OK && requestCode == ALBUM_PHOTO) {
             Glide.with(MainActivity.this).load(UCrop.getOutput(data)).crossFade().fitCenter().diskCacheStrategy(DiskCacheStrategy.ALL).into(ivAlbum);
             mMainPersenter.UploadPicTure(UCrop.getOutput(data));
         } else if (resultCode == UCrop.RESULT_ERROR) {
