@@ -113,10 +113,4 @@ public class AboutActivity extends BaseActivity implements IAboutView {
 
         }
     }
-
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
 }

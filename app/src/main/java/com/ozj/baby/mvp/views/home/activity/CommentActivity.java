@@ -15,6 +15,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.avos.avoscloud.AVException;
+import com.avos.avoscloud.AVObject;
 import com.hyphenate.easeui.domain.User;
 import com.jaeger.library.StatusBarUtil;
 import com.ozj.baby.R;
@@ -23,6 +25,7 @@ import com.ozj.baby.base.BaseActivity;
 import com.ozj.baby.event.AddCommentsEvent;
 import com.ozj.baby.mvp.model.bean.Comment;
 import com.ozj.baby.mvp.model.bean.Souvenir;
+import com.ozj.baby.mvp.model.dao.SouvenirDao;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.CommentPresenterImpl;
 import com.ozj.baby.mvp.views.ICommentView;
@@ -74,7 +77,12 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
 
     @Override
     protected void initData() {
-        mSouvenir = (Souvenir) getIntent().getExtras().get("moment");
+        String souvenirId = getIntent().getExtras().getString("moment");
+        try {
+            mSouvenir = AVObject.createWithoutData(Souvenir.class, souvenirId);
+        } catch (AVException e) {
+            e.printStackTrace();
+        }
         position = getIntent().getExtras().getInt("position");
         mCommentPresenter.fetchAllComments(mSouvenir, page, size);
         mSubscription = RegisterEvent();
@@ -254,7 +262,7 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
     protected void onDestroy() {
         super.onDestroy();
         mCommentPresenter.detachView();
-        if (mSubscription != null && mSubscription.isUnsubscribed()) {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
         }
     }

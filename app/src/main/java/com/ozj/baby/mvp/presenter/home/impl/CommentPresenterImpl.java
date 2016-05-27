@@ -132,7 +132,7 @@ public class CommentPresenterImpl implements ICommentPresenter {
 
     @Override
     public void detachView() {
-        if (mSubscription != null && mSubscription.isUnsubscribed()) {
+        if (mSubscription != null && !mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
         }
     }

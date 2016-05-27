@@ -217,7 +217,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
         if (!mSubscription.isUnsubscribed()) {
             mSubscription.unsubscribe();
         }
-        if (mIncrement != null && mIncrement.isUnsubscribed()) {
+        if (mIncrement != null && !mIncrement.isUnsubscribed()) {
             mIncrement.unsubscribe();
         }
         mSouvenirPresenterImpl.detachView();

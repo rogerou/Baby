@@ -64,7 +64,7 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, CommentActivity.class);
-                intent.putExtra("moment", mList.get(holder.getAdapterPosition()));
+                intent.putExtra("moment", mList.get(holder.getAdapterPosition()).getObjectId());
                 intent.putExtra("position", holder.getAdapterPosition());
                 mContext.startActivity(intent);
             }

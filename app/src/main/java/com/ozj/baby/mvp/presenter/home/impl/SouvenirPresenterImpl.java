@@ -85,7 +85,7 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
 
     @Override
     public void detachView() {
-        if (getAllSouvenir != null && getAllSouvenir.isUnsubscribed()) {
+        if (getAllSouvenir != null && !getAllSouvenir.isUnsubscribed()) {
             getAllSouvenir.unsubscribe();
         }
     }
