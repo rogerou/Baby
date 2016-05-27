@@ -17,7 +17,7 @@ import com.ozj.baby.util.OnItemClickListener;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
@@ -70,13 +70,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
     }
 
     class CommentViewholder extends RecyclerView.ViewHolder {
-        @Bind(R.id.iv_avatar)
+        @BindView(R.id.iv_avatar)
         ImageView mIvAvatar;
-        @Bind(R.id.tv_nick)
+        @BindView(R.id.tv_nick)
         TextView mTvNick;
-        @Bind(R.id.tv_comment)
+        @BindView(R.id.tv_comment)
         TextView mTvComment;
-        @Bind(R.id.tv_time)
+        @BindView(R.id.tv_time)
         TextView mTvTime;
 
 

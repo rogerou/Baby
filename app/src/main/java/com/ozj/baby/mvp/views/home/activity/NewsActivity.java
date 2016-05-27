@@ -7,18 +7,18 @@ import android.support.v7.widget.Toolbar;
 import com.ozj.baby.R;
 import com.ozj.baby.base.BaseActivity;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Administrator on 2016/4/29.
  */
 public class NewsActivity extends BaseActivity {
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.ry_news)
+    @BindView(R.id.ry_news)
     RecyclerView ryNews;
-    @Bind(R.id.swipeFreshLayout)
+    @BindView(R.id.swipeFreshLayout)
     SwipeRefreshLayout swipeFreshLayout;
 
 

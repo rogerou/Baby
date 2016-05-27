@@ -26,7 +26,7 @@ import com.ozj.baby.util.PreferenceManager;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import jp.wasabeef.blurry.Blurry;
 import shem.com.materiallogin.MaterialLoginView;
@@ -42,17 +42,17 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     SplashPresenterImpl mSplashPresenter;
     @Inject
     PreferenceManager mPreferenceManager;
-    @Bind(R.id.splash_bg)
+    @BindView(R.id.splash_bg)
     ImageView splashBg;
-    @Bind(R.id.tv_loginOrRegister)
+    @BindView(R.id.tv_loginOrRegister)
     TextView tvLoginOrRegister;
-    @Bind(R.id.shimmer_layout)
+    @BindView(R.id.shimmer_layout)
     ShimmerFrameLayout shimmerLayout;
-    @Bind(R.id.login)
+    @BindView(R.id.login)
     MaterialLoginView login;
-    @Bind(R.id.tv_slogan)
+    @BindView(R.id.tv_slogan)
     TextView tvSlogan;
-    @Bind(R.id.rootview)
+    @BindView(R.id.rootview)
     RelativeLayout rootview;
 
 

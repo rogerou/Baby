@@ -15,14 +15,14 @@ import com.ozj.baby.mvp.views.home.fragment.DetailFragment;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.Bind;
+import butterknife.BindView;
 
 /**
  * Created by Administrator on 2016/4/26.
  */
 public class DetailImageActivity extends BaseActivity {
 
-    @Bind(R.id.view_pager)
+    @BindView(R.id.view_pager)
     ViewPager viewPager;
 
     List<String> mList;

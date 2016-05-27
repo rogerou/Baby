@@ -29,7 +29,7 @@ import com.ozj.baby.mvp.views.home.activity.DetailImageActivity;
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
@@ -156,19 +156,19 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.tv_content)
+        @BindView(R.id.tv_content)
         TextView tvContent;
-        @Bind(R.id.iv_souvenir_pic)
+        @BindView(R.id.iv_souvenir_pic)
         ImageView ivSouvenirPic;
-        @Bind(R.id.txt_time)
+        @BindView(R.id.txt_time)
         TextView txtTime;
-        @Bind(R.id.iv_speaker)
+        @BindView(R.id.iv_speaker)
         ImageView ivSpeaker;
-        @Bind(R.id.tv_author)
+        @BindView(R.id.tv_author)
         TextView tvAuthor;
-        @Bind(R.id.like_button)
+        @BindView(R.id.like_button)
         LikeButton likeButton;
-        @Bind(R.id.tv_comment)
+        @BindView(R.id.tv_comment)
         TextView tv_comment;
 
         public ViewHolder(View itemView) {

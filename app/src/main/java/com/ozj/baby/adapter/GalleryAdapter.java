@@ -16,7 +16,7 @@ import com.ozj.baby.widget.RatioImageView;
 
 import java.util.List;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
@@ -60,7 +60,7 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @Bind(R.id.iv_gallery)
+        @BindView(R.id.iv_gallery)
         RatioImageView ivGallery;
 
         public ViewHolder(View itemView) {

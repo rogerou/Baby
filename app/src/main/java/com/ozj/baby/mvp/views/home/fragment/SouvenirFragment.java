@@ -25,7 +25,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import rx.Observer;
 import rx.Subscription;
@@ -42,9 +42,9 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     @Inject
     RxBus mRxbus;
     SouvenirAdapter mAdapter;
-    @Bind(R.id.ry_souvenir)
+    @BindView(R.id.ry_souvenir)
     RecyclerView rySouvenir;
-    @Bind(R.id.swipeFreshLayout)
+    @BindView(R.id.swipeFreshLayout)
     SwipeRefreshLayout swipeFreshLayout;
     Subscription mSubscription;
     Subscription mIncrement;

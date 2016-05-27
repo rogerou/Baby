@@ -16,9 +16,10 @@ import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.ozj.baby.R;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import butterknife.Unbinder;
 
 /**
  * Created by YX201603-6 on 2016/4/27.
@@ -26,10 +27,10 @@ import butterknife.OnClick;
 public class DetailFragment extends Fragment implements RequestListener<String, GlideDrawable> {
 
 
-    @Bind(R.id.iv_photo)
+    @BindView(R.id.iv_photo)
     ImageView ivPhoto;
     private String imgurl;
-
+    private Unbinder unbinder;
 
     public static DetailFragment newInstance(String url) {
         Bundle args = new Bundle();
@@ -60,7 +61,7 @@ public class DetailFragment extends Fragment implements RequestListener<String, 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_detail_zoom, container, false);
-        ButterKnife.bind(this, view);
+        unbinder = ButterKnife.bind(this, view);
         return view;
     }
 
@@ -90,7 +91,7 @@ public class DetailFragment extends Fragment implements RequestListener<String, 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
 
     public ImageView getSharedElement() {

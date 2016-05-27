@@ -26,7 +26,7 @@ import java.net.URISyntaxException;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
 /**
@@ -40,11 +40,11 @@ public class AddSouvenirActivity extends BaseActivity implements Toolbar.OnMenuI
     @Inject
     AddSouvenirImpl mAddSouenirPresenter;
     File imgfile;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.et_content)
+    @BindView(R.id.et_content)
     EditText etContent;
-    @Bind(R.id.iv_album)
+    @BindView(R.id.iv_album)
     ImageView ivAlbum;
 
 

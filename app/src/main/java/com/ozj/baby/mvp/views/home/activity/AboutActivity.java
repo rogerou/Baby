@@ -17,7 +17,7 @@ import com.ozj.baby.mvp.views.home.IAboutView;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 
 /**
@@ -27,11 +27,11 @@ public class AboutActivity extends BaseActivity implements IAboutView {
 
     @Inject
     AboutPresenterImpl mAboutPresenter;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.tv_author)
+    @BindView(R.id.tv_author)
     TextView tvAuthor;
-    @Bind(R.id.tv_github)
+    @BindView(R.id.tv_github)
     TextView tvGithub;
 
     @Override

@@ -23,7 +23,7 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import pl.aprilapps.easyphotopicker.EasyImage;
 
@@ -35,19 +35,19 @@ public class ProfileActivity extends BaseActivity implements IProfileView {
     ProfilePresenterImpl mProfilePresenterImpl;
     @Inject
     ChoosePicDialog mDialog;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.iv_avatar)
+    @BindView(R.id.iv_avatar)
     ImageView ivAvatar;
-    @Bind(R.id.btn_change_avatar)
+    @BindView(R.id.btn_change_avatar)
     Button btnChangeAvatar;
-    @Bind(R.id.nick_input)
+    @BindView(R.id.nick_input)
     TextInputLayout nickInput;
-    @Bind(R.id.sex_input)
+    @BindView(R.id.sex_input)
     TextInputLayout sexInput;
-    @Bind(R.id.city_input)
+    @BindView(R.id.city_input)
     TextInputLayout cityInput;
-    @Bind(R.id.lover_input)
+    @BindView(R.id.lover_input)
     TextInputLayout loverInput;
 
     @Override

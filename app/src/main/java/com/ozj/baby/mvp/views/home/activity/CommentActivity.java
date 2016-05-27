@@ -37,7 +37,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import rx.Subscription;
@@ -50,15 +50,15 @@ import rx.functions.Action1;
 public class CommentActivity extends BaseActivity implements ICommentView, SwipeRefreshLayout.OnRefreshListener {
 
 
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar mToolbar;
-    @Bind(R.id.ry_comment)
+    @BindView(R.id.ry_comment)
     RecyclerView mRyComment;
-    @Bind(R.id.swipeFreshLayout)
+    @BindView(R.id.swipeFreshLayout)
     SwipeRefreshLayout mSwipeFreshLayout;
-    @Bind(R.id.et_comment)
+    @BindView(R.id.et_comment)
     EditText mEtComment;
-    @Bind(R.id.btn_send)
+    @BindView(R.id.btn_send)
     Button mBtnSend;
     boolean isReplied = false;
     @Inject

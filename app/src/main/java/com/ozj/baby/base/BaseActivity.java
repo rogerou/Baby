@@ -13,6 +13,7 @@ import com.ozj.baby.di.component.DaggerActivityComponet;
 import com.ozj.baby.di.module.ActivityModule;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
@@ -26,13 +27,14 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     public SweetAlertDialog mWarningDialog;
     public SweetAlertDialog mErrorDialog;
+    private Unbinder unbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivityComponet = DaggerActivityComponet.builder().activityModule(new ActivityModule(this)).applicationComponet(((BabyApplication) getApplication()).getAppComponet()).build();
         initContentView();
-        ButterKnife.bind(this);
+        unbinder = ButterKnife.bind(this);
         initDagger();
         initPresenter();
         initToolbar();
@@ -112,7 +114,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
 
     }
 

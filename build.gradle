@@ -19,8 +19,8 @@ ext {
             compileVersion   : 23,
             minSdk           : 16,
             targetSdk        : 22,
-            version_code     : 20160511,
-            version_name     : "1.2",
+            version_code     : 20160527,
+            version_name     : "1.3",
     ]
 
 }

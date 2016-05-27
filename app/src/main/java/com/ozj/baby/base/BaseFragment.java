@@ -14,6 +14,7 @@ import com.ozj.baby.di.component.FragmentComponet;
 import com.ozj.baby.di.module.FragmentModule;
 
 import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by Administrator on 2016/3/25.
@@ -23,6 +24,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     private View mLayoutView;
     public FragmentComponet mFragmentComponet;
     protected BasePresenter mPresenter;
+    private Unbinder unbinder;
 
     /**
      * 初始化布局
@@ -80,7 +82,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mLayoutView = getCreateView(inflater, container);
-        ButterKnife.bind(this, mLayoutView);
+        unbinder = ButterKnife.bind(this, mLayoutView);
         return mLayoutView;
     }
 
@@ -144,10 +146,8 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ButterKnife.unbind(this);
+        unbinder.unbind();
     }
-
-
 
 
     @Override

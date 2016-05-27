@@ -45,7 +45,7 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import cn.pedant.SweetAlert.SweetAlertDialog;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
@@ -55,28 +55,28 @@ public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, IMainView {
     @Inject
     MainPresenterImpl mMainPersenter;
-    @Bind(R.id.iv_album)
+    @BindView(R.id.iv_album)
     ImageView ivAlbum;
-    @Bind(R.id.rl_loverbackground)
+    @BindView(R.id.rl_loverbackground)
     RelativeLayout rlLoverbackground;
-    @Bind(R.id.toolbar)
+    @BindView(R.id.toolbar)
     Toolbar toolbar;
-    @Bind(R.id.collaspingToolBarlayout)
+    @BindView(R.id.collaspingToolBarlayout)
     CollapsingToolbarLayout collaspingToolBarlayout;
-    @Bind(R.id.app_bar)
+    @BindView(R.id.app_bar)
     AppBarLayout appBar;
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
-    @Bind(R.id.nav_view)
+    @BindView(R.id.nav_view)
     NavigationView navView;
-    @Bind(R.id.drawer_layout)
+    @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
     @Inject
     ChoosePicDialog mPicDialog;
     @Inject
     RxBus mRxbus;
 
-    @Bind(R.id.coordinatorlayout)
+    @BindView(R.id.coordinatorlayout)
     CoordinatorLayout coordinatorlayout;
 
     ImageView iv_avatar;

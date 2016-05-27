@@ -298,7 +298,6 @@ public class RxLeanCloud {
                     public void done(AVException e) {
                         if (e == null) {
                             subscriber.onNext(AVInstallation.getCurrentInstallation().getInstallationId());
-
                         } else {
                             subscriber.onError(e);
                         }

@@ -30,7 +30,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import butterknife.Bind;
+import butterknife.BindView;
 import butterknife.OnClick;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import rx.Subscription;
@@ -41,17 +41,17 @@ import rx.functions.Action1;
  * Created by Roger on 2016/4/24.
  */
 public class GalleryFragment extends BaseFragment implements IGalleryView, SwipeRefreshLayout.OnRefreshListener, OnItemClickListener {
-    @Bind(R.id.ry_gallgery)
+    @BindView(R.id.ry_gallgery)
     RecyclerView ryGallgery;
-    @Bind(R.id.swipeFreshLayout)
+    @BindView(R.id.swipeFreshLayout)
     SwipeRefreshLayout swipeFreshLayout;
     @Inject
     RxBus mRxbus;
     @Inject
     GalleryPresenterImpl mGalleryPresenter;
-    @Bind(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
-    @Bind(R.id.fab_progress)
+    @BindView(R.id.fab_progress)
     FABProgressCircle fabProgress;
 
     @Inject
