@@ -38,7 +38,7 @@ public class EaseSidebar extends View{
 	private ListView mListView;
 	private Context context;
 	
-	private SectionIndexer sectionIndexter = null;
+	private SectionIndexer sectionIndexter;
 	private String[] sections;
 
 	public EaseSidebar(Context context, AttributeSet attrs) {

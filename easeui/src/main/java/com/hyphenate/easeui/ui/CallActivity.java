@@ -44,7 +44,7 @@ public class CallActivity extends EaseBaseActivity {
     protected EMCallStateChangeListener callStateListener;
     protected EMLocalSurfaceView localSurface;
     protected EMOppositeSurfaceView oppositeSurface;
-    protected boolean isAnswered = false;
+    protected boolean isAnswered;
     protected int streamID = -1;
 
     Runnable timeoutHangup = new Runnable() {
@@ -163,7 +163,7 @@ public class CallActivity extends EaseBaseActivity {
     /**
      * 0：音频，1：视频
      */
-    protected int callType = 0;
+    protected int callType;
 
     @Override
     protected void onCreate(Bundle arg0) {

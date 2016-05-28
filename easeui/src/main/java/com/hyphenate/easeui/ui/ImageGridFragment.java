@@ -188,7 +188,7 @@ public class ImageGridFragment extends android.support.v4.app.Fragment implement
     private class ImageAdapter extends BaseAdapter {
 
         private final Context mContext;
-        private int mItemHeight = 0;
+        private int mItemHeight;
         private RelativeLayout.LayoutParams mImageViewLayoutParams;
 
         public ImageAdapter(Context context) {

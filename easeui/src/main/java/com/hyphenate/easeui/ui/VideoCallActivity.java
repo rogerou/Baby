@@ -55,7 +55,7 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
     private boolean isMuteState;
     private boolean isHandsfreeState;
     private boolean isAnswered;
-    private boolean endCallTriggerByMe = false;
+    private boolean endCallTriggerByMe;
     private boolean monitor = true;
 
     private TextView callStateTextView;
@@ -82,7 +82,7 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
      * 正在通话中
      */
     private boolean isInCalling;
-    boolean isRecording = false;
+    boolean isRecording;
     private Button recordBtn;
     private Button switchCameraBtn;
     private SeekBar YDeltaSeekBar;
@@ -93,7 +93,7 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
 
     // dynamic adjust brightness
     class BrightnessDataProcess implements EMCameraDataProcessor {
-        byte yDelta = 0;
+        byte yDelta;
 
         synchronized void setYDelta(byte yDelta) {
             Log.d("VideoCallActivity", "brigntness uDelta:" + yDelta);

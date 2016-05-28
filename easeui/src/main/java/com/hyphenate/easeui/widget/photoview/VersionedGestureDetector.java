@@ -178,7 +178,7 @@ abstract class VersionedGestureDetector {
 	private static class EclairDetector extends CupcakeDetector {
 		private static final int INVALID_POINTER_ID = -1;
 		private int mActivePointerId = INVALID_POINTER_ID;
-		private int mActivePointerIndex = 0;
+		private int mActivePointerIndex;
 
 		public EclairDetector(Context context) {
 			super(context);

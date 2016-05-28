@@ -139,7 +139,7 @@ public class EaseUIHelper {
      */
     protected void registerEventListener() {
         messageListener = new EMMessageListener() {
-            private BroadcastReceiver broadCastReceiver = null;
+            private BroadcastReceiver broadCastReceiver;
 
             @Override
             public void onMessageReceived(List<EMMessage> messages) {
