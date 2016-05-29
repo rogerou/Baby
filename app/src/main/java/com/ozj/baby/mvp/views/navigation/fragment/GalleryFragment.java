@@ -58,7 +58,7 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
     ChoosePicDialog mDialog;
     StaggeredGridLayoutManager layout;
     int size = 20;
-    int page = 0;
+    int page;
 
     GalleryAdapter mAdapter;
 

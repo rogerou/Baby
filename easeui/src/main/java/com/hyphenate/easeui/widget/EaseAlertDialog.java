@@ -34,7 +34,7 @@ public class EaseAlertDialog extends Dialog {
 	private String msg;
 	private AlertDialogUser user;
 	private Bundle bundle;
-	private boolean showCancel = false;
+	private boolean showCancel;
 
 	public EaseAlertDialog(Context context, int msgId) {
 		super(context);

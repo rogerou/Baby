@@ -157,7 +157,7 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
     }
     
     protected class  MyFilter extends Filter{
-        List<EaseUser> mOriginalList = null;
+        List<EaseUser> mOriginalList;
         
         public MyFilter(List<EaseUser> myList) {
             this.mOriginalList = myList;

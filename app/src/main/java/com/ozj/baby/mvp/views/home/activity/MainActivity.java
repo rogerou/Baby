@@ -89,7 +89,7 @@ public class MainActivity extends BaseActivity
 
     boolean isAlbum;
 
-    private boolean isConflictDialogShow = false;
+    private boolean isConflictDialogShow;
 
 
     @Override

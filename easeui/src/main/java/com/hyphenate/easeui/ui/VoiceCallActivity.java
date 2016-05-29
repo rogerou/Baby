@@ -62,7 +62,7 @@ public class VoiceCallActivity extends CallActivity implements OnClickListener {
     private boolean isHandsfreeState;
 
     private TextView callStateTextView;
-    private boolean endCallTriggerByMe = false;
+    private boolean endCallTriggerByMe;
     private TextView nickTextView;
     private TextView durationTextView;
     private Chronometer chronometer;

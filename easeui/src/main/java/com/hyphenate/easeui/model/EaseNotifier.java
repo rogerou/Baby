@@ -45,7 +45,7 @@ import java.util.Locale;
  */
 public class EaseNotifier {
     private final static String TAG = "notify";
-    Ringtone ringtone = null;
+    Ringtone ringtone;
 
     protected final static String[] msg_eng = {"sent a message", "sent a picture", "sent a voice",
             "sent location message", "sent a video", "sent a file", "%1 contacts sent %2 messages"
@@ -57,10 +57,10 @@ public class EaseNotifier {
     protected static int notifyID = 0525; // start notification id
     protected static int foregroundNotifyID = 0555;
 
-    protected NotificationManager notificationManager = null;
+    protected NotificationManager notificationManager;
 
     protected HashSet<String> fromUsers = new HashSet<>();
-    protected int notificationNum = 0;
+    protected int notificationNum;
 
     protected Context appContext;
     protected String packageName;

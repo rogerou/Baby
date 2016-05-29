@@ -60,14 +60,14 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
     EditText mEtComment;
     @BindView(R.id.btn_send)
     Button mBtnSend;
-    boolean isReplied = false;
+    boolean isReplied;
     @Inject
     CommentPresenterImpl mCommentPresenter;
     @Inject
     RxBus mRxBus;
 
     Subscription mSubscription;
-    int size = 15, page = 0;
+    int size = 15, page;
     Souvenir mSouvenir;
     List<Comment> mList;
     CommentAdapter mAdapter;

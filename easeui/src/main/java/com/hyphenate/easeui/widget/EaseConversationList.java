@@ -34,7 +34,7 @@ public class EaseConversationList extends ListView {
     protected Context context;
     protected EaseConversationAdapater adapter;
     protected List<EMConversation> conversations = new ArrayList<>();
-    protected List<EMConversation> passedListRef = null;
+    protected List<EMConversation> passedListRef;
 
     Handler handler = new Handler() {
         @Override

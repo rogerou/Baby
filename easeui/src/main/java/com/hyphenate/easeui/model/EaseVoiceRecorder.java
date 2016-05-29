@@ -21,10 +21,10 @@ public class EaseVoiceRecorder {
     static final String PREFIX = "voice";
     static final String EXTENSION = ".amr";
 
-    private boolean isRecording = false;
+    private boolean isRecording;
     private long startTime;
-    private String voiceFilePath = null;
-    private String voiceFileName = null;
+    private String voiceFilePath;
+    private String voiceFileName;
     private File file;
     private Handler handler;
 

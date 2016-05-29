@@ -32,7 +32,7 @@ public final class EaseUI {
     /**
      * the global EaseUI instance
      */
-    private static EaseUI instance = null;
+    private static EaseUI instance;
 
     /**
      * 用户属性提供者
@@ -44,17 +44,17 @@ public final class EaseUI {
     /**
      * application context
      */
-    private Context appContext = null;
+    private Context appContext;
 
     /**
      * init flag: test if the sdk has been inited before, we don't need to init again
      */
-    private boolean sdkInited = false;
+    private boolean sdkInited;
 
     /**
      * the notifier
      */
-    private EaseNotifier notifier = null;
+    private EaseNotifier notifier;
 
     public boolean isVideoCalling;
     public boolean isVoiceCalling;

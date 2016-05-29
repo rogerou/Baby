@@ -9,8 +9,8 @@ import android.util.Log;
 public class RecyclingBitmapDrawable extends BitmapDrawable {
     static final String TAG = "CountingBitmapDrawable";
 
-    private int mCacheRefCount = 0;
-    private int mDisplayRefCount = 0;
+    private int mCacheRefCount;
+    private int mDisplayRefCount;
 
     private boolean mHasBeenDisplayed;
 

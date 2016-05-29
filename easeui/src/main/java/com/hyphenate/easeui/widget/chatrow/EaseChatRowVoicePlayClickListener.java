@@ -44,15 +44,15 @@ public class EaseChatRowVoicePlayClickListener implements View.OnClickListener {
     EMVoiceMessageBody voiceBody;
     ImageView voiceIconView;
 
-    private AnimationDrawable voiceAnimation = null;
-    MediaPlayer mediaPlayer = null;
+    private AnimationDrawable voiceAnimation;
+    MediaPlayer mediaPlayer;
     ImageView iv_read_status;
     Activity activity;
     private ChatType chatType;
     private BaseAdapter adapter;
 
-    public static boolean isPlaying = false;
-    public static EaseChatRowVoicePlayClickListener currentPlayListener = null;
+    public static boolean isPlaying;
+    public static EaseChatRowVoicePlayClickListener currentPlayListener;
     public static String playMsgId;
 
     public EaseChatRowVoicePlayClickListener(EMMessage message, ImageView v, ImageView iv_read_status, BaseAdapter adapter, Activity context) {

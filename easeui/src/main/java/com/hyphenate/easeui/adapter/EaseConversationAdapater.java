@@ -196,7 +196,7 @@ public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
 
 
     private class ConversationFilter extends Filter {
-        List<EMConversation> mOriginalValues = null;
+        List<EMConversation> mOriginalValues;
 
         public ConversationFilter(List<EMConversation> mList) {
             mOriginalValues = mList;

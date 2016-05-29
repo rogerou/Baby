@@ -73,13 +73,13 @@ public class RecorderVideoActivity extends EaseBaseActivity implements
     private int previewWidth = 480;
     private int previewHeight = 480;
     private Chronometer chronometer;
-    private int frontCamera = 0;// 0是后置摄像头，1是前置摄像头
+    private int frontCamera;// 0是后置摄像头，1是前置摄像头
     private Button btn_switch;
-    Parameters cameraParameters = null;
+    Parameters cameraParameters;
     private SurfaceHolder mSurfaceHolder;
     int defaultVideoFrameRate = -1;
-    MediaScannerConnection msc = null;
-    ProgressDialog progressDialog = null;
+    MediaScannerConnection msc;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

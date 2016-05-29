@@ -68,7 +68,7 @@ public class EaseMessageAdapter extends BaseAdapter{
 	
 	// reference to conversation object in chatsdk
 	private EMConversation conversation;
-	EMMessage[] messages = null;
+	EMMessage[] messages;
 	
     private String toChatUsername;
 

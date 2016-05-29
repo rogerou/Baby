@@ -56,7 +56,7 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     RelativeLayout rootview;
 
 
-    boolean isBlured = false;
+    boolean isBlured;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

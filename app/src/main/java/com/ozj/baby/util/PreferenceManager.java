@@ -12,7 +12,7 @@ import javax.inject.Singleton;
  * Created by Administrator on 2016/4/13.
  */
 public class PreferenceManager {
-    private static volatile PreferenceManager sInstance = null;
+    private static volatile PreferenceManager sInstance;
 
     private static final String SETTING = "babysetting";
     private static final String ID = "ID";

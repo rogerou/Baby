@@ -49,7 +49,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     Subscription mSubscription;
     Subscription mIncrement;
 
-    int page = 0;
+    int page;
     int size = 15;
     LinearLayoutManager layout;
     List<Souvenir> mList = new ArrayList<>();

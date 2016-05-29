@@ -52,20 +52,20 @@ import com.jaeger.library.StatusBarUtil;
 public class EaseBaiduMapActivity extends EaseBaseActivity {
 
     private final static String TAG = "map";
-    static MapView mMapView = null;
-    FrameLayout mMapViewContainer = null;
+    static MapView mMapView;
+    FrameLayout mMapViewContainer;
     // 定位相关
     LocationClient mLocClient;
     public MyLocationListenner myListener = new MyLocationListenner();
-    public NotifyLister mNotifyer = null;
+    public NotifyLister mNotifyer;
 
-    Button sendButton = null;
+    Button sendButton;
 
-    EditText indexText = null;
-    int index = 0;
+    EditText indexText;
+    int index;
     // LocationData locData = null;
-    static BDLocation lastLocation = null;
-    public  EaseBaiduMapActivity instance = null;
+    static BDLocation lastLocation;
+    public  EaseBaiduMapActivity instance;
     ProgressDialog progressDialog;
     private BaiduMap mBaiduMap;
 
