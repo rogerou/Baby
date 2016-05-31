@@ -228,6 +228,7 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
 
     @Override
     public void showLoading() {
+        if (mSwipeFreshLayout!=null)
         mSwipeFreshLayout.post(new Runnable() {
             @Override
             public void run() {
