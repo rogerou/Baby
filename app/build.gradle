@@ -15,7 +15,7 @@ android {
         versionCode cfg.version_code
         versionName cfg.version_name
         // dex突破65535的限制
-//        multiDexEnabled true
+        multiDexEnabled true
     }
     lintOptions {
         abortOnError false
@@ -75,6 +75,7 @@ dependencies {
     compile 'com.yalantis:ucrop:1.5.0'
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'
     compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
+    compile 'com.android.support:multidex:1.0.1'
     compile project(':easeui')
 }
 

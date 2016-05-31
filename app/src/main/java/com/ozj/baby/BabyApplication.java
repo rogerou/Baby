@@ -1,6 +1,8 @@
 package com.ozj.baby;
 
 import android.app.Application;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVOSCloud;
@@ -24,12 +26,13 @@ import im.fir.sdk.FIR;
  * Created by Roger ou on 2016/3/25.
  * 初始化leancloud Easeui 第三方服务 leancloud
  */
-public class BabyApplication extends Application {
+public class BabyApplication extends MultiDexApplication {
     private ApplicationComponet mAppComponet;
 
     @Override
     public void onCreate() {
         super.onCreate();
+        MultiDex.install(this);
         initThirdService();
         initEaseUI();
     }

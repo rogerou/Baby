@@ -3,6 +3,7 @@ package com.ozj.baby.mvp.presenter.home.impl;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
+import com.avos.avoscloud.AVException;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.event.AddCommentsEvent;
@@ -29,7 +30,7 @@ import rx.functions.Func1;
 
 /**
  * Created by RogerOu on 2016/5/25.
- * <p/>
+ * <p>
  * 评论Presenter
  */
 public class CommentPresenterImpl implements ICommentPresenter {
