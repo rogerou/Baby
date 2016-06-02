@@ -68,7 +68,7 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
 
                     @Override
                     public void onNext(List<Souvenir> list) {
-                        if (list.size() != 0) {
+                        if (!list.isEmpty()) {
                             mRxBus.post(new AddSouvenirEvent(isFresh, true, list));
                         }
                     }

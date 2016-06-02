@@ -95,7 +95,7 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
 
                     @Override
                     public void onNext(List<Gallery> galleries) {
-                        if (galleries.size() != 0) {
+                        if (!galleries.isEmpty()) {
                             mRxbus.post(new AddGalleryEvent(galleries, true, isFirst));
                         }
                     }

@@ -29,7 +29,7 @@ public class EaseConversationList extends ListView {
     protected float timeSize;
     
 
-    protected final int MSG_REFRESH_ADAPTER_DATA = 0;
+    protected static final int MSG_REFRESH_ADAPTER_DATA = 0;
     
     protected Context context;
     protected EaseConversationAdapater adapter;
@@ -112,7 +112,7 @@ public class EaseConversationList extends ListView {
         List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
         synchronized (conversations) {
             for (EMConversation conversation : conversations.values()) {
-                if (conversation.getAllMessages().size() != 0) {
+                if (!conversation.getAllMessages().isEmpty()) {
                     sortList.add(new Pair<Long, EMConversation>(conversation.getLastMessage().getMsgTime(), conversation));
                 }
             }
