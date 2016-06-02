@@ -230,7 +230,7 @@ public final class EaseUI {
     }
 
     public boolean hasForegroundActivies() {
-        return activityList.size() != 0;
+        return !activityList.isEmpty();
     }
 
     /**

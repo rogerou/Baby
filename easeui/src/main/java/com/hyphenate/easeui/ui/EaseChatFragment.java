@@ -314,7 +314,7 @@ public class EaseChatFragment extends EaseBaseFragment {
         int msgCount = msgs != null ? msgs.size() : 0;
         if (msgCount < conversation.getAllMsgCount() && msgCount < pagesize) {
             String msgId = null;
-            if (msgs != null && msgs.size() > 0) {
+            if (msgs != null && !msgs.isEmpty()) {
                 msgId = msgs.get(0).getMsgId();
             }
             conversation.loadMoreMsgFromDB(msgId, pagesize - msgCount);
@@ -405,7 +405,7 @@ public class EaseChatFragment extends EaseBaseFragment {
                                 swipeRefreshLayout.setRefreshing(false);
                                 return;
                             }
-                            if (messages.size() > 0) {
+                            if (!messages.isEmpty()) {
                                 messageList.refreshSeekTo(messages.size() - 1);
                                 if (messages.size() != pagesize) {
                                     haveMoreData = false;

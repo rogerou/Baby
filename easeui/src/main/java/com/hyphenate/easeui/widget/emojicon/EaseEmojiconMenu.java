@@ -24,8 +24,8 @@ public class EaseEmojiconMenu extends EaseEmojiconMenuBase{
 	
 	private int emojiconColumns;
 	private int bigEmojiconColumns;
-	private final int defaultBigColumns = 4;
-	private final int defaultColumns = 7;
+	private static final int defaultBigColumns = 4;
+	private static final int defaultColumns = 7;
     private EaseEmojiconScrollTabBar tabBar;
     private EaseEmojiconIndicatorView indicatorView;
     private EaseEmojiconPagerView pagerView;
@@ -63,7 +63,7 @@ public class EaseEmojiconMenu extends EaseEmojiconMenuBase{
 	}
 	
 	public void init(List<EaseEmojiconGroupEntity> groupEntities){
-	    if(groupEntities == null || groupEntities.size() == 0){
+	    if(groupEntities == null || groupEntities.isEmpty()){
 	        return;
 	    }
 	    for(EaseEmojiconGroupEntity groupEntity : groupEntities){

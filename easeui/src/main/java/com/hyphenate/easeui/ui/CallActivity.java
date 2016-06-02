@@ -24,13 +24,13 @@ import com.hyphenate.util.EMLog;
 import com.hyphenate.util.NetUtils;
 
 public class CallActivity extends EaseBaseActivity {
-    protected final int MSG_CALL_MAKE_VIDEO = 0;
-    protected final int MSG_CALL_MAKE_VOICE = 1;
-    protected final int MSG_CALL_ANSWER = 2;
-    protected final int MSG_CALL_REJECT = 3;
-    protected final int MSG_CALL_END = 4;
-    protected final int MSG_CALL_RLEASE_HANDLER = 5;
-    protected final int MSG_CALL_SWITCH_CAMERA = 6;
+    protected static final int MSG_CALL_MAKE_VIDEO = 0;
+    protected static final int MSG_CALL_MAKE_VOICE = 1;
+    protected static final int MSG_CALL_ANSWER = 2;
+    protected static final int MSG_CALL_REJECT = 3;
+    protected static final int MSG_CALL_END = 4;
+    protected static final int MSG_CALL_RLEASE_HANDLER = 5;
+    protected static final int MSG_CALL_SWITCH_CAMERA = 6;
 
     protected boolean isInComingCall;
     protected String username;

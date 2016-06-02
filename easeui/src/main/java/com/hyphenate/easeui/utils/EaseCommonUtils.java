@@ -173,7 +173,7 @@ public class EaseCommonUtils {
                     return DefaultLetter;
                 }
                 ArrayList<Token> l = HanziToPinyin.getInstance().get(name.substring(0, 1));
-                if (l != null && l.size() > 0 && l.get(0).target.length() > 0)
+                if (l != null && !l.isEmpty() && !l.get(0).target.isEmpty())
                 {
                     Token token = l.get(0);
                     String letter = token.target.substring(0, 1).toUpperCase();
