@@ -44,13 +44,13 @@ import rx.schedulers.Schedulers;
 public class GalleryPresenterImpl implements IGalleryPersenter {
 
 
-    private RxLeanCloud mRxleanCloud;
+    private final RxLeanCloud mRxleanCloud;
 
 
-    private PreferenceManager mPreferenceManager;
-    private RxBus mRxbus;
+    private final PreferenceManager mPreferenceManager;
+    private final RxBus mRxbus;
     private IGalleryView mGalleryView;
-    private Context mContext;
+    private final Context mContext;
     Subscription mFetchAllPicture;
 
     @Inject

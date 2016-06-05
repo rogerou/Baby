@@ -32,7 +32,7 @@ import java.util.Map;
 public class EaseUIHelper {
     private EaseUI easeUI;
 
-    private Context mAppContext;
+    private final Context mAppContext;
     private static volatile EaseUIHelper easeUIHelper;
     protected EMMessageListener messageListener;
 

@@ -30,7 +30,7 @@ public class EaseEmojiconMenu extends EaseEmojiconMenuBase{
     private EaseEmojiconIndicatorView indicatorView;
     private EaseEmojiconPagerView pagerView;
     
-    private List<EaseEmojiconGroupEntity> emojiconGroupList = new ArrayList<>();
+    private final List<EaseEmojiconGroupEntity> emojiconGroupList = new ArrayList<>();
 	
 	
 	@TargetApi(Build.VERSION_CODES.HONEYCOMB)

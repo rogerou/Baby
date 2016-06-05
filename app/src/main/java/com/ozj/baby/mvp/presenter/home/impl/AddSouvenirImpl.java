@@ -31,9 +31,9 @@ import rx.functions.Func1;
  */
 public class AddSouvenirImpl implements IAddSouvenirPresenter {
 
-    private RxLeanCloud mRxLeanCloud;
-    private PreferenceManager manager;
-    private RxBus mRxbus;
+    private final RxLeanCloud mRxLeanCloud;
+    private final PreferenceManager manager;
+    private final RxBus mRxbus;
     IAddSouvenirView mView;
 
     @Inject

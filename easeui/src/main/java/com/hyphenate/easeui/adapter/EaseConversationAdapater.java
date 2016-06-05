@@ -36,8 +36,8 @@ import java.util.List;
  */
 public class EaseConversationAdapater extends ArrayAdapter<EMConversation> {
     private static final String TAG = "ChatAllHistoryAdapter";
-    private List<EMConversation> conversationList;
-    private List<EMConversation> copyConversationList;
+    private final List<EMConversation> conversationList;
+    private final List<EMConversation> copyConversationList;
     private ConversationFilter conversationFilter;
     private boolean notiyfyByFilter;
     

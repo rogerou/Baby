@@ -25,10 +25,10 @@ import rx.Subscription;
  */
 public class SouvenirPresenterImpl implements ISouvenirPresenter {
 
-    private RxLeanCloud mRxleanCloud;
-    private RxBus mRxBus;
+    private final RxLeanCloud mRxleanCloud;
+    private final RxBus mRxBus;
 
-    private PreferenceManager mPreferencepManager;
+    private final PreferenceManager mPreferencepManager;
     ISouvenirVIew mSouvenirView;
     Subscription getAllSouvenir;
 

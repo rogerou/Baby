@@ -45,10 +45,10 @@ import rx.functions.Func1;
  */
 public class MainPresenterImpl implements IMainPresenter {
     IMainView mMainView;
-    private Context mContext;
-    private Activity mActivity;
-    private PreferenceManager mPreferenceManager;
-    private RxLeanCloud mRxLeanCloud;
+    private final Context mContext;
+    private final Activity mActivity;
+    private final PreferenceManager mPreferenceManager;
+    private final RxLeanCloud mRxLeanCloud;
     String currentFragmentTag;
 
     @Inject

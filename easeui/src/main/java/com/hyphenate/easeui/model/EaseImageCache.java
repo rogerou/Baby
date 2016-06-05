@@ -18,7 +18,7 @@ import android.support.v4.util.LruCache;
 
 public class EaseImageCache {
 	private static EaseImageCache imageCache;
-	private LruCache<String, Bitmap> cache;
+	private final LruCache<String, Bitmap> cache;
 
 	private EaseImageCache() {
 		// use 1/8 of available heap size

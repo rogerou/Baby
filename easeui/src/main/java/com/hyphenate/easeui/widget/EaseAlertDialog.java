@@ -30,8 +30,8 @@ public class EaseAlertDialog extends Dialog {
 		public void onResult(boolean confirmed, Bundle bundle);
 	}
 
-	private String title;
-	private String msg;
+	private final String title;
+	private final String msg;
 	private AlertDialogUser user;
 	private Bundle bundle;
 	private boolean showCancel;

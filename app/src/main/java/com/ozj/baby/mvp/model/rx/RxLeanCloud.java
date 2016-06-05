@@ -47,7 +47,7 @@ import rx.schedulers.Schedulers;
  */
 public class RxLeanCloud {
     private static volatile RxLeanCloud mRxLeanCloud;
-    private Context mContext;
+    private final Context mContext;
 
     @Singleton
     @Inject

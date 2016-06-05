@@ -89,7 +89,7 @@ public class VideoCallActivity extends CallActivity implements OnClickListener {
     private EMVideoCallHelper callHelper;
     private Button toggleVideoBtn;
 
-    private BrightnessDataProcess dataProcessor = new BrightnessDataProcess();
+    private final BrightnessDataProcess dataProcessor = new BrightnessDataProcess();
 
     // dynamic adjust brightness
     class BrightnessDataProcess implements EMCameraDataProcessor {

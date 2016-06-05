@@ -24,14 +24,14 @@ public class EaseEmojiconPagerView extends ViewPager{
 
     private Context context;
     private List<EaseEmojiconGroupEntity> groupEntities;
-    private List<EaseEmojicon> totalEmojiconList = new ArrayList<>();
+    private final List<EaseEmojicon> totalEmojiconList = new ArrayList<>();
     
     private PagerAdapter pagerAdapter;
     
-    private int emojiconRows = 3;
+    private static final int EMOJICON_ROWS = 3;
     private int emojiconColumns = 7;
     
-    private int bigEmojiconRows = 2;
+    private static final int BIG_EMOJICON_ROWS = 2;
     private int bigEmojiconColumns = 4;
     
     private int firstGroupPageSize;
@@ -108,11 +108,11 @@ public class EaseEmojiconPagerView extends ViewPager{
      */
     public List<View> getGroupGridViews(EaseEmojiconGroupEntity groupEntity){
         List<EaseEmojicon> emojiconList = groupEntity.getEmojiconList();
-        int itemSize = emojiconColumns * emojiconRows -1;
+        int itemSize = emojiconColumns * EMOJICON_ROWS -1;
         int totalSize = emojiconList.size();
         Type emojiType = groupEntity.getType();
         if(emojiType == Type.BIG_EXPRESSION){
-            itemSize = bigEmojiconColumns * bigEmojiconRows;
+            itemSize = bigEmojiconColumns * BIG_EMOJICON_ROWS;
         }
         int pageSize = totalSize % itemSize == 0 ? totalSize/itemSize : totalSize/itemSize + 1;   
         List<View> views = new ArrayList<View>();
@@ -199,11 +199,11 @@ public class EaseEmojiconPagerView extends ViewPager{
      */
     private int getPageSize(EaseEmojiconGroupEntity groupEntity) {
         List<EaseEmojicon> emojiconList = groupEntity.getEmojiconList();
-        int itemSize = emojiconColumns * emojiconRows -1;
+        int itemSize = emojiconColumns * EMOJICON_ROWS -1;
         int totalSize = emojiconList.size();
         Type emojiType = groupEntity.getType();
         if(emojiType == Type.BIG_EXPRESSION){
-            itemSize = bigEmojiconColumns * bigEmojiconRows;
+            itemSize = bigEmojiconColumns * BIG_EMOJICON_ROWS;
         }
         int pageSize = totalSize % itemSize == 0 ? totalSize/itemSize : totalSize/itemSize + 1;   
         return pageSize;
