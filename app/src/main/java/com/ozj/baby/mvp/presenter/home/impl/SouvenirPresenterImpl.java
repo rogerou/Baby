@@ -31,7 +31,6 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
 
     private final RxLeanCloud mRxleanCloud;
     private final RxBus mRxBus;
-
     private final PreferenceManager mPreferencepManager;
     ISouvenirVIew mSouvenirView;
     Subscription getAllSouvenir;

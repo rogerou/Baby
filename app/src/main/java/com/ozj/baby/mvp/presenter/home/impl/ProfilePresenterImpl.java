@@ -45,13 +45,13 @@ public class ProfilePresenterImpl implements IProfilePresenter {
 
     private final Context mContext;
     private final Activity mActivity;
-    IProfileView mProfileView;
     private final RxLeanCloud mRxleanCloud;
-//    private RxBabyRealm mRxBabyRealm;
+    //    private RxBabyRealm mRxBabyRealm;
     private final PreferenceManager mPreferenceManager;
+    IProfileView mProfileView;
 
     @Inject
-    public ProfilePresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxLeanCloud rxLeanCloud,  PreferenceManager preferenmanager) {
+    public ProfilePresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxLeanCloud rxLeanCloud, PreferenceManager preferenmanager) {
         mContext = context;
         mActivity = activity;
 //        mRxBabyRealm = rxBabyRealm;

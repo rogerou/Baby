@@ -21,8 +21,8 @@ public class ChoosePicDialog implements View.OnClickListener {
     Button btnPicture;
     Button btnTakephoto;
     Button btnCancel;
-    private final Dialog mDialog;
-    Activity mContext;
+    final Dialog mDialog;
+    final Activity mContext;
 
     @Inject
     public ChoosePicDialog(Activity context) {
@@ -78,20 +78,18 @@ public class ChoosePicDialog implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_cancel:
-                dismiss();
                 break;
             case R.id.btn_picture:
                 EasyImage.openGallery(mContext, 0);
-                dismiss();
                 break;
             case R.id.btn_takephoto:
                 EasyImage.openCamera(mContext, 0);
-                dismiss();
+
                 break;
             default:
                 break;
         }
-
+        dismiss();
 
     }
 }

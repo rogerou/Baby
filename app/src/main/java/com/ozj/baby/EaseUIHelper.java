@@ -27,14 +27,13 @@ import java.util.Map;
 
 /**
  * Created by YX201603-6 on 2016/5/4.
- * 
  */
 public class EaseUIHelper {
     private EaseUI easeUI;
 
     private final Context mAppContext;
     private static volatile EaseUIHelper easeUIHelper;
-    protected EMMessageListener messageListener;
+
 
     public EaseUIHelper(Context context) {
         this.mAppContext = context;
@@ -49,7 +48,6 @@ public class EaseUIHelper {
                 }
             }
         }
-
         return easeUIHelper;
 
     }
@@ -138,7 +136,7 @@ public class EaseUIHelper {
      * activityList.size() <= 0 意味着所有页面都已经在后台运行，或者已经离开Activity Stack
      */
     protected void registerEventListener() {
-        messageListener = new EMMessageListener() {
+        EMMessageListener messageListener = new EMMessageListener() {
             private BroadcastReceiver broadCastReceiver;
 
             @Override

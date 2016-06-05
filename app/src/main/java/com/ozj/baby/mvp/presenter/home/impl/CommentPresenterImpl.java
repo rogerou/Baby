@@ -39,10 +39,11 @@ public class CommentPresenterImpl implements ICommentPresenter {
 
     ICommentView mCommentView;
 
-    Context mContext;
-    RxLeanCloud mRxLeanCloud;
+    final Context mContext;
+    final RxLeanCloud mRxLeanCloud;
+    final RxBus mRxBus;
     Subscription mSubscription;
-    RxBus mRxBus;
+
 
     @Inject
     public CommentPresenterImpl(@ContextLife("Activity") Context context, RxLeanCloud rxLeanCloud, RxBus rxBus) {
