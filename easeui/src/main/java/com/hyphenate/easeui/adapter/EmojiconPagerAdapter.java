@@ -8,7 +8,7 @@ import java.util.List;
 
 public class EmojiconPagerAdapter extends PagerAdapter{
 
-    private List<View> views;
+    private final List<View> views;
 
     public EmojiconPagerAdapter(List<View> views) {
         this.views = views;

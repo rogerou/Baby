@@ -26,7 +26,7 @@ import java.util.List;
 public class EaseChatExtendMenu extends GridView{
 
     protected Context context;
-    private List<ChatMenuItemModel> itemModels = new ArrayList<>();
+    private final List<ChatMenuItemModel> itemModels = new ArrayList<>();
 
     public EaseChatExtendMenu(Context context, AttributeSet attrs, int defStyle) {
         this(context, attrs);
@@ -101,7 +101,7 @@ public class EaseChatExtendMenu extends GridView{
     
     private class ItemAdapter extends ArrayAdapter<ChatMenuItemModel>{
 
-        private Context context;
+        private final Context context;
 
         public ItemAdapter(Context context, List<ChatMenuItemModel> objects) {
             super(context, 1, objects);

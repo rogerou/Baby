@@ -228,7 +228,7 @@ public abstract class ImageWorker {
      * The actual AsyncTask that will asynchronously process the image.
      */
     private class BitmapWorkerTask extends AsyncTask<Void, Void, BitmapDrawable> {
-        private Object mData;
+        private final Object mData;
         private final WeakReference<ImageView> imageViewReference;
 
         public BitmapWorkerTask(Object data, ImageView imageView) {

@@ -28,10 +28,10 @@ public class EaseContactAdapter extends ArrayAdapter<EaseUser> implements Sectio
     List<String> list;
     List<EaseUser> userList;
     List<EaseUser> copyUserList;
-    private LayoutInflater layoutInflater;
+    private final LayoutInflater layoutInflater;
     private SparseIntArray positionOfSection;
     private SparseIntArray sectionOfPosition;
-    private int res;
+    private final int res;
     private MyFilter myFilter;
     private boolean notiyfyByFilter;
 

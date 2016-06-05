@@ -38,7 +38,7 @@ public class EaseChatInputMenu extends LinearLayout {
     protected FrameLayout chatExtendMenuContainer;
     protected LayoutInflater layoutInflater;
 
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
     private ChatInputMenuListener listener;
     private Context context;
     private boolean inited;

@@ -48,8 +48,8 @@ public class EaseChatRowVoicePlayClickListener implements View.OnClickListener {
     MediaPlayer mediaPlayer;
     ImageView iv_read_status;
     Activity activity;
-    private ChatType chatType;
-    private BaseAdapter adapter;
+    private final ChatType chatType;
+    private final BaseAdapter adapter;
 
     public static boolean isPlaying;
     public static EaseChatRowVoicePlayClickListener currentPlayListener;

@@ -24,8 +24,8 @@ import butterknife.ButterKnife;
  */
 public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHolder> {
 
-    private List<Gallery> mList;
-    private Context mContext;
+    private final List<Gallery> mList;
+    private final Context mContext;
 
     private OnItemClickListener mlistener;
 

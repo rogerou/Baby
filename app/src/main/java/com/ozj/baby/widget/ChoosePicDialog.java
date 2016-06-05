@@ -21,7 +21,7 @@ public class ChoosePicDialog implements View.OnClickListener {
     Button btnPicture;
     Button btnTakephoto;
     Button btnCancel;
-    private Dialog mDialog;
+    private final Dialog mDialog;
     Activity mContext;
 
     @Inject

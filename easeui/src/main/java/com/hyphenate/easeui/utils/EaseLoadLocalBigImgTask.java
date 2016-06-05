@@ -27,12 +27,12 @@ import com.hyphenate.util.ImageUtils;
 
 public class EaseLoadLocalBigImgTask extends AsyncTask<Void, Void, Bitmap> {
 
-	private ProgressBar pb;
-	private EasePhotoView photoView;
-	private String path;
-	private int width;
-	private int height;
-	private Context context;
+	private final ProgressBar pb;
+	private final EasePhotoView photoView;
+	private final String path;
+	private final int width;
+	private final int height;
+	private final Context context;
 
 	public EaseLoadLocalBigImgTask(Context context,String path, EasePhotoView photoView,
 			ProgressBar pb, int width, int height) {

@@ -44,10 +44,10 @@ import rx.schedulers.Schedulers;
 public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
 
     ISplashView mSplashView;
-    private Context mContext;
-    private PreferenceManager mPreferenceManager;
+    private final Context mContext;
+    private final PreferenceManager mPreferenceManager;
 
-    private RxLeanCloud mRxleanCloud;
+    private final RxLeanCloud mRxleanCloud;
     private Handler mHandler;
     private static final int MESSAGE_WHAT = 1;
     AnimatorSet mAnimatorSet;
