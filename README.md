@@ -81,6 +81,7 @@
 
 ## Thanks
 感谢Github、LeanCloud、环信、还有造那么多轮子给我们用的Square FaceBook Google的大大们。
+Thanks for improving my code  [m-ezzat](https://github.com/m-ezzat).
 
 ## Contacts
  * Email:379489343zhi@gmail.com
