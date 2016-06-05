@@ -24,9 +24,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     public SweetAlertDialog mProgressdialog;
     public BasePresenter mIPresenter;
     public ActivityComponet mActivityComponet;
-
-    public SweetAlertDialog mWarningDialog;
-    public SweetAlertDialog mErrorDialog;
     private Unbinder unbinder;
 
     @Override
@@ -71,10 +68,12 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void showProgress(String message) {
-        mProgressdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-        mProgressdialog.getProgressHelper().setBarColor(getResources().getColor(R.color.colorPrimary));
+        if (mProgressdialog == null) {
+            mProgressdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+            mProgressdialog.getProgressHelper().setBarColor(getResources().getColor(R.color.colorPrimary));
+            mProgressdialog.setCancelable(false);
+        }
         mProgressdialog.setTitleText(message);
-        mProgressdialog.setCancelable(false);
         mProgressdialog.show();
 
     }
@@ -120,18 +119,17 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
 
     public void showWarningDialog(String title, String content, SweetAlertDialog.OnSweetClickListener listener) {
-        mWarningDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
-                .setTitleText(title)
-                .setContentText(content)
+        SweetAlertDialog mWarningDialog = new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                 .setConfirmText("确定")
                 .setCancelText("取消")
+                .setTitleText(title)
+                .setContentText(content)
                 .setConfirmClickListener(listener);
-
         mWarningDialog.show();
     }
 
     public void showErrorDialog(String title, String content, SweetAlertDialog.OnSweetClickListener listener) {
-        mErrorDialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
+        SweetAlertDialog mErrorDialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE)
                 .setConfirmText("确定")
                 .setTitleText(title)
                 .setContentText(content)

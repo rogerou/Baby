@@ -14,8 +14,10 @@ import com.github.jorgecastilloprz.FABProgressCircle;
 import com.ozj.baby.R;
 import com.ozj.baby.adapter.GalleryAdapter;
 import com.ozj.baby.base.BaseFragment;
-import com.ozj.baby.event.AddGalleryEvent;
+import com.ozj.baby.event.EventConstant;
+import com.ozj.baby.event.GalleryEvent;
 import com.ozj.baby.event.UploadPhotoUri;
+import com.ozj.baby.mvp.model.bean.Comment;
 import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.navigation.impl.GalleryPresenterImpl;
@@ -23,6 +25,7 @@ import com.ozj.baby.mvp.views.home.activity.DetailImageActivity;
 import com.ozj.baby.mvp.views.home.activity.ProfileActivity;
 import com.ozj.baby.mvp.views.navigation.IGalleryView;
 import com.ozj.baby.util.OnItemClickListener;
+import com.ozj.baby.util.OnItemLongClickListener;
 import com.ozj.baby.widget.ChoosePicDialog;
 
 import java.util.ArrayList;
@@ -32,6 +35,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -40,7 +44,7 @@ import rx.functions.Action1;
 /**
  * Created by Roger on 2016/4/24.
  */
-public class GalleryFragment extends BaseFragment implements IGalleryView, SwipeRefreshLayout.OnRefreshListener, OnItemClickListener {
+public class GalleryFragment extends BaseFragment implements IGalleryView, SwipeRefreshLayout.OnRefreshListener, OnItemClickListener, OnItemLongClickListener {
     @BindView(R.id.ry_gallgery)
     RecyclerView ryGallgery;
     @BindView(R.id.swipeFreshLayout)
@@ -65,9 +69,7 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
     List<Gallery> mList;
 
     Subscription mSubscription;
-
     Subscription mUploadPhoto;
-
     boolean isFirst = true;
 
     @Override
@@ -99,6 +101,7 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
             }
         });
         mAdapter.setOnItemActionListener(this);
+        mAdapter.setOnItemLongClickListener(this);
 
     }
 
@@ -124,29 +127,27 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
     @Override
     public void initData() {
         mGalleryPresenter.fetchDataFromNetwork(true, size, page);
-        mSubscription = mRxbus.toObservable(AddGalleryEvent.class)
+        mSubscription = mRxbus.toObservable(GalleryEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<AddGalleryEvent>() {
+                .subscribe(new Action1<GalleryEvent>() {
                     @Override
-                    public void call(AddGalleryEvent addGalleryEvent) {
-                        if (addGalleryEvent.isList()) {
-                            if (addGalleryEvent.isFresh()) {
+                    public void call(GalleryEvent galleryEvent) {
+                        switch (galleryEvent.mAction) {
+                            case EventConstant.REFRESH:
                                 mList.clear();
-                                for (Gallery g : addGalleryEvent.getList()) {
-                                    if (!mList.contains(g)) {
-                                        mList.add(g);
-                                    }
-                                }
-
-                            } else {
-                                for (Gallery g : addGalleryEvent.getList()) {
-                                    if (!mList.contains(g)) {
-                                        mList.add(g);
-                                    }
-                                }
-                            }
-                        } else {
-                            mList.add(0, addGalleryEvent.getGallery());
+                                mList.addAll(galleryEvent.mList);
+                                break;
+                            case EventConstant.LOADMORE:
+                                mList.addAll(galleryEvent.mList);
+                                break;
+                            case EventConstant.DELETE:
+                                mList.remove(galleryEvent.mGallery);
+                                break;
+                            case EventConstant.ADD:
+                                mList.add(0, galleryEvent.mGallery);
+                                break;
+                            default:
+                                break;
                         }
                         mAdapter.notifyDataSetChanged();
                     }
@@ -283,5 +284,17 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
         ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(getActivity(), view, imgurls.get(position));
         startActivity(intent, optionsCompat.toBundle());
 
+    }
+
+    @Override
+    public void onLongClick(View view, int position) {
+        final Gallery gallery = mList.get(position);
+        showWarningDialog("确定要删除这个相片吗？", "删除", new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismissWithAnimation();
+                mGalleryPresenter.deleteGalley(gallery);
+            }
+        });
     }
 }

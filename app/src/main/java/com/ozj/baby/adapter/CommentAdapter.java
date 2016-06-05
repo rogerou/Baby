@@ -14,6 +14,7 @@ import com.hyphenate.util.DateUtils;
 import com.ozj.baby.R;
 import com.ozj.baby.mvp.model.bean.Comment;
 import com.ozj.baby.util.OnItemClickListener;
+import com.ozj.baby.util.OnItemLongClickListener;
 
 import java.util.List;
 
@@ -23,12 +24,13 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by Rogerou on 2016/5/25.
- * <p/>
+ * <p>
  */
 public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewholder> {
-    List<Comment> mList;
-    Context mContext;
+    final List<Comment> mList;
+    final Context mContext;
     OnItemClickListener mOnItemClickListener;
+    OnItemLongClickListener mOnItemLongClickListener;
 
     public CommentAdapter(List<Comment> comments, Context context) {
         this.mList = comments;
@@ -69,6 +71,10 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
         this.mOnItemClickListener = onclicklistener;
     }
 
+    public void setItemOnLongClickListener(OnItemLongClickListener onClickListener) {
+        this.mOnItemLongClickListener = onClickListener;
+    }
+
     class CommentViewholder extends RecyclerView.ViewHolder {
         @BindView(R.id.iv_avatar)
         ImageView mIvAvatar;
@@ -87,6 +93,13 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentV
                 @Override
                 public void onClick(View v) {
                     mOnItemClickListener.onClick(v, getAdapterPosition());
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mOnItemLongClickListener.onLongClick(v, getAdapterPosition());
+                    return true;
                 }
             });
         }

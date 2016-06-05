@@ -8,7 +8,8 @@ import com.avos.avoscloud.AVUser;
 import com.hyphenate.easeui.domain.User;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
-import com.ozj.baby.event.AddSouvenirEvent;
+import com.ozj.baby.event.EventConstant;
+import com.ozj.baby.event.SouvenirEvent;
 import com.ozj.baby.mvp.model.bean.Souvenir;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
@@ -77,7 +78,7 @@ public class AddSouvenirImpl implements IAddSouvenirPresenter {
                     .flatMap(new Func1<Souvenir, Observable<Boolean>>() {
                         @Override
                         public Observable<Boolean> call(Souvenir souvenir) {
-                            mRxbus.post(new AddSouvenirEvent(false, false, souvenir));
+                            mRxbus.post(new SouvenirEvent(souvenir, null, EventConstant.ADD));
                             return mRxLeanCloud.PushToLover("Ta发布了一个新的Moment", 0);
                         }
                     })
@@ -112,9 +113,7 @@ public class AddSouvenirImpl implements IAddSouvenirPresenter {
 
     @Override
     public void attachView(@NonNull BaseView view) {
-
         mView = (IAddSouvenirView) view;
-
     }
 
     @Override

@@ -22,14 +22,15 @@ import com.jaeger.library.StatusBarUtil;
 import com.ozj.baby.R;
 import com.ozj.baby.adapter.CommentAdapter;
 import com.ozj.baby.base.BaseActivity;
-import com.ozj.baby.event.AddCommentsEvent;
+import com.ozj.baby.event.CommentsEvent;
+import com.ozj.baby.event.EventConstant;
 import com.ozj.baby.mvp.model.bean.Comment;
 import com.ozj.baby.mvp.model.bean.Souvenir;
-import com.ozj.baby.mvp.model.dao.SouvenirDao;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.CommentPresenterImpl;
 import com.ozj.baby.mvp.views.ICommentView;
 import com.ozj.baby.util.OnItemClickListener;
+import com.ozj.baby.util.OnItemLongClickListener;
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -47,7 +49,7 @@ import rx.functions.Action1;
 /**
  * Created by Rogerou on 2016/5/25.
  */
-public class CommentActivity extends BaseActivity implements ICommentView, SwipeRefreshLayout.OnRefreshListener {
+public class CommentActivity extends BaseActivity implements ICommentView, SwipeRefreshLayout.OnRefreshListener, OnItemLongClickListener, OnItemClickListener {
 
 
     @BindView(R.id.toolbar)
@@ -67,7 +69,8 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
     RxBus mRxBus;
 
     Subscription mSubscription;
-    int size = 15, page;
+    final int size = 15;
+    int page;
     Souvenir mSouvenir;
     List<Comment> mList;
     CommentAdapter mAdapter;
@@ -85,7 +88,7 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
         }
         position = getIntent().getExtras().getInt("position");
         mCommentPresenter.fetchAllComments(mSouvenir, page, size);
-        mSubscription = RegisterEvent();
+        mSubscription = registerEvent();
         mComment = new Comment();
         mComment.setSouvenir(mSouvenir);
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -102,28 +105,34 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
         StatusBarUtil.setColor(this, getResources().getColor(R.color.colorPrimary));
     }
 
-    private Subscription RegisterEvent() {
-        return mRxBus.toObservable(AddCommentsEvent.class)
+    private Subscription registerEvent() {
+        return mRxBus.toObservable(CommentsEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Action1<AddCommentsEvent>() {
+                .subscribe(new Action1<CommentsEvent>() {
                     @Override
-                    public void call(AddCommentsEvent addCommentsEvent) {
-                        if (addCommentsEvent.isList) {
-                            if (addCommentsEvent.isRefresh) {
+                    public void call(CommentsEvent event) {
+                        switch (event.mAction) {
+                            case EventConstant.REFRESH:
                                 mList.clear();
-                                mList.addAll(addCommentsEvent.mCommentList);
-                            } else {
-                                int size = mAdapter.getItemCount();
-                                mList.addAll(addCommentsEvent.mCommentList);
-                            }
-                            mAdapter.notifyDataSetChanged();
-                        } else {
-                            mList.add(0, addCommentsEvent.mComment);
-                            mAdapter.notifyItemInserted(0);
+                                mList.addAll(event.mCommentList);
+                                break;
+                            case EventConstant.LOADMORE:
+                                mList.addAll(event.mCommentList);
+                                break;
+                            case EventConstant.DELETE:
+                                mList.remove(event.mComment);
+                                break;
+                            case EventConstant.ADD:
+                                mList.add(0, event.mComment);
+                                break;
+                            default:
+                                break;
                         }
+                        mAdapter.notifyDataSetChanged();
                     }
                 });
     }
+
 
     @Override
     public void initViewsAndListener() {
@@ -167,22 +176,8 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
                 }
             }
         });
-        mAdapter.setItemOnclicklistener(new OnItemClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                if (mList.get(position).getAuhtor().equals(User.getCurrentUser(User.class))) {
-                    showToast("不自己回复自己");
-                    return;
-                }
-                mEtComment.setHint(String.format("回复 %s 的评论:", mList.get(position).getAuhtor().getNick()));
-                mEtComment.requestFocus();
-                inputMethodManager.showSoftInput(mEtComment, InputMethodManager.RESULT_UNCHANGED_SHOWN);
-                mComment.setReply(mList.get(position).getAuhtor());
-                isReplied = true;
-                invalidateOptionsMenu();
-            }
-        });
-
+        mAdapter.setItemOnclicklistener(this);
+        mAdapter.setItemOnLongClickListener(this);
     }
 
 
@@ -205,7 +200,6 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         if (item.getItemId() == R.id.cancel_comment) {
             mEtComment.setHint(getString(R.string.add_comment));
             mComment.setReply(null);
@@ -253,7 +247,6 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
         mComment.setComment(mEtComment.getText().toString());
         mComment.setAuhtor(User.getCurrentUser(User.class));
         mCommentPresenter.Comment(mComment, position);
-        mEtComment.setText("");
         inputMethodManager.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(),
                 InputMethodManager.HIDE_NOT_ALWAYS);
     }
@@ -270,5 +263,32 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
     @Override
     public void onRefresh() {
         mCommentPresenter.fetchAllComments(mSouvenir, 0, size);
+    }
+
+    @Override
+    public void onClick(View view, int position) {
+        if (mList.get(position).getAuhtor().equals(User.getCurrentUser(User.class))) {
+            showToast("不自己回复自己");
+            return;
+        }
+        mEtComment.setHint(String.format("回复 %s 的评论:", mList.get(position).getAuhtor().getNick()));
+        mEtComment.requestFocus();
+
+        inputMethodManager.showSoftInput(mEtComment, InputMethodManager.RESULT_UNCHANGED_SHOWN);
+        mComment.setReply(mList.get(position).getAuhtor());
+        isReplied = true;
+        invalidateOptionsMenu();
+    }
+
+    @Override
+    public void onLongClick(View view, int position) {
+        final Comment comment = mList.get(position);
+        showWarningDialog("删除", "确定要删除评论吗？", new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismissWithAnimation();
+                mCommentPresenter.deleteComment(comment);
+            }
+        });
     }
 }

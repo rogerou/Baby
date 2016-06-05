@@ -34,7 +34,7 @@ public class PreferenceManager {
         if (sInstance == null) {
             synchronized (PreferenceManager.class) {
                 if (sInstance == null) {
-                    sInstance = new PreferenceManager(context);
+                    sInstance = new PreferenceManager(context.getApplicationContext());
                 }
             }
         }

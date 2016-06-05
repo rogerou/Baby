@@ -9,6 +9,7 @@ import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVPush;
 import com.avos.avoscloud.AVQuery;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.DeleteCallback;
 import com.avos.avoscloud.FindCallback;
 import com.avos.avoscloud.LogInCallback;
 import com.avos.avoscloud.SaveCallback;
@@ -473,4 +474,25 @@ public class RxLeanCloud {
         });
 
     }
+
+    public Observable<Boolean> delete(final AVObject obj) {
+        return Observable.create(new Observable.OnSubscribe<Boolean>() {
+            @Override
+            public void call(final Subscriber<? super Boolean> subscriber) {
+                obj.deleteEventually(new DeleteCallback() {
+                    @Override
+                    public void done(AVException e) {
+                        if (e == null) {
+                            subscriber.onNext(true);
+                        } else {
+                            subscriber.onError(e);
+                        }
+                        subscriber.onCompleted();
+                    }
+                });
+            }
+        }).subscribeOn(AndroidSchedulers.mainThread());
+    }
+
+
 }

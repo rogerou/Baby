@@ -20,14 +20,12 @@ import dagger.Provides;
 public class ApplicationModule {
     private final BabyApplication mApplication;
     private final PreferenceManager mPreferenceManager;
-    //    private RxBabyRealm mRxBabyRealm;
     private final RxLeanCloud mRxLeanCloud;
     private final RxBus mRxBus;
 
     public ApplicationModule(BabyApplication application) {
         mApplication = application;
         mPreferenceManager = new PreferenceManager(mApplication.getApplicationContext());
-//        mRxBabyRealm = new RxBabyRealm(mApplication.getApplicationContext());
         mRxLeanCloud = new RxLeanCloud(mApplication.getApplicationContext());
         mRxBus = new RxBus();
     }

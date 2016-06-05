@@ -12,6 +12,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.ozj.baby.R;
 import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.util.OnItemClickListener;
+import com.ozj.baby.util.OnItemLongClickListener;
 import com.ozj.baby.widget.RatioImageView;
 
 import java.util.List;
@@ -26,8 +27,8 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     private final List<Gallery> mList;
     private final Context mContext;
-
     private OnItemClickListener mlistener;
+    private OnItemLongClickListener mOnItemLongClickListener;
 
     public GalleryAdapter(List<Gallery> list, Activity activity) {
         mList = list;
@@ -54,6 +55,10 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
 
     }
 
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.mOnItemLongClickListener = listener;
+    }
+
     @Override
     public int getItemCount() {
         return mList.size();
@@ -70,6 +75,13 @@ public class GalleryAdapter extends RecyclerView.Adapter<GalleryAdapter.ViewHold
                 @Override
                 public void onClick(View v) {
                     mlistener.onClick(v, getAdapterPosition());
+                }
+            });
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mOnItemLongClickListener.onLongClick(v, getAdapterPosition());
+                    return true;
                 }
             });
 

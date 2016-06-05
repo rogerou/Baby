@@ -14,13 +14,15 @@ import com.hyphenate.easeui.domain.User;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
-import com.ozj.baby.event.AddGalleryEvent;
+import com.ozj.baby.event.EventConstant;
+import com.ozj.baby.event.GalleryEvent;
 import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
 import com.ozj.baby.mvp.presenter.navigation.IGalleryPersenter;
 import com.ozj.baby.mvp.views.navigation.IGalleryView;
 import com.ozj.baby.util.PreferenceManager;
+import com.ozj.baby.util.SchedulersCompat;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -33,8 +35,10 @@ import javax.inject.Inject;
 
 import rx.Observable;
 import rx.Observer;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action0;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -96,7 +100,7 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
                     @Override
                     public void onNext(List<Gallery> galleries) {
                         if (!galleries.isEmpty()) {
-                            mRxbus.post(new AddGalleryEvent(galleries, true, isFirst));
+                            mRxbus.post(new GalleryEvent(galleries, null, EventConstant.REFRESH));
                         }
                     }
                 });
@@ -128,7 +132,7 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
                 .flatMap(new Func1<Gallery, Observable<Boolean>>() {
                     @Override
                     public Observable<Boolean> call(Gallery gallery) {
-                        mRxbus.post(new AddGalleryEvent(gallery, false, true));
+                        mRxbus.post(new GalleryEvent(null, gallery, EventConstant.ADD));
                         return mRxleanCloud.PushToLover("Ta上传了一张新的相片", 1);
                     }
                 }).subscribe(new Observer<Boolean>() {
@@ -181,6 +185,38 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
             gallery.setWidth(0);
         }
         return gallery;
+    }
+
+    @Override
+    public void deleteGalley(final Gallery gallery) {
+        mRxleanCloud.delete(gallery)
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        mGalleryView.showProgress("正在删除相片...");
+                    }
+                }).compose(SchedulersCompat.<Boolean>observeOnMainThread())
+                .subscribe(new Subscriber<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        mGalleryView.showToast("删除成功");
+                        mGalleryView.hideProgress();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mGalleryView.hideProgress();
+                        mGalleryView.showToast("删除失败");
+
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        Logger.e("删除相片" + aBoolean);
+                        mRxbus.post(new GalleryEvent(null, gallery, EventConstant.DELETE));
+                    }
+                });
+
     }
 
 
