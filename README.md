@@ -2,7 +2,7 @@
 # ![](app/src/main/res/mipmap-mdpi/ic_launcher.png)一个恋爱社交APP
 
 这个项目就当是学习一年安卓来的总结和学习的新技术的应用吧。
-
+(能讨女朋友欢喜)
  
 ## version 1.3
 * 1.增加了评论功能
