@@ -34,7 +34,7 @@ import shem.com.materiallogin.MaterialLoginViewListener;
 
 /**
  * Created by Rpger ou on 2016/4/13.
- * <p/>
+ * <p>
  * 开屏页
  */
 public class SplashActivity extends BaseActivity implements ISplashView {
@@ -67,7 +67,7 @@ public class SplashActivity extends BaseActivity implements ISplashView {
 
     @Override
     protected void initData() {
-        
+
     }
 
     @Override
@@ -145,7 +145,7 @@ public class SplashActivity extends BaseActivity implements ISplashView {
                 }
             }
         });
-        animator.start(); 
+        animator.start();
 
     }
 
@@ -176,6 +176,9 @@ public class SplashActivity extends BaseActivity implements ISplashView {
     public void showLoginButton() {
         tvLoginOrRegister.setVisibility(View.VISIBLE);
     }
+
+ 
+
 
     @OnClick(R.id.tv_loginOrRegister)
     public void onClick() {

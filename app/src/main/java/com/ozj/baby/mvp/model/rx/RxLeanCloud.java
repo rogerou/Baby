@@ -261,6 +261,7 @@ public class RxLeanCloud {
                 AVPush push = new AVPush();
                 Map<String, Object> map = new HashMap<>();
                 String installationId = User.getCurrentUser(User.class).getLoverInstallationId();
+                Logger.e(installationId);
                 map.put(NewsDao.CONTENT, content);
                 map.put(NewsDao.ACTION, "com.ozj.baby.Push");
                 map.put(NewsDao.AVATARURL, User.getCurrentUser(User.class).getAvatar());
