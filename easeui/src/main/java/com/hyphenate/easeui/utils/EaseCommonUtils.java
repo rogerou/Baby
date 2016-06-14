@@ -33,8 +33,14 @@ import com.hyphenate.util.HanziToPinyin.Token;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EaseCommonUtils {
-	private static final String TAG = "CommonUtils";
+public final class EaseCommonUtils {
+
+    private static final String TAG = "CommonUtils";
+
+    private EaseCommonUtils() throws InstantiationException {
+        throw new InstantiationException("This utility class is not created for instantiation");
+    }
+
 	/**
 	 * 检测网络是否可用
 	 * 

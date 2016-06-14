@@ -11,7 +11,11 @@ import rx.schedulers.Schedulers;
  * RxjavaScheduler线程与Main线程切换
  */
 @SuppressWarnings("unchecked")
-public class SchedulersCompat {
+public final class SchedulersCompat {
+
+    private SchedulersCompat() throws InstantiationException {
+        throw new InstantiationException("This utility class is not created for instantiation");
+    }
 
     private static final Observable.Transformer computationTransformer =
             new Observable.Transformer() {

@@ -11,14 +11,18 @@ import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.controller.EaseUI.EaseUserProfileProvider;
 import com.hyphenate.easeui.domain.EaseUser;
 
-public class EaseUserUtils {
+public final class EaseUserUtils {
     
     static EaseUserProfileProvider userProvider;
     
     static {
         userProvider = EaseUI.getInstance().getUserProfileProvider();
     }
-    
+
+    private EaseUserUtils() throws InstantiationException {
+        throw new InstantiationException("This utility class is not created for instantiation");
+    }
+
     /**
      * 根据username获取相应user
      * @param username
