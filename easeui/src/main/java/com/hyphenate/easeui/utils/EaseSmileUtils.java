@@ -31,7 +31,7 @@ import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class EaseSmileUtils {
+public final class EaseSmileUtils {
     public static final String DELETE_KEY = "em_delete_delete_expression";
     
 	public static final String EE_1 = "[):]";
@@ -88,6 +88,10 @@ public class EaseSmileUtils {
 	        }
 	    }
 	    
+	}
+
+	private EaseSmileUtils() throws InstantiationException {
+		throw new InstantiationException("This utility class is not created for instantiation");
 	}
 
 	/**
