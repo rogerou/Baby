@@ -394,13 +394,8 @@ public class EaseChatFragment extends EaseBaseFragment {
                         if (listView.getFirstVisiblePosition() == 0 && !isloading && haveMoreData) {
                             List<EMMessage> messages;
                             try {
-                                if (chatType == EaseConstant.CHATTYPE_SINGLE) {
                                     messages = conversation.loadMoreMsgFromDB(messageList.getItem(0).getMsgId(),
                                             pagesize);
-                                } else {
-                                    messages = conversation.loadMoreMsgFromDB(messageList.getItem(0).getMsgId(),
-                                            pagesize);
-                                }
                             } catch (Exception e1) {
                                 swipeRefreshLayout.setRefreshing(false);
                                 return;

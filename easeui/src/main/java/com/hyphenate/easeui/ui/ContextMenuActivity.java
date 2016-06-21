@@ -41,7 +41,8 @@ public class ContextMenuActivity extends EaseBaseActivity {
             } else {
                 setContentView(R.layout.em_context_menu_for_text);
             }
-        } else if (type == EMMessage.Type.LOCATION.ordinal()) {
+        } else if (type == EMMessage.Type.LOCATION.ordinal()
+                || type == EMMessage.Type.FILE.ordinal()) {
             setContentView(R.layout.em_context_menu_for_location);
         } else if (type == EMMessage.Type.IMAGE.ordinal()) {
             setContentView(R.layout.em_context_menu_for_image);
@@ -49,8 +50,6 @@ public class ContextMenuActivity extends EaseBaseActivity {
             setContentView(R.layout.em_context_menu_for_voice);
         } else if (type == EMMessage.Type.VIDEO.ordinal()) {
             setContentView(R.layout.em_context_menu_for_video);
-        } else if (type == EMMessage.Type.FILE.ordinal()) {
-            setContentView(R.layout.em_context_menu_for_location);
         }
 
     }
