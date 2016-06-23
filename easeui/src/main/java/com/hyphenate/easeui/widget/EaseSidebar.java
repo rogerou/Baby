@@ -130,9 +130,6 @@ public class EaseSidebar extends View{
 			return true;
 		}
 		case MotionEvent.ACTION_UP:
-			header.setVisibility(View.INVISIBLE);
-			setBackgroundColor(Color.TRANSPARENT);
-			return true;
 		case MotionEvent.ACTION_CANCEL:
 			header.setVisibility(View.INVISIBLE);
 			setBackgroundColor(Color.TRANSPARENT);

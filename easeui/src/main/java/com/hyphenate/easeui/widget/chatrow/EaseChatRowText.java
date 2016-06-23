@@ -48,16 +48,11 @@ public class EaseChatRowText extends EaseChatRow{
         if (message.direct() == EMMessage.Direct.SEND) {
             setMessageSendCallback();
             switch (message.status()) {
-            case CREATE: 
-                progressBar.setVisibility(View.GONE);
-                statusView.setVisibility(View.VISIBLE);
-                // 发送消息
-//                sendMsgInBackground(message);
-                break;
             case SUCCESS: // 发送成功
                 progressBar.setVisibility(View.GONE);
                 statusView.setVisibility(View.GONE);
                 break;
+            case CREATE:
             case FAIL: // 发送失败
                 progressBar.setVisibility(View.GONE);
                 statusView.setVisibility(View.VISIBLE);

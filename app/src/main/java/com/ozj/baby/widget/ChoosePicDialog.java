@@ -77,8 +77,6 @@ public class ChoosePicDialog implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_cancel:
-                break;
             case R.id.btn_picture:
                 EasyImage.openGallery(mContext, 0);
                 break;
@@ -86,6 +84,7 @@ public class ChoosePicDialog implements View.OnClickListener {
                 EasyImage.openCamera(mContext, 0);
 
                 break;
+            case R.id.btn_cancel:
             default:
                 break;
         }
