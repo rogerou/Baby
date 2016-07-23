@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.ozj.baby.R;
+import com.ozj.baby.di.scope.ContextLife;
 
 import javax.inject.Inject;
 

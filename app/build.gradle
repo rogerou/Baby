@@ -40,8 +40,8 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     //support libray
-    compile 'com.android.support:appcompat-v7:23.4.0'
-    compile 'com.android.support:design:23.4.0'
+    compile 'com.android.support:appcompat-v7:24.1.0'
+    compile 'com.android.support:design:24.1.0'
 
 //rxjava
     compile 'io.reactivex:rxandroid:1.2.0'
@@ -77,6 +77,7 @@ dependencies {
     compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
     compile 'com.android.support:multidex:1.0.1'
     compile project(':easeui')
+    
 }
 
 

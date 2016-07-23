@@ -52,7 +52,7 @@ public class MainPresenterImpl implements IMainPresenter {
     String currentFragmentTag;
 
     @Inject
-    public MainPresenterImpl(@ContextLife("Activity") Context context, Activity activity, PreferenceManager preferenceManager, RxLeanCloud rxLeanCloud) {
+    public MainPresenterImpl(@ContextLife("Application") Context context, Activity activity, PreferenceManager preferenceManager, RxLeanCloud rxLeanCloud) {
         mRxLeanCloud = rxLeanCloud;
         mContext = context;
         mActivity = activity;

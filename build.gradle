@@ -5,7 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.0'
+        classpath 'com.android.tools.build:gradle:2.1.2'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
 //        classpath "io.realm:realm-gradle-plugin:0.89.1"
     }
@@ -16,7 +16,7 @@ ext {
     configuration = [
             package          : "com.ozj.baby",
             buildToolsVersion: "23.0.2",
-            compileVersion   : 23,
+            compileVersion   : 24,
             minSdk           : 16,
             targetSdk        : 22,
             version_code     : 20160527,

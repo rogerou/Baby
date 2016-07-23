@@ -120,8 +120,8 @@ public class CommentPresenterImpl implements ICommentPresenter {
                     }
 
                     @Override
-                    public void onNext(Comment comment) {
-                        mRxBus.post(new CommentsEvent(comment, null, EventConstant.ADD));
+                    public void onNext(Comment com) {
+                        mRxBus.post(new CommentsEvent(com, null, EventConstant.ADD));
                     }
                 });
     }
