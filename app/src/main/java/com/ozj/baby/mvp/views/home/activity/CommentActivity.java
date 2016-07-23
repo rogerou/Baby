@@ -269,10 +269,10 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
 
     @Override
     public void onClick(View view, int position) {
-//        if (mList.get(position).getAuhtor().equals(User.getCurrentUser(User.class))) {
-//            showToast("不自己回复自己");
-//            return;
-//        }
+        if (mList.get(position).getAuhtor().equals(User.getCurrentUser(User.class))) {
+            showToast("不自己回复自己");
+            return;
+        }
         mEtComment.setHint(String.format("回复 %s 的评论:", mList.get(position).getAuhtor().getNick()));
         mEtComment.requestFocus();
 
