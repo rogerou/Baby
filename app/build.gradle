@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'//添加apt命令
+apply plugin: 'com.jakewharton.butterknife'
 //apply plugin: 'realm-android'
 def cfg = rootProject.ext.configuration
 
@@ -40,16 +41,16 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     //support libray
-    compile 'com.android.support:appcompat-v7:24.1.0'
-    compile 'com.android.support:design:24.1.0'
-
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:design:24.2.0'
+ 
 //rxjava
-    compile 'io.reactivex:rxandroid:1.2.0'
-    compile 'io.reactivex:rxjava:1.1.5'
+    compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.1.6'
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.5.2@aar'
     //butterknife
-    compile 'com.jakewharton:butterknife:8.0.1'
-    apt 'com.jakewharton:butterknife-compiler:8.0.1'
+    compile 'com.jakewharton:butterknife:8.2.1'
+    apt 'com.jakewharton:butterknife-compiler:8.2.1'
     //leakcanary
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.4-beta2'
@@ -76,8 +77,9 @@ dependencies {
     compile 'jp.wasabeef:recyclerview-animators:2.2.3'
     compile 'com.github.jorgecastilloprz:fabprogresscircle:1.01@aar'
     compile 'com.android.support:multidex:1.0.1'
+
     compile project(':easeui')
-    
+
 }
 
 
