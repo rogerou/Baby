@@ -15,6 +15,7 @@ import com.ozj.baby.di.module.FragmentModule;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 
 /**
  * Created by Administrator on 2016/3/25.
@@ -118,6 +119,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     }
 
+
     @Override
     public void showToast(String msg) {
         if (getStatus() && getBaseActivity() != null) {
@@ -129,6 +131,10 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     @Override
     public void close() {
 
+    }
+
+    public void showWarningDialog(String content, String title, SweetAlertDialog.OnSweetClickListener listener) {
+        getBaseActivity().showWarningDialog(title, content, listener);
     }
 
     @Override

@@ -45,14 +45,14 @@ import rx.functions.Func1;
  */
 public class MainPresenterImpl implements IMainPresenter {
     IMainView mMainView;
-    private Context mContext;
-    private Activity mActivity;
-    private PreferenceManager mPreferenceManager;
-    private RxLeanCloud mRxLeanCloud;
+    private final Context mContext;
+    private final Activity mActivity;
+    private final PreferenceManager mPreferenceManager;
+    private final RxLeanCloud mRxLeanCloud;
     String currentFragmentTag;
 
     @Inject
-    public MainPresenterImpl(@ContextLife("Activity") Context context, Activity activity, PreferenceManager preferenceManager, RxLeanCloud rxLeanCloud) {
+    public MainPresenterImpl(@ContextLife("Application") Context context, Activity activity, PreferenceManager preferenceManager, RxLeanCloud rxLeanCloud) {
         mRxLeanCloud = rxLeanCloud;
         mContext = context;
         mActivity = activity;

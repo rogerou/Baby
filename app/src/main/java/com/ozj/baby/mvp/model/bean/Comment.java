@@ -9,7 +9,7 @@ import com.ozj.baby.mvp.model.dao.CommentDao;
  * Created by YX201603-6 on 2016/5/25.
  */
 @AVClassName("Comment")
-public class Comment extends AVObject {
+public class Comment extends AVObject implements Cloneable {
 
     private User auhtor;
     private User reply;
@@ -48,5 +48,13 @@ public class Comment extends AVObject {
         put(CommentDao.COMMENT, comment);
     }
 
-
+    @Override
+    public Comment clone() {
+        try {
+            return (Comment) super.clone();
+        } catch (CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

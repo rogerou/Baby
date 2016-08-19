@@ -19,4 +19,6 @@ public interface IGalleryPersenter extends BasePresenter {
 
     Gallery getHeightAndWidth(String url, Gallery gallery, boolean isUploaded);
 
+    void deleteGalley(Gallery gallery);
+
 }

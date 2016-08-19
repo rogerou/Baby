@@ -114,7 +114,7 @@ public class MainActivity extends BaseActivity
     @Override
     public void initContentView() {
         setContentView(R.layout.activity_main);
-        PushService.setDefaultPushCallback(this, MainActivity.class);
+     
         if (getIntent().getBooleanExtra(EaseConstant.ACCOUNT_CONFLICT, false) && !isConflictDialogShow) {
             ConflictAngRestart();
         }
@@ -193,7 +193,6 @@ public class MainActivity extends BaseActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
         if (id == R.id.nav_moment) {
             if (souvenirFragment == null) {
                 souvenirFragment = SouvenirFragment.newInsatance();
@@ -209,8 +208,7 @@ public class MainActivity extends BaseActivity
             collaspingToolBarlayout.setTitle("相册");
             mMainPersenter.replaceFragment(galleryFragment, "Gallery", false);
         } else if (id == R.id.nav_manage) {
-            FeedbackAgent agent = new FeedbackAgent(MainActivity.this);
-            agent.startDefaultThreadActivity();
+            toFeedBackActivity();
         } else if (id == R.id.nav_logout) {
             showWarningDialog("退出", "确定要退出吗？", new SweetAlertDialog.OnSweetClickListener() {
                 @Override
@@ -220,14 +218,11 @@ public class MainActivity extends BaseActivity
 
                 }
             });
-
         } else if (id == R.id.nav_share) {
             mMainPersenter.Share();
         } else if (id == R.id.nav_send) {
             if (mMainPersenter.isHavedLover()) {
-                Intent intent = new Intent(MainActivity.this, ChatActivity.class);
-                intent.putExtra(EaseConstant.EXTRA_USER_ID, User.getCurrentUser(User.class).getLoverusername());
-                startActivity(intent);
+                toChatActivity();
             } else {
                 toProfileActivity();
                 showToast("老实说，这是个两个人使用的APP");
@@ -265,6 +260,19 @@ public class MainActivity extends BaseActivity
         Intent intent = new Intent(this, ProfileActivity.class);
         startActivityForResult(intent, CHANGE_PROFILE);
 
+    }
+
+    @Override
+    public void toChatActivity() {
+        Intent intent = new Intent(MainActivity.this, ChatActivity.class);
+        intent.putExtra(EaseConstant.EXTRA_USER_ID, User.getCurrentUser(User.class).getLoverusername());
+        startActivity(intent);
+    }
+
+    @Override
+    public void toFeedBackActivity() {
+        FeedbackAgent agent = new FeedbackAgent(MainActivity.this);
+        agent.startDefaultThreadActivity();
     }
 
     @Override

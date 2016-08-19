@@ -22,10 +22,10 @@ public class EaseEmojiconScrollTabBar extends RelativeLayout{
     private HorizontalScrollView scrollView;
     private LinearLayout tabContainer;
     
-    private List<ImageView> tabList = new ArrayList<ImageView>();
+    private final List<ImageView> tabList = new ArrayList<ImageView>();
     private EaseScrollTabBarItemClickListener itemClickListener;
     
-    private int tabWidth = 60;
+    private static final int TAB_WIDTH = 60;
 
     public EaseEmojiconScrollTabBar(Context context) {
         this(context, null);
@@ -56,7 +56,7 @@ public class EaseEmojiconScrollTabBar extends RelativeLayout{
         View tabView = View.inflate(context, R.layout.ease_scroll_tab_item, null);
         ImageView imageView = (ImageView) tabView.findViewById(R.id.iv_icon);
         imageView.setImageResource(icon);
-        LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(DensityUtil.dip2px(context, tabWidth), LayoutParams.MATCH_PARENT);
+        LinearLayout.LayoutParams imgParams = new LinearLayout.LayoutParams(DensityUtil.dip2px(context, TAB_WIDTH), LayoutParams.MATCH_PARENT);
         imageView.setLayoutParams(imgParams);
         tabContainer.addView(tabView);
         tabList.add(imageView);

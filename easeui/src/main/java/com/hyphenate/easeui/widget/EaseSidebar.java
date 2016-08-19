@@ -36,7 +36,7 @@ public class EaseSidebar extends View{
 	private TextView header;
 	private float height;
 	private ListView mListView;
-	private Context context;
+	private final Context context;
 	
 	private SectionIndexer sectionIndexter;
 	private String[] sections;
@@ -130,9 +130,6 @@ public class EaseSidebar extends View{
 			return true;
 		}
 		case MotionEvent.ACTION_UP:
-			header.setVisibility(View.INVISIBLE);
-			setBackgroundColor(Color.TRANSPARENT);
-			return true;
 		case MotionEvent.ACTION_CANCEL:
 			header.setVisibility(View.INVISIBLE);
 			setBackgroundColor(Color.TRANSPARENT);

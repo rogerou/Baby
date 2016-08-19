@@ -165,7 +165,7 @@ public class RecorderVideoActivity extends EaseBaseActivity implements
         List<Integer> supportedPreviewFrameRates = mCamera.getParameters()
                 .getSupportedPreviewFrameRates();
         if (supportedPreviewFrameRates != null
-                && supportedPreviewFrameRates.size() > 0) {
+                && !supportedPreviewFrameRates.isEmpty()) {
             Collections.sort(supportedPreviewFrameRates);
             for (int i = 0; i < supportedPreviewFrameRates.size(); i++) {
                 int supportRate = supportedPreviewFrameRates.get(i);
@@ -184,7 +184,7 @@ public class RecorderVideoActivity extends EaseBaseActivity implements
         }
         // 获取摄像头的所有支持的分辨率
         List<Size> resolutionList = Utils.getResolutionList(mCamera);
-        if (resolutionList != null && resolutionList.size() > 0) {
+        if (resolutionList != null && !resolutionList.isEmpty()) {
             Collections.sort(resolutionList, new Utils.ResolutionComparator());
             Size previewSize = null;
             boolean hasSize = false;

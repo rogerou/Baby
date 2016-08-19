@@ -3,10 +3,11 @@ package com.ozj.baby.mvp.presenter.home.impl;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-import com.avos.avoscloud.AVException;
+import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
 import com.ozj.baby.di.scope.ContextLife;
-import com.ozj.baby.event.AddCommentsEvent;
+import com.ozj.baby.event.CommentsEvent;
+import com.ozj.baby.event.EventConstant;
 import com.ozj.baby.event.IncrementEvent;
 import com.ozj.baby.mvp.model.bean.Comment;
 import com.ozj.baby.mvp.model.bean.Souvenir;
@@ -38,10 +39,11 @@ public class CommentPresenterImpl implements ICommentPresenter {
 
     ICommentView mCommentView;
 
-    Context mContext;
-    RxLeanCloud mRxLeanCloud;
+    final Context mContext;
+    final RxLeanCloud mRxLeanCloud;
+    final RxBus mRxBus;
     Subscription mSubscription;
-    RxBus mRxBus;
+
 
     @Inject
     public CommentPresenterImpl(@ContextLife("Activity") Context context, RxLeanCloud rxLeanCloud, RxBus rxBus) {
@@ -74,11 +76,10 @@ public class CommentPresenterImpl implements ICommentPresenter {
                     @Override
                     public void onNext(List<Comment> comments) {
                         if (page == 0) {
-                            mRxBus.post(new AddCommentsEvent(comments, true, true));
+                            mRxBus.post(new CommentsEvent(null, comments, EventConstant.REFRESH));
                         } else {
-                            mRxBus.post(new AddCommentsEvent(comments, false, true));
+                            mRxBus.post(new CommentsEvent(null, comments, EventConstant.LOADMORE));
                         }
-
                     }
                 });
     }
@@ -119,8 +120,38 @@ public class CommentPresenterImpl implements ICommentPresenter {
                     }
 
                     @Override
-                    public void onNext(Comment comment) {
-                        mRxBus.post(new AddCommentsEvent(comment, true, false));
+                    public void onNext(Comment com) {
+                        mRxBus.post(new CommentsEvent(com, null, EventConstant.ADD));
+                    }
+                });
+    }
+
+    @Override
+    public void deleteComment(final Comment comment) {
+        mRxLeanCloud.delete(comment)
+                .doOnSubscribe(new Action0() {
+                    @Override
+                    public void call() {
+                        mCommentView.showProgress("正在删除评论");
+                    }
+                }).compose(SchedulersCompat.<Boolean>observeOnMainThread())
+                .subscribe(new Subscriber<Boolean>() {
+                    @Override
+                    public void onCompleted() {
+                        mCommentView.showToast("删除成功");
+                        mCommentView.hideProgress();
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        mCommentView.hideProgress();
+                        mCommentView.showToast("删除失败");
+                    }
+
+                    @Override
+                    public void onNext(Boolean aBoolean) {
+                        Logger.e("删除评论" + aBoolean);
+                        mRxBus.post(new CommentsEvent(comment, null, EventConstant.DELETE));
                     }
                 });
     }

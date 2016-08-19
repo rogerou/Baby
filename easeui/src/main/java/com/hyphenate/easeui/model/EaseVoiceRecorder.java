@@ -26,7 +26,7 @@ public class EaseVoiceRecorder {
     private String voiceFilePath;
     private String voiceFileName;
     private File file;
-    private Handler handler;
+    private final Handler handler;
 
     public EaseVoiceRecorder(Handler handler) {
         this.handler = handler;

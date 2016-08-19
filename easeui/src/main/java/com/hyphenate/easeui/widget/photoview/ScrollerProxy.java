@@ -59,7 +59,7 @@ abstract class ScrollerProxy {
 	@TargetApi(9)
 	private static class GingerScroller extends ScrollerProxy {
 
-		private OverScroller mScroller;
+		private final OverScroller mScroller;
 
 		public GingerScroller(Context context) {
 			mScroller = new OverScroller(context);
@@ -94,7 +94,7 @@ abstract class ScrollerProxy {
 
 	private static class PreGingerScroller extends ScrollerProxy {
 
-		private Scroller mScroller;
+		private final Scroller mScroller;
 
 		public PreGingerScroller(Context context) {
 			mScroller = new Scroller(context);

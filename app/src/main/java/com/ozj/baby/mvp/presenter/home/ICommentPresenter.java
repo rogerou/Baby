@@ -13,4 +13,6 @@ public interface ICommentPresenter extends BasePresenter {
 
     void Comment(Comment comment, int position);
 
+    void deleteComment(Comment comment);
+
 }

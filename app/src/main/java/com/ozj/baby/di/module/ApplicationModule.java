@@ -18,16 +18,14 @@ import dagger.Provides;
  */
 @Module
 public class ApplicationModule {
-    private BabyApplication mApplication;
-    private PreferenceManager mPreferenceManager;
-    //    private RxBabyRealm mRxBabyRealm;
-    private RxLeanCloud mRxLeanCloud;
-    private RxBus mRxBus;
+    private final BabyApplication mApplication;
+    private final PreferenceManager mPreferenceManager;
+    private final RxLeanCloud mRxLeanCloud;
+    private final RxBus mRxBus;
 
     public ApplicationModule(BabyApplication application) {
         mApplication = application;
         mPreferenceManager = new PreferenceManager(mApplication.getApplicationContext());
-//        mRxBabyRealm = new RxBabyRealm(mApplication.getApplicationContext());
         mRxLeanCloud = new RxLeanCloud(mApplication.getApplicationContext());
         mRxBus = new RxBus();
     }

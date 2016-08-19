@@ -53,9 +53,9 @@
 ////        return mRealm.where(Souvenir.class).findAllAsync().asObservable();
 ////    }
 ////
-////    public void saveSouvenList(List<Souvenir> list) {
+////    public void saveSouvenList(List<Souvenir> mList) {
 ////        mRealm.beginTransaction();
-////        mRealm.copyToRealmOrUpdate(list);
+////        mRealm.copyToRealmOrUpdate(mList);
 ////        mRealm.commitTransaction();
 ////    }
 //
@@ -82,19 +82,19 @@
 ////        return mRealm.where(Gallery.class).findAll();
 ////    }
 ////
-////    public void saveGalleryList(final List<Gallery> list) {
+////    public void saveGalleryList(final List<Gallery> mList) {
 ////        mRealm.executeTransactionAsync(new Realm.Transaction() {
 ////            @Override
 ////            public void execute(Realm realm) {
-////                realm.copyToRealmOrUpdate(list);
+////                realm.copyToRealmOrUpdate(mList);
 ////            }
 ////        });
 ////
 ////    }
 ////
-////    public void saveGallery(Gallery gallery) {
+////    public void saveGallery(Gallery mGallery) {
 ////        mRealm.beginTransaction();
-////        mRealm.copyToRealmOrUpdate(gallery);
+////        mRealm.copyToRealmOrUpdate(mGallery);
 ////        mRealm.commitTransaction();
 ////
 ////    }

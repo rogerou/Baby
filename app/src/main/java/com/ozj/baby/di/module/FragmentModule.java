@@ -15,7 +15,7 @@ import dagger.Provides;
 @Module
 public class FragmentModule {
 
-    private android.app.Fragment mFragment;
+    private final android.app.Fragment mFragment;
 
     public FragmentModule(android.app.Fragment fragment) {
         this.mFragment = fragment;

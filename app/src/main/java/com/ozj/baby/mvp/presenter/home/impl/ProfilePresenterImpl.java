@@ -43,15 +43,15 @@ import rx.functions.Func1;
  */
 public class ProfilePresenterImpl implements IProfilePresenter {
 
-    private Context mContext;
-    private Activity mActivity;
+    private final Context mContext;
+    private final Activity mActivity;
+    private final RxLeanCloud mRxleanCloud;
+    //    private RxBabyRealm mRxBabyRealm;
+    private final PreferenceManager mPreferenceManager;
     IProfileView mProfileView;
-    private RxLeanCloud mRxleanCloud;
-//    private RxBabyRealm mRxBabyRealm;
-    private PreferenceManager mPreferenceManager;
 
     @Inject
-    public ProfilePresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxLeanCloud rxLeanCloud,  PreferenceManager preferenmanager) {
+    public ProfilePresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxLeanCloud rxLeanCloud, PreferenceManager preferenmanager) {
         mContext = context;
         mActivity = activity;
 //        mRxBabyRealm = rxBabyRealm;

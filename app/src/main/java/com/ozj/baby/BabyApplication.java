@@ -1,6 +1,5 @@
 package com.ozj.baby;
 
-import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
@@ -9,6 +8,7 @@ import com.avos.avoscloud.AVAnalytics;
 import com.avos.avoscloud.AVOSCloud;
 import com.avos.avoscloud.AVObject;
 import com.avos.avoscloud.AVUser;
+import com.avos.avoscloud.PushService;
 import com.hyphenate.easeui.domain.User;
 import com.orhanobut.logger.AndroidLogTool;
 import com.orhanobut.logger.LogLevel;
@@ -19,6 +19,7 @@ import com.ozj.baby.di.module.ApplicationModule;
 import com.ozj.baby.mvp.model.bean.Comment;
 import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.bean.Souvenir;
+import com.ozj.baby.mvp.views.home.activity.MainActivity;
 import com.squareup.leakcanary.LeakCanary;
 
 import im.fir.sdk.FIR;
@@ -35,7 +36,6 @@ public class BabyApplication extends MultiDexApplication {
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
-        
     }
 
     @Override
@@ -57,6 +57,7 @@ public class BabyApplication extends MultiDexApplication {
         Logger.init("Baby").logLevel(LogLevel.FULL).logTool(new AndroidLogTool());
         AVOSCloud.setDebugLogEnabled(false);
         FIR.init(this);
+        PushService.setDefaultPushCallback(this, MainActivity.class);
     }
 
     private void initEaseUI() {

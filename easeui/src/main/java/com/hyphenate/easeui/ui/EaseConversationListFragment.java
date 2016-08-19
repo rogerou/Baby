@@ -218,7 +218,7 @@ public class EaseConversationListFragment extends EaseBaseFragment{
         List<Pair<Long, EMConversation>> sortList = new ArrayList<Pair<Long, EMConversation>>();
         synchronized (conversations) {
             for (EMConversation conversation : conversations.values()) {
-                if (conversation.getAllMessages().size() != 0) {
+                if (!conversation.getAllMessages().isEmpty()) {
                     //if(conversation.getType() != EMConversationType.ChatRoom){
                         sortList.add(new Pair<Long, EMConversation>(conversation.getLastMessage().getMsgTime(), conversation));
                     //}

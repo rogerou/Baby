@@ -25,6 +25,7 @@ import com.ozj.baby.R;
 import com.ozj.baby.mvp.model.bean.Souvenir;
 import com.ozj.baby.mvp.views.home.activity.CommentActivity;
 import com.ozj.baby.mvp.views.home.activity.DetailImageActivity;
+import com.ozj.baby.util.OnItemLongClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,8 +39,9 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
  */
 public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHolder> {
 
-    List<Souvenir> mList;
-    Context mContext;
+    final List<Souvenir> mList;
+    final Context mContext;
+    OnItemLongClickListener mOnItemLongClickListener;
 
     public SouvenirAdapter(@NonNull List<Souvenir> List, Context context) {
         this.mList = List;
@@ -123,6 +125,10 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
 
     }
 
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.mOnItemLongClickListener = listener;
+    }
+
 
     private void isLikeSouvenir(ViewHolder holder, boolean isMine, boolean islike) {
         if (isMine) {
@@ -155,7 +161,7 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
     }
 
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_content)
         TextView tvContent;
         @BindView(R.id.iv_souvenir_pic)
@@ -174,6 +180,13 @@ public class SouvenirAdapter extends RecyclerView.Adapter<SouvenirAdapter.ViewHo
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mOnItemLongClickListener.onLongClick(v, getAdapterPosition());
+                    return true;
+                }
+            });
         }
 
 

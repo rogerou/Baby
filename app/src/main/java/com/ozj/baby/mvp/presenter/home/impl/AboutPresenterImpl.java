@@ -24,7 +24,7 @@ import im.fir.sdk.VersionCheckCallback;
 public class AboutPresenterImpl implements IAboutPresenter {
 
 
-    private Context mContext;
+    private final Context mContext;
     IAboutView mAboutView;
 
     @Inject

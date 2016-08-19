@@ -21,7 +21,7 @@ import java.util.List;
 
 public class EaseExpressionPagerAdapter extends PagerAdapter {
 
-	private List<View> views;
+	private final List<View> views;
 
 	public EaseExpressionPagerAdapter(List<View> views) {
 		this.views = views;

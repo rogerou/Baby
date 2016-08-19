@@ -44,10 +44,10 @@ import rx.schedulers.Schedulers;
 public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
 
     ISplashView mSplashView;
-    private Context mContext;
-    private PreferenceManager mPreferenceManager;
+    private final Context mContext;
+    private final PreferenceManager mPreferenceManager;
 
-    private RxLeanCloud mRxleanCloud;
+    private final RxLeanCloud mRxleanCloud;
     private Handler mHandler;
     private static final int MESSAGE_WHAT = 1;
     AnimatorSet mAnimatorSet;
@@ -178,8 +178,6 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
             return;
         }
         mSplashView.showProgress("登陆中...");
-
-
         mRxleanCloud.Login(username, passwd)
                 .flatMap(new Func1<User, Observable<AVUser>>() {
                     @Override
@@ -191,11 +189,13 @@ public class SplashPresenterImpl implements ISplashPresenter, Handler.Callback {
                         return Observable.zip(mRxleanCloud.SaveInstallationId(), mRxleanCloud.GetUserByUsername(user.getLoverusername()), new Func2<String, AVUser, AVUser>() {
                             @Override
                             public AVUser call(String s, AVUser user) {
+                                Logger.e(s);
                                 User u = User.getCurrentUser(User.class);
                                 u.setInstallationId(s);
                                 if (user != null) {
                                     u.setLoverAvatar(user.getString(UserDao.AVATARURL));
                                     u.setLoverBackGround(user.getString(UserDao.BACKGROUND));
+                                    Logger.e(user.getString(UserDao.INSTALLATIONID));
                                     u.setLoverInstallationId(user.getString(UserDao.INSTALLATIONID));
                                     u.setLoverNick(user.getString(UserDao.NICK));
                                 }

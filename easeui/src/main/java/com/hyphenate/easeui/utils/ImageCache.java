@@ -358,9 +358,8 @@ public class ImageCache {
     private static int getBytesPerPixel(Config config) {
         if (config == Config.ARGB_8888) {
             return 4;
-        } else if (config == Config.RGB_565) {
-            return 2;
-        } else if (config == Config.ARGB_4444) {
+        } else if (config == Config.RGB_565
+                || config == Config.ARGB_4444) {
             return 2;
         } else if (config == Config.ALPHA_8) {
             return 1;

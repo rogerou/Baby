@@ -2,8 +2,14 @@
 # ![](app/src/main/res/mipmap-mdpi/ic_launcher.png)一个恋爱社交APP
 
 这个项目就当是学习一年安卓来的总结和学习的新技术的应用吧。
+(能讨女朋友欢喜)
 
- 
+## version 1.4
+* 1.增加长按删除功能
+* 2.优化Rxbus订阅加载数据
+* 3.外国友人优化的一些细节
+* 4.等等
+
 ## version 1.3
 * 1.增加了评论功能
 * 2.优化了相册加载
@@ -80,7 +86,8 @@
 
 
 ## Thanks
-感谢Github、LeanCloud、环信、还有造那么多轮子给我们用的Square FaceBook Google的大大们。
+* 感谢Github、LeanCloud、环信、还有造那么多轮子给我们用的Square FaceBook Google的大大们。
+* Thanks for improving my code  [m-ezzat](https://github.com/m-ezzat).
 
 ## Contacts
  * Email:379489343zhi@gmail.com

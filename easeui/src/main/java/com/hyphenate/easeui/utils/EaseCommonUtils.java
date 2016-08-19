@@ -33,8 +33,14 @@ import com.hyphenate.util.HanziToPinyin.Token;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EaseCommonUtils {
-	private static final String TAG = "CommonUtils";
+public final class EaseCommonUtils {
+
+    private static final String TAG = "CommonUtils";
+
+    private EaseCommonUtils() throws InstantiationException {
+        throw new InstantiationException("This utility class is not created for instantiation");
+    }
+
 	/**
 	 * 检测网络是否可用
 	 * 
@@ -173,7 +179,7 @@ public class EaseCommonUtils {
                     return DefaultLetter;
                 }
                 ArrayList<Token> l = HanziToPinyin.getInstance().get(name.substring(0, 1));
-                if (l != null && l.size() > 0 && l.get(0).target.length() > 0)
+                if (l != null && !l.isEmpty() && !l.get(0).target.isEmpty())
                 {
                     Token token = l.get(0);
                     String letter = token.target.substring(0, 1).toUpperCase();

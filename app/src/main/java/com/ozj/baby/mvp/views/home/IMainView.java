@@ -11,6 +11,10 @@ public interface IMainView extends BaseView {
 
     void toProfileActivity();
 
+    void toChatActivity();
+
+    void toFeedBackActivity();
+
     void toAddSouvenirActivity();
 
     void showScrollView();

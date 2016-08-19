@@ -9,6 +9,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 
 import com.ozj.baby.R;
+import com.ozj.baby.di.scope.ContextLife;
 
 import javax.inject.Inject;
 
@@ -21,8 +22,8 @@ public class ChoosePicDialog implements View.OnClickListener {
     Button btnPicture;
     Button btnTakephoto;
     Button btnCancel;
-    private Dialog mDialog;
-    Activity mContext;
+    final Dialog mDialog;
+    final Activity mContext;
 
     @Inject
     public ChoosePicDialog(Activity context) {
@@ -77,21 +78,18 @@ public class ChoosePicDialog implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btn_cancel:
-                dismiss();
-                break;
             case R.id.btn_picture:
                 EasyImage.openGallery(mContext, 0);
-                dismiss();
                 break;
             case R.id.btn_takephoto:
                 EasyImage.openCamera(mContext, 0);
-                dismiss();
+
                 break;
+            case R.id.btn_cancel:
             default:
                 break;
         }
-
+        dismiss();
 
     }
 }

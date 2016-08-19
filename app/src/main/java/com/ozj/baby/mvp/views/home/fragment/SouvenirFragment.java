@@ -5,20 +5,24 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.avos.avoscloud.AVAnalytics;
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.R;
 import com.ozj.baby.adapter.SouvenirAdapter;
 import com.ozj.baby.base.BaseFragment;
-import com.ozj.baby.event.AddSouvenirEvent;
+import com.ozj.baby.event.EventConstant;
+import com.ozj.baby.event.SouvenirEvent;
 import com.ozj.baby.event.IncrementEvent;
+import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.bean.Souvenir;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.SouvenirPresenterImpl;
 import com.ozj.baby.mvp.views.home.ISouvenirVIew;
 import com.ozj.baby.mvp.views.home.activity.AddSouvenirActivity;
 import com.ozj.baby.mvp.views.home.activity.ProfileActivity;
+import com.ozj.baby.util.OnItemLongClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,34 +30,31 @@ import java.util.List;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import jp.wasabeef.recyclerview.animators.FadeInUpAnimator;
-import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 
 /**
  * Created by Rogerou on 2016/4/19.
- * 
  */
-public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, SwipeRefreshLayout.OnRefreshListener {
+public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, SwipeRefreshLayout.OnRefreshListener, OnItemLongClickListener {
     @Inject
     SouvenirPresenterImpl mSouvenirPresenterImpl;
     @Inject
     RxBus mRxbus;
-    SouvenirAdapter mAdapter;
     @BindView(R.id.ry_souvenir)
     RecyclerView rySouvenir;
     @BindView(R.id.swipeFreshLayout)
     SwipeRefreshLayout swipeFreshLayout;
     Subscription mSubscription;
     Subscription mIncrement;
-
+    SouvenirAdapter mAdapter;
     int page;
     int size = 15;
     LinearLayoutManager layout;
     List<Souvenir> mList = new ArrayList<>();
-    boolean isFirst;
 
     @Override
     public int getLayoutRes() {
@@ -81,6 +82,8 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
                 }
             }
         });
+
+        mAdapter.setOnItemLongClickListener(this);
     }
 
     public static SouvenirFragment newInsatance() {
@@ -104,50 +107,37 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     @Override
     public void initDagger() {
         mFragmentComponet.inject(this);
-
     }
 
     @Override
     public void initData() {
         mSouvenirPresenterImpl.LoadingDataFromNet(true, size, 0);
-        mSubscription = mRxbus.toObservable(AddSouvenirEvent.class)
+        mSubscription = mRxbus.toObservable(SouvenirEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<AddSouvenirEvent>() {
+                .subscribe(new Action1<SouvenirEvent>() {
                     @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        showToast("出错啦，请稍后再试");
-                        Logger.e(e.getMessage());
-
-                    }
-
-                    @SuppressWarnings("unchecked")
-                    @Override
-                    public void onNext(AddSouvenirEvent addSouvenirEvent) {
-                        if (addSouvenirEvent.isList()) {
-                            if (addSouvenirEvent.isRefresh()) {
+                    public void call(SouvenirEvent souvenirEvent) {
+                        switch (souvenirEvent.mAction) {
+                            case EventConstant.REFRESH:
                                 mList.clear();
-                                mList.addAll(addSouvenirEvent.getMlist());
-                                mAdapter.notifyDataSetChanged();
-                            } else {
-                                for (Souvenir s : addSouvenirEvent.getMlist()) {
-                                    if (!mList.contains(s)) {
-                                        mList.add(s);
-                                        mAdapter.notifyItemInserted(mList.size() - 1);
-                                    }
-                                }
-                            }
-                        } else {
-                            mList.add(0, addSouvenirEvent.getSouvenir());
-                            mAdapter.notifyItemInserted(0);
+                                mList.addAll(souvenirEvent.mlist);
+                                break;
+                            case EventConstant.LOADMORE:
+                                mList.addAll(souvenirEvent.mlist);
+                                break;
+                            case EventConstant.DELETE:
+                                mList.remove(souvenirEvent.mSouvenir);
+                                break;
+                            case EventConstant.ADD:
+                                mList.add(0, souvenirEvent.mSouvenir);
+                                break;
+                            default:
+                                break;
                         }
-
+                        mAdapter.notifyDataSetChanged();
                     }
                 });
+
         mIncrement = mRxbus.toObservable(IncrementEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<IncrementEvent>() {
@@ -223,4 +213,16 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
         mSouvenirPresenterImpl.detachView();
     }
 
+    @Override
+    public void onLongClick(View view, int position) {
+        final Souvenir souvenir = mList.get(position);
+        showWarningDialog("删除", "确定要删除这条Moment吗？", new SweetAlertDialog.OnSweetClickListener() {
+            @Override
+            public void onClick(SweetAlertDialog sweetAlertDialog) {
+                sweetAlertDialog.dismissWithAnimation();
+                mSouvenirPresenterImpl.delete(souvenir);
+            }
+        });
+
+    }
 }

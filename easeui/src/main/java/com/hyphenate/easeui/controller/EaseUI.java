@@ -63,7 +63,7 @@ public final class EaseUI {
     /**
      * 用来记录注册了eventlistener的foreground Activity
      */
-    private List<Activity> activityList = new ArrayList<Activity>();
+    private final List<Activity> activityList = new ArrayList<Activity>();
 
     private EaseEmojiconInfoProvider emojiconInfoProvider;
 
@@ -230,7 +230,7 @@ public final class EaseUI {
     }
 
     public boolean hasForegroundActivies() {
-        return activityList.size() != 0;
+        return !activityList.isEmpty();
     }
 
     /**
