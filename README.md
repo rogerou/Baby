@@ -1,8 +1,11 @@
 # Baby
 # ![](app/src/main/res/mipmap-mdpi/ic_launcher.png)一个恋爱社交APP
 
-这个项目就当是学习一年安卓来的总结和学习的新技术的应用吧。
-(能讨女朋友欢喜)
+Dagger2 MVP Rxjava 入门练手项目。
+
+## version 1.5 
+* 1.bug fix
+* 2.update sth
 
 ## version 1.4
 * 1.增加长按删除功能
