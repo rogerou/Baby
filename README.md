@@ -94,7 +94,7 @@ Dagger2 MVP Rxjava 入门练手项目。
 
 ## Contacts
  * Email:379489343zhi@gmail.com
- * QQ:37948943
+ * QQ:379489343
 
 ## License
 
