@@ -1,11 +1,9 @@
 package com.ozj.baby.mvp.presenter.home.impl;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.orhanobut.logger.Logger;
 import com.ozj.baby.base.BaseView;
-import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.event.CommentsEvent;
 import com.ozj.baby.event.EventConstant;
 import com.ozj.baby.event.IncrementEvent;
@@ -37,17 +35,15 @@ import rx.functions.Func1;
 public class CommentPresenterImpl implements ICommentPresenter {
 
 
-    ICommentView mCommentView;
+    private ICommentView mCommentView;
 
-    final Context mContext;
-    final RxLeanCloud mRxLeanCloud;
-    final RxBus mRxBus;
-    Subscription mSubscription;
+    private final RxLeanCloud mRxLeanCloud;
+    private final RxBus mRxBus;
+    private Subscription mSubscription;
 
 
     @Inject
-    public CommentPresenterImpl(@ContextLife("Activity") Context context, RxLeanCloud rxLeanCloud, RxBus rxBus) {
-        mContext = context;
+    public CommentPresenterImpl(RxLeanCloud rxLeanCloud, RxBus rxBus) {
         mRxLeanCloud = rxLeanCloud;
         mRxBus = rxBus;
     }

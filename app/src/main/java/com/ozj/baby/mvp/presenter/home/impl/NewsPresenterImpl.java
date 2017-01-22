@@ -13,11 +13,10 @@ import java.util.List;
  * Created by Administrator on 2016/4/29.
  */
 public class NewsPresenterImpl implements INewsPresenter {
-    INewsView mNewsView;
+    private INewsView mNewsView;
 
     @Override
-    public List<News> getAllNewss() {
-        
+    public List<News> getAllNews() {
         return null;
         
     }

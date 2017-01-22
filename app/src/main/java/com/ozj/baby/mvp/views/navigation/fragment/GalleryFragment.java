@@ -44,12 +44,12 @@ import rx.functions.Action1;
  * Created by Roger on 2016/4/24.
  */
 public class GalleryFragment extends BaseFragment implements IGalleryView, SwipeRefreshLayout.OnRefreshListener, OnItemClickListener, OnItemLongClickListener {
-    @BindView(R.id.ry_gallgery)
-    RecyclerView ryGallgery;
+    @BindView(R.id.ry_gallery)
+    RecyclerView ryGallery;
     @BindView(R.id.swipeFreshLayout)
     SwipeRefreshLayout swipeFreshLayout;
     @Inject
-    RxBus mRxbus;
+    RxBus mRxBus;
     @Inject
     GalleryPresenterImpl mGalleryPresenter;
     @BindView(R.id.fab)
@@ -69,7 +69,6 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
 
     Subscription mSubscription;
     Subscription mUploadPhoto;
-    boolean isFirst = true;
 
     @Override
     public int getLayoutRes() {
@@ -80,15 +79,15 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
     public void initViews() {
 //        fabProgress.attachListener(this);
         layout = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        ryGallgery.setLayoutManager(layout);
-        ryGallgery.setItemAnimator(new FadeInUpAnimator());
+        ryGallery.setLayoutManager(layout);
+        ryGallery.setItemAnimator(new FadeInUpAnimator());
         swipeFreshLayout.setColorSchemeResources(R.color.colorPrimary);
         swipeFreshLayout.setOnRefreshListener(this);
-        ryGallgery.setNestedScrollingEnabled(false);
+        ryGallery.setNestedScrollingEnabled(false);
         mList = new ArrayList<>();
         mAdapter = new GalleryAdapter(mList, getActivity());
-        ryGallgery.setAdapter(mAdapter);
-        ryGallgery.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        ryGallery.setAdapter(mAdapter);
+        ryGallery.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
@@ -126,7 +125,7 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
     @Override
     public void initData() {
         mGalleryPresenter.fetchDataFromNetwork(true, size, page);
-        mSubscription = mRxbus.toObservable(GalleryEvent.class)
+        mSubscription = mRxBus.toObservable(GalleryEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<GalleryEvent>() {
                     @Override
@@ -151,7 +150,7 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
                         mAdapter.notifyDataSetChanged();
                     }
                 });
-        mUploadPhoto = mRxbus.toObservable(UploadPhotoUri.class)
+        mUploadPhoto = mRxBus.toObservable(UploadPhotoUri.class)
                 .subscribe(new Action1<UploadPhotoUri>() {
                     @Override
                     public void call(UploadPhotoUri uploadPhotoUri) {
@@ -204,7 +203,7 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
     }
 
     @Override
-    public void UpdateCompelte() {
+    public void UpdateComplete() {
         fabProgress.beginFinalAnimation();
     }
 
@@ -251,11 +250,10 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
     }
 
     private int getMaxElem(int[] arr) {
-        int size = arr.length;
         int maxVal = Integer.MIN_VALUE;
-        for (int i = 0; i < size; i++) {
-            if (arr[i] > maxVal)
-                maxVal = arr[i];
+        for (int anArr : arr) {
+            if (anArr > maxVal)
+                maxVal = anArr;
         }
         return maxVal;
     }

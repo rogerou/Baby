@@ -52,7 +52,7 @@ public class MainPresenterImpl implements IMainPresenter {
     private String currentFragmentTag;
 
     @Inject
-    public MainPresenterImpl(@ContextLife("Application") Context context, Activity activity, PreferenceManager preferenceManager, RxLeanCloud rxLeanCloud) {
+    public MainPresenterImpl(@ContextLife() Context context, Activity activity, PreferenceManager preferenceManager, RxLeanCloud rxLeanCloud) {
         mRxLeanCloud = rxLeanCloud;
         mContext = context;
         mActivity = activity;
@@ -95,7 +95,7 @@ public class MainPresenterImpl implements IMainPresenter {
 
     @Override
     public void fabOnclick() {
-        if (isHavedLover()) {
+        if (isHadLover()) {
             mMainView.toAddSouvenirActivity();
         } else {
             mMainView.toProfileActivity();
@@ -104,7 +104,7 @@ public class MainPresenterImpl implements IMainPresenter {
     }
 
     @Override
-    public boolean isHavedLover() {
+    public boolean isHadLover() {
         return !TextUtils.isEmpty(mPreferenceManager.GetLoverID());
     }
 

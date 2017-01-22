@@ -7,7 +7,8 @@ import java.lang.annotation.RetentionPolicy;
 import javax.inject.Qualifier;
 
 /**
- * Created by Administrator on 2016/4/13.
+ * Created by Roger on 2016/4/13.
+ * 控制context的生命周期
  */
 
 @Qualifier

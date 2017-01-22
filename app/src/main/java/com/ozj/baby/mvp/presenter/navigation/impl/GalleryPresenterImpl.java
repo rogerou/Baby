@@ -19,7 +19,7 @@ import com.ozj.baby.event.GalleryEvent;
 import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
-import com.ozj.baby.mvp.presenter.navigation.IGalleryPersenter;
+import com.ozj.baby.mvp.presenter.navigation.IGalleryPresenter;
 import com.ozj.baby.mvp.views.navigation.IGalleryView;
 import com.ozj.baby.util.PreferenceManager;
 import com.ozj.baby.util.SchedulersCompat;
@@ -45,23 +45,23 @@ import rx.schedulers.Schedulers;
 /**
  * Created by YX201603-6 on 2016/4/25.
  */
-public class GalleryPresenterImpl implements IGalleryPersenter {
+public class GalleryPresenterImpl implements IGalleryPresenter {
 
 
-    private final RxLeanCloud mRxleanCloud;
+    private final RxLeanCloud mRxLeanCloud;
 
 
     private final PreferenceManager mPreferenceManager;
-    private final RxBus mRxbus;
+    private final RxBus mRxBus;
     private IGalleryView mGalleryView;
     private final Context mContext;
-    Subscription mFetchAllPicture;
+    private Subscription mFetchAllPicture;
 
     @Inject
     public GalleryPresenterImpl(@ContextLife("Activity") Context context, RxLeanCloud rxLeanCloud, PreferenceManager PreferenceManager, RxBus rxBus) {
-        this.mRxleanCloud = rxLeanCloud;
+        this.mRxLeanCloud = rxLeanCloud;
         mPreferenceManager = PreferenceManager;
-        mRxbus = rxBus;
+        mRxBus = rxBus;
         mContext = context;
         com.orhanobut.logger.Logger.init(this.getClass().getSimpleName());
     }
@@ -70,7 +70,7 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
     @Override
     public void fetchDataFromNetwork(final boolean isFirst, int size, int page) {
         mGalleryView.showRefreshing();
-        mFetchAllPicture = mRxleanCloud.FetchAllPicture(mPreferenceManager.getCurrentUserId(), mPreferenceManager.GetLoverID(), isFirst, size, page)
+        mFetchAllPicture = mRxLeanCloud.FetchAllPicture(mPreferenceManager.getCurrentUserId(), mPreferenceManager.GetLoverID(), isFirst, size, page)
                 .observeOn(Schedulers.io())
                 .map(new Func1<List<Gallery>, List<Gallery>>() {
                     @Override
@@ -100,7 +100,7 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
                     @Override
                     public void onNext(List<Gallery> galleries) {
                         if (!galleries.isEmpty()) {
-                            mRxbus.post(new GalleryEvent(galleries, null, EventConstant.REFRESH));
+                            mRxBus.post(new GalleryEvent(galleries, null, EventConstant.REFRESH));
                         }
                     }
                 });
@@ -117,7 +117,7 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
         } catch (FileNotFoundException | URISyntaxException e) {
             e.printStackTrace();
         }
-        mRxleanCloud.UploadPicture(file)
+        mRxLeanCloud.UploadPicture(file)
                 .observeOn(Schedulers.io())
                 .flatMap(new Func1<String, Observable<Gallery>>() {
                     @Override
@@ -126,25 +126,25 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
                         gallery.setImgUrl(s);
                         gallery.setUser(User.getCurrentUser(User.class));
                         gallery.setAuthorId(mPreferenceManager.getCurrentUserId());
-                        return mRxleanCloud.saveGallery(getHeightAndWidth(uri.toString(), gallery, false));
+                        return mRxLeanCloud.saveGallery(getHeightAndWidth(uri.toString(), gallery, false));
                     }
                 }).observeOn(AndroidSchedulers.mainThread())
                 .flatMap(new Func1<Gallery, Observable<Boolean>>() {
                     @Override
                     public Observable<Boolean> call(Gallery gallery) {
-                        mRxbus.post(new GalleryEvent(null, gallery, EventConstant.ADD));
-                        return mRxleanCloud.PushToLover("Ta上传了一张新的相片", 1);
+                        mRxBus.post(new GalleryEvent(null, gallery, EventConstant.ADD));
+                        return mRxLeanCloud.PushToLover("Ta上传了一张新的相片", 1);
                     }
                 }).subscribe(new Observer<Boolean>() {
             @Override
             public void onCompleted() {
-                mGalleryView.UpdateCompelte();
+                mGalleryView.UpdateComplete();
                 mGalleryView.showSnackBar("上传成功");
             }
 
             @Override
             public void onError(Throwable e) {
-                mGalleryView.UpdateCompelte();
+                mGalleryView.UpdateComplete();
                 mGalleryView.showSnackBar("上传失败，请稍后再试");
                 com.orhanobut.logger.Logger.e(e.getMessage());
             }
@@ -189,7 +189,7 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
 
     @Override
     public void deleteGalley(final Gallery gallery) {
-        mRxleanCloud.delete(gallery)
+        mRxLeanCloud.delete(gallery)
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {
@@ -213,7 +213,7 @@ public class GalleryPresenterImpl implements IGalleryPersenter {
                     @Override
                     public void onNext(Boolean aBoolean) {
                         Logger.e("删除相片" + aBoolean);
-                        mRxbus.post(new GalleryEvent(null, gallery, EventConstant.DELETE));
+                        mRxBus.post(new GalleryEvent(null, gallery, EventConstant.DELETE));
                     }
                 });
 

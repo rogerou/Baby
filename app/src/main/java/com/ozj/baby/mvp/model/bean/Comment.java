@@ -33,11 +33,11 @@ public class Comment extends AVObject implements Cloneable {
     }
 
     public User getReply() {
-        return (User) get(CommentDao.REPLYTO);
+        return (User) get(CommentDao.REPLY_TO);
     }
 
     public void setReply(User replyTo) {
-        put(CommentDao.REPLYTO, replyTo);
+        put(CommentDao.REPLY_TO, replyTo);
     }
 
     public String getComment() {

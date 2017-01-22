@@ -12,7 +12,7 @@ public interface IGalleryView extends BaseView {
 
     void showUpdating();
 
-    void UpdateCompelte();
+    void UpdateComplete();
 
 
     void showPicDialog();

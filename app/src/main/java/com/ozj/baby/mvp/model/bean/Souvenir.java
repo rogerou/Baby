@@ -12,7 +12,7 @@ import com.ozj.baby.mvp.model.dao.SouvenirDao;
 /**
  * Created by Administrator on 2016/4/20.
  */
-@AVClassName(SouvenirDao.TABLENAME)
+@AVClassName(SouvenirDao.TABLE_NAME)
 public class Souvenir extends AVObject implements Parcelable {
     private String Content;
     private String Picture;
@@ -24,11 +24,11 @@ public class Souvenir extends AVObject implements Parcelable {
     private int commentcount;
 
     public int getCommentcount() {
-        return getInt(SouvenirDao.SOUVENIR_COMMENTCOUNT);
+        return getInt(SouvenirDao.SOUVENIR_COMMENT_COUNT);
     }
 
     public void setCommentcount(int commentcount) {
-        put(SouvenirDao.SOUVENIR_COMMENTCOUNT, commentcount);
+        put(SouvenirDao.SOUVENIR_COMMENT_COUNT, commentcount);
     }
 
 
@@ -53,11 +53,11 @@ public class Souvenir extends AVObject implements Parcelable {
 
 
     public String getPicture() {
-        return getString(SouvenirDao.SOUVENIR_PICTUREURL);
+        return getString(SouvenirDao.SOUVENIR_PICTURE_URL);
     }
 
     public void setPicture(String picture) {
-        put(SouvenirDao.SOUVENIR_PICTUREURL, picture);
+        put(SouvenirDao.SOUVENIR_PICTURE_URL, picture);
     }
 
     public User getAuthor() {
@@ -70,28 +70,28 @@ public class Souvenir extends AVObject implements Parcelable {
 
 
     public boolean isLikedOther() {
-        return getBoolean(SouvenirDao.SOUVENIR_ISLIKEOTHER);
+        return getBoolean(SouvenirDao.SOUVENIR_IS_LIKE_OTHER);
     }
 
     public void setLikedOther(boolean likedOther) {
-        put(SouvenirDao.SOUVENIR_ISLIKEOTHER, likedOther);
+        put(SouvenirDao.SOUVENIR_IS_LIKE_OTHER, likedOther);
     }
 
     public boolean isLikedMine() {
-        return getBoolean(SouvenirDao.SOUVENIR_ISLIKEME);
+        return getBoolean(SouvenirDao.SOUVENIR_IS_LIKE_ME);
     }
 
     public void setLikedMine(boolean likedMine) {
-        put(SouvenirDao.SOUVENIR_ISLIKEME, likedMine);
+        put(SouvenirDao.SOUVENIR_IS_LIKE_ME, likedMine);
     }
 
 
     public String getAuthorId() {
-        return getString(SouvenirDao.SOUVENIR_AUTHORID);
+        return getString(SouvenirDao.SOUVENIR_AUTHOR_ID);
     }
 
     public void setAuthorId(String authorId) {
-        put(SouvenirDao.SOUVENIR_AUTHORID, authorId);
+        put(SouvenirDao.SOUVENIR_AUTHOR_ID, authorId);
     }
 
     @Override
@@ -112,11 +112,11 @@ public class Souvenir extends AVObject implements Parcelable {
 
 
     public String getOhterUserId() {
-        return getString(SouvenirDao.SOUVENIR_OTHERUSERID);
+        return getString(SouvenirDao.SOUVENIR_OTHER_USER_ID);
     }
 
     public void setOhterUserId(String ohterUserId) {
-        put(SouvenirDao.SOUVENIR_OTHERUSERID, ohterUserId);
+        put(SouvenirDao.SOUVENIR_OTHER_USER_ID, ohterUserId);
     }
 
 

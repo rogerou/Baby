@@ -29,12 +29,12 @@ public class DetailFragment extends Fragment implements RequestListener<String, 
 
     @BindView(R.id.iv_photo)
     ImageView ivPhoto;
-    private String imgurl;
+    private String mImgUrl;
     private Unbinder unbinder;
 
     public static DetailFragment newInstance(String url) {
         Bundle args = new Bundle();
-        args.putString("imgurl", url);
+        args.putString("mImgUrl", url);
         DetailFragment fragment = new DetailFragment();
         fragment.setArguments(args);
         return fragment;
@@ -45,7 +45,7 @@ public class DetailFragment extends Fragment implements RequestListener<String, 
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            imgurl = getArguments().getString("imgurl");
+            mImgUrl = getArguments().getString("mImgUrl");
         }
     }
 
@@ -53,7 +53,7 @@ public class DetailFragment extends Fragment implements RequestListener<String, 
     @Override
     public void onResume() {
         super.onResume();
-        Glide.with(getActivity()).load(imgurl).diskCacheStrategy(DiskCacheStrategy.ALL).listener(this).into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
+        Glide.with(getActivity()).load(mImgUrl).diskCacheStrategy(DiskCacheStrategy.ALL).listener(this).into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL);
         AVAnalytics.onFragmentStart("DetailFragment");
     }
 

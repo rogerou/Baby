@@ -10,7 +10,7 @@ import java.util.List;
  */
 public interface INewsPresenter extends BasePresenter {
 
-    List<News> getAllNewss();
+    List<News> getAllNews();
     
 
 }

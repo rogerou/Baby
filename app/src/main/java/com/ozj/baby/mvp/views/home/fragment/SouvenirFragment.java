@@ -42,7 +42,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     @Inject
     SouvenirPresenterImpl mSouvenirPresenterImpl;
     @Inject
-    RxBus mRxbus;
+    RxBus mRxBus;
     @BindView(R.id.ry_souvenir)
     RecyclerView rySouvenir;
     @BindView(R.id.swipeFreshLayout)
@@ -85,7 +85,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
         mAdapter.setOnItemLongClickListener(this);
     }
 
-    public static SouvenirFragment newInsatance() {
+    public static SouvenirFragment newInstance() {
         return new SouvenirFragment();
 
     }
@@ -111,7 +111,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
     @Override
     public void initData() {
         mSouvenirPresenterImpl.LoadingDataFromNet(true, size, 0);
-        mSubscription = mRxbus.toObservable(SouvenirEvent.class)
+        mSubscription = mRxBus.toObservable(SouvenirEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<SouvenirEvent>() {
                     @Override
@@ -137,7 +137,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
                     }
                 });
 
-        mIncrement = mRxbus.toObservable(IncrementEvent.class)
+        mIncrement = mRxBus.toObservable(IncrementEvent.class)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<IncrementEvent>() {
                     @Override

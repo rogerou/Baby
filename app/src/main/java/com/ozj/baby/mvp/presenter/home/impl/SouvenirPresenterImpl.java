@@ -18,7 +18,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import rx.Observable;
 import rx.Observer;
 import rx.Subscriber;
 import rx.Subscription;
@@ -29,17 +28,17 @@ import rx.functions.Action0;
  */
 public class SouvenirPresenterImpl implements ISouvenirPresenter {
 
-    private final RxLeanCloud mRxleanCloud;
+    private final RxLeanCloud mRxLeanCloud;
     private final RxBus mRxBus;
-    private final PreferenceManager mPreferencepManager;
-    ISouvenirVIew mSouvenirView;
-    Subscription getAllSouvenir;
+    private final PreferenceManager mPreferenceManager;
+    private ISouvenirVIew mSouvenirView;
+    private Subscription getAllSouvenir;
 
     @Inject
     public SouvenirPresenterImpl(RxLeanCloud rxLeanCloud, PreferenceManager preferenceManager, RxBus rxbus) {
         mRxBus = rxbus;
-        mRxleanCloud = rxLeanCloud;
-        mPreferencepManager = preferenceManager;
+        mRxLeanCloud = rxLeanCloud;
+        mPreferenceManager = preferenceManager;
         Logger.init(this.getClass().getSimpleName());
     }
 
@@ -47,7 +46,7 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
     @Override
     public void LoadingDataFromNet(final boolean isFresh, final int size, final int page) {
         mSouvenirView.showRefreshingLoading();
-        getAllSouvenir = mRxleanCloud.GetALlSouvenirByLeanCloud(mPreferencepManager.getCurrentUserId(), mPreferencepManager.GetLoverID(), size, page)
+        getAllSouvenir = mRxLeanCloud.GetALlSouvenirByLeanCloud(mPreferenceManager.getCurrentUserId(), mPreferenceManager.GetLoverID(), size, page)
 
                 .compose(SchedulersCompat.<List<Souvenir>>applyIoSchedulers())
                 .subscribe(new Observer<List<Souvenir>>() {
@@ -79,7 +78,7 @@ public class SouvenirPresenterImpl implements ISouvenirPresenter {
 
     @Override
     public void delete(final Souvenir souvenir) {
-        mRxleanCloud.delete(souvenir)
+        mRxLeanCloud.delete(souvenir)
                 .doOnSubscribe(new Action0() {
                     @Override
                     public void call() {

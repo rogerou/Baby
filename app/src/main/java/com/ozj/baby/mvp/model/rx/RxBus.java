@@ -10,8 +10,7 @@ import rx.subjects.SerializedSubject;
  * 利用Rxjava实现Eventbus
  */
 public class RxBus {
-    private static volatile RxBus defaultInstance;
-    //主题
+    //Subject是一个可以是订阅者又不是被订阅者的存在
     private final SerializedSubject mSubject;
 
     public RxBus() {

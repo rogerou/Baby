@@ -1,7 +1,5 @@
 package com.ozj.baby.mvp.model.rx;
 
-import android.content.Context;
-
 import com.avos.avoscloud.AVException;
 import com.avos.avoscloud.AVFile;
 import com.avos.avoscloud.AVInstallation;
@@ -21,7 +19,6 @@ import com.hyphenate.easeui.domain.User;
 import com.hyphenate.easeui.domain.UserDao;
 import com.hyphenate.exceptions.HyphenateException;
 import com.orhanobut.logger.Logger;
-import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.mvp.model.bean.Comment;
 import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.bean.Souvenir;
@@ -35,39 +32,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 /**
- * Created by Administrator on 2016/4/20.
+ * Created by Roger on 2016/4/20.
+ * 用Rxjava封装了LeanCloud的Sdk
  */
 public class RxLeanCloud {
-    private static volatile RxLeanCloud mRxLeanCloud;
-    private final Context mContext;
 
-    @Singleton
-    @Inject
-    public RxLeanCloud(@ContextLife("Application") Context context) {
-        mContext = context;
-    }
-
-
-    public RxLeanCloud getInstance(Context context) {
-        if (mRxLeanCloud == null) {
-            synchronized (RxLeanCloud.class) {
-                if (mRxLeanCloud == null) {
-                    mRxLeanCloud = new RxLeanCloud(context);
-
-                }
-            }
-        }
-        return mRxLeanCloud;
-    }
 
     public Observable<Souvenir> SaveSouvenirByLeanCloud(final Souvenir souvenir) {
         return Observable.create(new Observable.OnSubscribe<Souvenir>() {
@@ -137,10 +112,10 @@ public class RxLeanCloud {
             @Override
             public void call(final Subscriber<? super List<Souvenir>> subscriber) {
 
-                AVQuery<Souvenir> query = AVQuery.getQuery(SouvenirDao.TABLENAME);
-                query.whereEqualTo(SouvenirDao.SOUVENIR_AUTHORID, authorId);
-                AVQuery<Souvenir> query1 = AVQuery.getQuery(SouvenirDao.TABLENAME);
-                query1.whereEqualTo(SouvenirDao.SOUVENIR_AUTHORID, loverid);
+                AVQuery<Souvenir> query = AVQuery.getQuery(SouvenirDao.TABLE_NAME);
+                query.whereEqualTo(SouvenirDao.SOUVENIR_AUTHOR_ID, authorId);
+                AVQuery<Souvenir> query1 = AVQuery.getQuery(SouvenirDao.TABLE_NAME);
+                query1.whereEqualTo(SouvenirDao.SOUVENIR_AUTHOR_ID, loverid);
                 List<AVQuery<Souvenir>> queries = new ArrayList<>();
                 queries.add(query);
                 queries.add(query1);
@@ -195,9 +170,9 @@ public class RxLeanCloud {
             @Override
             public void call(final Subscriber<? super List<Gallery>> subscriber) {
                 AVQuery<Gallery> query = AVQuery.getQuery(Gallery.class);
-                query.whereEqualTo(GalleryDao.AUTHORID, authorId);
+                query.whereEqualTo(GalleryDao.AUTHOR_ID, authorId);
                 AVQuery<Gallery> query1 = AVQuery.getQuery(Gallery.class);
-                query1.whereEqualTo(GalleryDao.AUTHORID, theotherone);
+                query1.whereEqualTo(GalleryDao.AUTHOR_ID, theotherone);
                 List<AVQuery<Gallery>> queries = new ArrayList<>();
                 queries.add(query);
                 queries.add(query1);
@@ -264,8 +239,8 @@ public class RxLeanCloud {
                 Logger.e(installationId);
                 map.put(NewsDao.CONTENT, content);
                 map.put(NewsDao.ACTION, "com.ozj.baby.Push");
-                map.put(NewsDao.AVATARURL, User.getCurrentUser(User.class).getAvatar());
-                map.put(NewsDao.INSTALLATIONIID,
+                map.put(NewsDao.AVATAR_URL, User.getCurrentUser(User.class).getAvatar());
+                map.put(NewsDao.INSTALLATIONI_ID,
                         installationId);
                 map.put(NewsDao.TITLE, action == 0 ? "Moment" : "相册");
                 map.put(NewsDao.TIME, System.currentTimeMillis());
@@ -414,7 +389,7 @@ public class RxLeanCloud {
                 query.setLimit(size);
                 query.setSkip(page * size);
                 query.orderByDescending("createdAt");
-                query.include(CommentDao.REPLYTO);
+                query.include(CommentDao.REPLY_TO);
                 query.include(CommentDao.AUTHOR);
                 query.findInBackground(new FindCallback<Comment>() {
                     @Override
@@ -458,7 +433,7 @@ public class RxLeanCloud {
             @Override
             public void call(final Subscriber<? super Integer> subscriber) {
                 souvenir.setFetchWhenSave(true);
-                souvenir.increment(SouvenirDao.SOUVENIR_COMMENTCOUNT);
+                souvenir.increment(SouvenirDao.SOUVENIR_COMMENT_COUNT);
                 souvenir.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(AVException e) {

@@ -131,7 +131,7 @@ public class MainActivity extends BaseActivity
             }
         });
         navView.getMenu().getItem(0).setChecked(true);
-        souvenirFragment = SouvenirFragment.newInsatance();
+        souvenirFragment = SouvenirFragment.newInstance();
         mMainPresenter.replaceFragment(souvenirFragment, "Moment", true);
     }
 
@@ -185,7 +185,7 @@ public class MainActivity extends BaseActivity
         int id = item.getItemId();
         if (id == R.id.nav_moment) {
             if (souvenirFragment == null) {
-                souvenirFragment = SouvenirFragment.newInsatance();
+                souvenirFragment = SouvenirFragment.newInstance();
             }
             isAlbum = true;
             collaspingToolBarlayout.setTitle("Moment");
@@ -211,7 +211,7 @@ public class MainActivity extends BaseActivity
         } else if (id == R.id.nav_share) {
             mMainPresenter.Share();
         } else if (id == R.id.nav_send) {
-            if (mMainPresenter.isHavedLover()) {
+            if (mMainPresenter.isHadLover()) {
                 toChatActivity();
             } else {
                 toProfileActivity();

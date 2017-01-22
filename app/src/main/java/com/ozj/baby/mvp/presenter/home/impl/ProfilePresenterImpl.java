@@ -45,18 +45,18 @@ public class ProfilePresenterImpl implements IProfilePresenter {
 
     private final Context mContext;
     private final Activity mActivity;
-    private final RxLeanCloud mRxleanCloud;
+    private final RxLeanCloud mRxLeanCloud;
     //    private RxBabyRealm mRxBabyRealm;
     private final PreferenceManager mPreferenceManager;
-    IProfileView mProfileView;
+    private IProfileView mProfileView;
 
     @Inject
-    public ProfilePresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxLeanCloud rxLeanCloud, PreferenceManager preferenmanager) {
+    public ProfilePresenterImpl(@ContextLife("Activity") Context context, Activity activity, RxLeanCloud rxLeanCloud, PreferenceManager preferenceManager) {
         mContext = context;
         mActivity = activity;
 //        mRxBabyRealm = rxBabyRealm;
-        mRxleanCloud = rxLeanCloud;
-        mPreferenceManager = preferenmanager;
+        mRxLeanCloud = rxLeanCloud;
+        mPreferenceManager = preferenceManager;
         Logger.init(this.getClass().getSimpleName());
     }
 
@@ -80,7 +80,7 @@ public class ProfilePresenterImpl implements IProfilePresenter {
             avUser.put(UserDao.SEX, sex);
         }
         if (!TextUtils.isEmpty(lover)) {
-            mRxleanCloud.GetUserByUsername(lover).flatMap(new Func1<AVUser, Observable<AVUser>>() {
+            mRxLeanCloud.GetUserByUsername(lover).flatMap(new Func1<AVUser, Observable<AVUser>>() {
                 @Override
                 public Observable<AVUser> call(AVUser user) {
                     avUser.put(UserDao.LOVERUSERNAME, lover);
@@ -91,7 +91,7 @@ public class ProfilePresenterImpl implements IProfilePresenter {
                     avUser.put(UserDao.LOVERAVATAR, user.getString(UserDao.AVATARURL));
                     avUser.put(UserDao.LOVERNICK, user.getString(UserDao.NICK));
                     mPreferenceManager.SaveLoverId(user.getObjectId());
-                    return mRxleanCloud.SaveUserByLeanCloud(avUser);
+                    return mRxLeanCloud.SaveUserByLeanCloud(avUser);
                 }
             }).observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<AVUser>() {
@@ -115,7 +115,7 @@ public class ProfilePresenterImpl implements IProfilePresenter {
                         }
                     });
         } else {
-            mRxleanCloud.SaveUserByLeanCloud(avUser)
+            mRxLeanCloud.SaveUserByLeanCloud(avUser)
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<AVUser>() {
                         @Override
@@ -198,13 +198,13 @@ public class ProfilePresenterImpl implements IProfilePresenter {
         try {
             if (uri != null) {
                 AVFile file = AVFile.withFile(name, new File(new URI(uri.toString())));
-                mRxleanCloud.UploadPicture(file)
+                mRxLeanCloud.UploadPicture(file)
                         .flatMap(new Func1<String, Observable<AVUser>>() {
                             @Override
                             public Observable<AVUser> call(String s) {
                                 AVUser user = AVUser.getCurrentUser();
                                 user.put(UserDao.AVATARURL, s);
-                                return mRxleanCloud.SaveUserByLeanCloud(user);
+                                return mRxLeanCloud.SaveUserByLeanCloud(user);
                             }
                         }).observeOn(AndroidSchedulers.mainThread())
                         .subscribe(new Observer<AVUser>() {

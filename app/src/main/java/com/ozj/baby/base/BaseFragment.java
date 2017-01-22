@@ -8,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ozj.baby.BabyApplicationLike;
 import com.ozj.baby.di.component.DaggerFragmentComponent;
 import com.ozj.baby.di.component.FragmentComponent;
-import com.ozj.baby.di.module.FragmentModule;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -22,7 +20,6 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  */
 public abstract class BaseFragment extends Fragment implements BaseView {
     private BaseActivity mActivity;
-    private View mLayoutView;
     public FragmentComponent mFragmentComponent;
     protected BasePresenter mPresenter;
     private Unbinder unbinder;
@@ -66,8 +63,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         mFragmentComponent = DaggerFragmentComponent
                 .builder()
-                .fragmentModule(new FragmentModule(this))
-                .applicationComponent(BabyApplicationLike.getAppComponent())
+                .activityComponent(getBaseActivity().mActivityComponent)
                 .build();
         initDagger();
         initViews();
@@ -80,9 +76,9 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        mLayoutView = getCreateView(inflater, container);
-        unbinder = ButterKnife.bind(this, mLayoutView);
-        return mLayoutView;
+        View layoutView = getCreateView(inflater, container);
+        unbinder = ButterKnife.bind(this, layoutView);
+        return layoutView;
     }
 
     /**
@@ -159,7 +155,6 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         super.onDestroy();
         if (mPresenter != null) {
             mPresenter.detachView();
-
         }
     }
 }

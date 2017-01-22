@@ -25,7 +25,7 @@ public class AboutPresenterImpl implements IAboutPresenter {
 
 
     private final Context mContext;
-    IAboutView mAboutView;
+    private IAboutView mAboutView;
 
     @Inject
     public AboutPresenterImpl(@ContextLife("Activity") Context context) {

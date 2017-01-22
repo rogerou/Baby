@@ -17,7 +17,7 @@ public interface IMainPresenter extends BasePresenter {
 
     void fabOnclick();
 
-    boolean isHavedLover();
+    boolean isHadLover();
 
     void initData(ImageView avatar, TextView nick, ImageView ivAlbum);
 

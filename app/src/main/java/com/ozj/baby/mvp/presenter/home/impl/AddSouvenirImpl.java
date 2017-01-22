@@ -34,14 +34,14 @@ public class AddSouvenirImpl implements IAddSouvenirPresenter {
 
     private final RxLeanCloud mRxLeanCloud;
     private final PreferenceManager manager;
-    private final RxBus mRxbus;
-    IAddSouvenirView mView;
+    private final RxBus mRxBus;
+    private IAddSouvenirView mView;
 
     @Inject
     public AddSouvenirImpl(RxBus mRxbus, RxLeanCloud rxLeanCloud, PreferenceManager preferenceManager) {
         this.mRxLeanCloud = rxLeanCloud;
         this.manager = preferenceManager;
-        this.mRxbus = mRxbus;
+        this.mRxBus = mRxbus;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class AddSouvenirImpl implements IAddSouvenirPresenter {
                     .flatMap(new Func1<Souvenir, Observable<Boolean>>() {
                         @Override
                         public Observable<Boolean> call(Souvenir souvenir) {
-                            mRxbus.post(new SouvenirEvent(souvenir, null, EventConstant.ADD));
+                            mRxBus.post(new SouvenirEvent(souvenir, null, EventConstant.ADD));
                             return mRxLeanCloud.PushToLover("Ta发布了一个新的Moment", 0);
                         }
                     })

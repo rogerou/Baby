@@ -10,7 +10,8 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Created by Administrator on 2016/4/13.
+ * Created by Roger on 2016/4/13.
+ * 提供Activity和Context
  */
 @Module
 public class ActivityModule {

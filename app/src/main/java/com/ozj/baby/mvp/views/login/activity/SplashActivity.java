@@ -123,7 +123,7 @@ public class SplashActivity extends BaseActivity implements ISplashView {
 
 
     @Override
-    public boolean isLoginViewisShowing() {
+    public boolean isLoginViewShowing() {
 
         return login.getVisibility() == View.VISIBLE;
     }
@@ -182,7 +182,7 @@ public class SplashActivity extends BaseActivity implements ISplashView {
 
     @OnClick(R.id.tv_loginOrRegister)
     public void onClick() {
-        if (!isLoginViewisShowing()) {
+        if (!isLoginViewShowing()) {
             showLoginView();
         } else {
             dismissLoginView();

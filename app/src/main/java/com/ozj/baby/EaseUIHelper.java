@@ -32,7 +32,6 @@ public class EaseUIHelper {
     private EaseUI easeUI;
 
     private final Context mAppContext;
-    private static volatile EaseUIHelper easeUIHelper;
 
 
     public EaseUIHelper(Context context) {
@@ -40,17 +39,6 @@ public class EaseUIHelper {
     }
 
 
-    public static EaseUIHelper getInstance(Context context) {
-        if (easeUIHelper == null) {
-            synchronized (EaseUIHelper.class) {
-                if (easeUIHelper == null) {
-                    easeUIHelper = new EaseUIHelper(context);
-                }
-            }
-        }
-        return easeUIHelper;
-
-    }
 
     public void init() {
         if (EaseUI.getInstance().init(mAppContext, null)) {
@@ -171,7 +159,6 @@ public class EaseUIHelper {
 
                             @Override
                             public void onReceive(Context context, Intent intent) {
-                                // TODO Auto-generated method stub
                                 Toast.makeText(mAppContext, intent.getStringExtra("cmd_value"), Toast.LENGTH_SHORT).show();
                             }
                         };

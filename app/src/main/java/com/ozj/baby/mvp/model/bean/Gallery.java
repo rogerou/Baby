@@ -11,7 +11,7 @@ import com.ozj.baby.mvp.model.dao.GalleryDao;
  * Created by YX201603-6 on 2016/4/25.
  */
 
-@AVClassName(GalleryDao.TABLENAME)
+@AVClassName(GalleryDao.TABLE_NAME)
 public class Gallery extends AVObject implements Parcelable {
     private String imgUrl;
     private String authorId;
@@ -48,11 +48,11 @@ public class Gallery extends AVObject implements Parcelable {
 
 
     public String getImgUrl() {
-        return getString(GalleryDao.IMGURL);
+        return getString(GalleryDao.IMG_URL);
     }
 
     public void setImgUrl(String imgUrl) {
-        put(GalleryDao.IMGURL, imgUrl);
+        put(GalleryDao.IMG_URL, imgUrl);
 
     }
 
@@ -74,10 +74,10 @@ public class Gallery extends AVObject implements Parcelable {
     }
 
     public String getAuthorId() {
-        return getString(GalleryDao.AUTHORID);
+        return getString(GalleryDao.AUTHOR_ID);
     }
 
     public void setAuthorId(String authorId) {
-        put(GalleryDao.AUTHORID, authorId);
+        put(GalleryDao.AUTHOR_ID, authorId);
     }
 }

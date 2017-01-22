@@ -1,7 +1,5 @@
 package com.ozj.baby.mvp.views.login;
 
-import android.support.design.widget.TextInputLayout;
-
 import com.ozj.baby.base.BaseView;
 
 /**
@@ -12,7 +10,7 @@ public interface ISplashView extends BaseView {
     void toMainActivity();
 
 
-    boolean isLoginViewisShowing();
+    boolean isLoginViewShowing();
 
     void showLoginView();
 

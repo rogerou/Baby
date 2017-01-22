@@ -5,41 +5,24 @@ import android.content.SharedPreferences;
 
 import com.ozj.baby.di.scope.ContextLife;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 /**
  * Created by Administrator on 2016/4/13.
  */
 public class PreferenceManager {
-    private static volatile PreferenceManager sInstance;
 
     private static final String SETTING = "babysetting";
     private static final String ID = "ID";
     private static final String FIRST_TIME = "firsttime";
-    private static final String ISLOGIN = "islogin";
+    private static final String IS_LOGIN = "islogin";
     private static final boolean FIRST_TIME_DEFAULT = true;
-    private static final String LOVERID = "loverid";
+    private static final String LOVER_ID = "loverid";
 
     private static SharedPreferences mSharedPreferences;
 
-    @Inject
-    @Singleton
-    public PreferenceManager(@ContextLife("Application") Context context) {
+    public PreferenceManager(@ContextLife() Context context) {
         mSharedPreferences = context.getSharedPreferences(SETTING, Context.MODE_PRIVATE);
-        sInstance = this;
     }
 
-    public static PreferenceManager getsInstance(Context context) {
-        if (sInstance == null) {
-            synchronized (PreferenceManager.class) {
-                if (sInstance == null) {
-                    sInstance = new PreferenceManager(context.getApplicationContext());
-                }
-            }
-        }
-        return sInstance;
-    }
 
     public void saveCurrentUserId(String id) {
         mSharedPreferences.edit().putString(ID, id).apply();
@@ -51,12 +34,12 @@ public class PreferenceManager {
     }
 
     public boolean isLogined() {
-        return mSharedPreferences.getBoolean(ISLOGIN, false);
+        return mSharedPreferences.getBoolean(IS_LOGIN, false);
     }
 
     public void setIslogin(boolean islogin) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putBoolean(ISLOGIN, islogin);
+        editor.putBoolean(IS_LOGIN, islogin);
         editor.apply();
 
     }
@@ -74,12 +57,12 @@ public class PreferenceManager {
 
 
     public String GetLoverID() {
-        return mSharedPreferences.getString(LOVERID, null);
+        return mSharedPreferences.getString(LOVER_ID, null);
     }
 
     public void SaveLoverId(String ID) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(LOVERID, ID);
+        editor.putString(LOVER_ID, ID);
         editor.apply();
     }
 

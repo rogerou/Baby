@@ -8,7 +8,7 @@ import rx.schedulers.Schedulers;
  * Created by Seven on 2016/5/13.
  * <p/>
  * 用Compose来切换线程调度
- * RxjavaScheduler线程与Main线程切换
+ * RxJavaScheduler线程与Main线程切换
  */
 @SuppressWarnings("unchecked")
 public final class SchedulersCompat {
@@ -30,7 +30,7 @@ public final class SchedulersCompat {
         @Override
         public Object call(Object observable) {
             return ((Observable) observable).subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread());
+                    .observeOn(AndroidSchedulers.mainThread(), true);
         }
     };
     private static final Observable.Transformer newTransformer = new Observable.Transformer() {

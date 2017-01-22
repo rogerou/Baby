@@ -8,7 +8,7 @@ import com.ozj.baby.mvp.model.bean.Gallery;
 /**
  * Created by YX201603-6 on 2016/4/25.
  */
-public interface IGalleryPersenter extends BasePresenter {
+public interface IGalleryPresenter extends BasePresenter {
 
     void fetchDataFromNetwork(boolean isFirst, int size, int page);
 

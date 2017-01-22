@@ -14,7 +14,8 @@ import dagger.Module;
 import dagger.Provides;
 
 /**
- * Created by Administrator on 2016/4/13.
+ * Created by Roger on 2016/4/13.
+ * 在Application里边生成的全局对象
  */
 @Module
 public class ApplicationModule {
@@ -26,21 +27,21 @@ public class ApplicationModule {
     public ApplicationModule(Application application) {
         mApplication = application;
         mPreferenceManager = new PreferenceManager(mApplication.getApplicationContext());
-        mRxLeanCloud = new RxLeanCloud(mApplication.getApplicationContext());
+        mRxLeanCloud = new RxLeanCloud();
         mRxBus = new RxBus();
     }
 
     @Provides
     @Singleton
-    @ContextLife("Application")
-    public Context provideConext() {
+    @ContextLife()
+    public Context provideContext() {
         return mApplication.getApplicationContext();
     }
 
 
     @Provides
     @Singleton
-    public PreferenceManager providePreferceManager() {
+    public PreferenceManager providePreferenceManager() {
         return mPreferenceManager;
     }
 

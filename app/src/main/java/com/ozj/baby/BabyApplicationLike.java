@@ -29,6 +29,8 @@ import com.tencent.tinker.loader.shareutil.ShareConstants;
 import com.tinkerpatch.sdk.TinkerPatch;
 import com.tinkerpatch.sdk.tinker.callback.ResultCallBack;
 
+import javax.inject.Inject;
+
 import im.fir.sdk.FIR;
 
 /**
@@ -41,6 +43,9 @@ import im.fir.sdk.FIR;
 )
 public class BabyApplicationLike extends DefaultApplicationLike {
     private static ApplicationComponent mAppComponent;
+
+    @Inject
+    EaseUIHelper mEaseUIHelper;
 
     public BabyApplicationLike(Application application, int i, boolean b, long l, long l1, Intent intent) {
         super(application, i, b, l, l1, intent);
@@ -66,7 +71,7 @@ public class BabyApplicationLike extends DefaultApplicationLike {
                     });
         }
         initThirdService();
-        initEaseUI();
+        mEaseUIHelper.init();
     }
 
     @Override
@@ -83,6 +88,7 @@ public class BabyApplicationLike extends DefaultApplicationLike {
         AVOSCloud.initialize(getApplication(), "GpLTBKYub2ekB1GG2UUDdpmu-gzGzoHsz", "IjkswTLu60dF1rnnAHNoLM98");
         AVAnalytics.enableCrashReport(getApplication(), true);
         initComponent();
+        mAppComponent.inject(this);
         LeakCanary.install(getApplication());
         Logger.init("Baby").logLevel(LogLevel.FULL).logTool(new AndroidLogTool());
         AVOSCloud.setDebugLogEnabled(false);
@@ -90,13 +96,10 @@ public class BabyApplicationLike extends DefaultApplicationLike {
         PushService.setDefaultPushCallback(getApplication(), MainActivity.class);
     }
 
-    private void initEaseUI() {
-        EaseUIHelper.getInstance(getApplication()).init();
-    }
-
 
     private void initComponent() {
-        mAppComponent = DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(getApplication())).build();
+        if (mAppComponent == null)
+            mAppComponent = DaggerApplicationComponent.builder().applicationModule(new ApplicationModule(getApplication())).build();
     }
 
     public static ApplicationComponent getAppComponent() {

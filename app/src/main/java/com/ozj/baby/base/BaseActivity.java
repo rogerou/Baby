@@ -21,8 +21,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
  * BaseAvtivity
  */
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
-    public SweetAlertDialog mProgressdialog;
-    public BasePresenter mIPresenter;
+    public SweetAlertDialog mProgressDialog;
     public ActivityComponent mActivityComponent;
     private Unbinder unbinder;
 
@@ -68,24 +67,24 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void showProgress(String message) {
-        if (mProgressdialog == null) {
-            mProgressdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-            mProgressdialog.getProgressHelper().setBarColor(getResources().getColor(R.color.colorPrimary));
-            mProgressdialog.setCancelable(false);
+        if (mProgressDialog == null) {
+            mProgressDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+            mProgressDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.colorPrimary));
+            mProgressDialog.setCancelable(false);
         }
-        mProgressdialog.setTitleText(message);
-        mProgressdialog.show();
+        mProgressDialog.setTitleText(message);
+        mProgressDialog.show();
 
     }
 
     @Override
     public void showProgress(String message, int progress) {
-        mProgressdialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
-        mProgressdialog.getProgressHelper().setBarColor(getResources().getColor(R.color.colorPrimary));
-        mProgressdialog.setTitleText(message);
-        mProgressdialog.setCancelable(false);
-        mProgressdialog.getProgressHelper().setProgress(progress);
-        mProgressdialog.show();
+        mProgressDialog = new SweetAlertDialog(this, SweetAlertDialog.PROGRESS_TYPE);
+        mProgressDialog.getProgressHelper().setBarColor(getResources().getColor(R.color.colorPrimary));
+        mProgressDialog.setTitleText(message);
+        mProgressDialog.setCancelable(false);
+        mProgressDialog.getProgressHelper().setProgress(progress);
+        mProgressDialog.show();
 
     }
 
@@ -98,8 +97,8 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     @Override
     public void hideProgress() {
-        if (mProgressdialog != null) {
-            mProgressdialog.dismiss();
+        if (mProgressDialog != null) {
+            mProgressDialog.dismiss();
         }
 
     }
