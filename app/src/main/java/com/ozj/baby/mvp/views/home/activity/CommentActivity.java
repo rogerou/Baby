@@ -96,7 +96,7 @@ public class CommentActivity extends BaseActivity implements ICommentView, Swipe
 
     @Override
     public void initDagger() {
-        mActivityComponet.inject(this);
+        mActivityComponent.inject(this);
     }
 
     @Override

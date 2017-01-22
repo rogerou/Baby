@@ -17,7 +17,6 @@ import com.ozj.baby.base.BaseFragment;
 import com.ozj.baby.event.EventConstant;
 import com.ozj.baby.event.GalleryEvent;
 import com.ozj.baby.event.UploadPhotoUri;
-import com.ozj.baby.mvp.model.bean.Comment;
 import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.navigation.impl.GalleryPresenterImpl;
@@ -107,7 +106,7 @@ public class GalleryFragment extends BaseFragment implements IGalleryView, Swipe
 
     @Override
     public void initDagger() {
-        mFragmentComponet.inject(this);
+        mFragmentComponent.inject(this);
 
     }
 

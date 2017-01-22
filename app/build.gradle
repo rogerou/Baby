@@ -35,7 +35,7 @@ android {
     }
 }
 
-
+apply from: 'tinkerpatch.gradle'
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
@@ -65,6 +65,9 @@ dependencies {
     provided 'org.glassfish:javax.annotation:10.0-b28'
     //添加android缺失的部分javax注解
 
+    //tinker
+    provided("com.tencent.tinker:tinker-android-anno:1.7.7")
+    compile("com.tinkerpatch.sdk:tinkerpatch-android-sdk:1.1.1")
     //other
     compile 'com.github.jd-alexander:LikeButton:0.2.0'
     compile 'com.facebook.shimmer:shimmer:0.1.0@aar'
@@ -79,7 +82,7 @@ dependencies {
     compile 'com.android.support:multidex:1.0.1'
 
     compile project(':easeui')
-
+ 
 }
 
 

@@ -15,7 +15,6 @@ import com.ozj.baby.base.BaseFragment;
 import com.ozj.baby.event.EventConstant;
 import com.ozj.baby.event.SouvenirEvent;
 import com.ozj.baby.event.IncrementEvent;
-import com.ozj.baby.mvp.model.bean.Gallery;
 import com.ozj.baby.mvp.model.bean.Souvenir;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.presenter.home.impl.SouvenirPresenterImpl;
@@ -106,7 +105,7 @@ public class SouvenirFragment extends BaseFragment implements ISouvenirVIew, Swi
 
     @Override
     public void initDagger() {
-        mFragmentComponet.inject(this);
+        mFragmentComponent.inject(this);
     }
 
     @Override

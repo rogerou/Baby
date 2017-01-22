@@ -21,7 +21,7 @@ public interface IMainPresenter extends BasePresenter {
 
     void initData(ImageView avatar, TextView nick, ImageView ivAlbum);
 
-    void UploadPicTure(Uri uri);
+    void UploadPic(Uri uri);
 
     void Share();
 

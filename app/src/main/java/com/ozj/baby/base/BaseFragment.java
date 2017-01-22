@@ -8,9 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ozj.baby.BabyApplication;
-import com.ozj.baby.di.component.DaggerFragmentComponet;
-import com.ozj.baby.di.component.FragmentComponet;
+import com.ozj.baby.BabyApplicationLike;
+import com.ozj.baby.di.component.DaggerFragmentComponent;
+import com.ozj.baby.di.component.FragmentComponent;
 import com.ozj.baby.di.module.FragmentModule;
 
 import butterknife.ButterKnife;
@@ -23,7 +23,7 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public abstract class BaseFragment extends Fragment implements BaseView {
     private BaseActivity mActivity;
     private View mLayoutView;
-    public FragmentComponet mFragmentComponet;
+    public FragmentComponent mFragmentComponent;
     protected BasePresenter mPresenter;
     private Unbinder unbinder;
 
@@ -64,12 +64,10 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        mFragmentComponet = DaggerFragmentComponet
+        mFragmentComponent = DaggerFragmentComponent
                 .builder()
                 .fragmentModule(new FragmentModule(this))
-                .applicationComponet(((BabyApplication) getActivity()
-                        .getApplication())
-                        .getAppComponet())
+                .applicationComponent(BabyApplicationLike.getAppComponent())
                 .build();
         initDagger();
         initViews();

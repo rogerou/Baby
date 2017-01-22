@@ -44,12 +44,12 @@ import rx.functions.Func1;
  * Created by Administrator on 2016/4/20.
  */
 public class MainPresenterImpl implements IMainPresenter {
-    IMainView mMainView;
+    private IMainView mMainView;
     private final Context mContext;
     private final Activity mActivity;
     private final PreferenceManager mPreferenceManager;
     private final RxLeanCloud mRxLeanCloud;
-    String currentFragmentTag;
+    private String currentFragmentTag;
 
     @Inject
     public MainPresenterImpl(@ContextLife("Application") Context context, Activity activity, PreferenceManager preferenceManager, RxLeanCloud rxLeanCloud) {
@@ -95,15 +95,12 @@ public class MainPresenterImpl implements IMainPresenter {
 
     @Override
     public void fabOnclick() {
-
         if (isHavedLover()) {
-
             mMainView.toAddSouvenirActivity();
         } else {
             mMainView.toProfileActivity();
             mMainView.showToast("请先设置另一半才能发日记哦");
         }
-
     }
 
     @Override
@@ -129,7 +126,7 @@ public class MainPresenterImpl implements IMainPresenter {
     }
 
     @Override
-    public void UploadPicTure(Uri uri) {
+    public void UploadPic(Uri uri) {
         mMainView.showProgress("上传中...");
         try {
             AVFile file = AVFile.withFile(mPreferenceManager.getCurrentUserId(), new File(new URI(uri.toString())));
@@ -157,7 +154,6 @@ public class MainPresenterImpl implements IMainPresenter {
                         @Override
                         public void onNext(AVUser user) {
                             mMainView.showToast("保存成功");
-
                         }
                     });
         } catch (FileNotFoundException | URISyntaxException e) {

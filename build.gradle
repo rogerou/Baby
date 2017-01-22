@@ -5,10 +5,10 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.2'
+        classpath 'com.android.tools.build:gradle:2.2.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.jakewharton:butterknife-gradle-plugin:8.2.1'
-//        classpath "io.realm:realm-gradle-plugin:0.89.1"
+        classpath "com.tinkerpatch.sdk:tinkerpatch-gradle-plugin:1.1.1"
     }
 }
 
@@ -20,8 +20,8 @@ ext {
             compileVersion   : 24,
             minSdk           : 16,
             targetSdk        : 22,
-            version_code     : 20160819,
-            version_name     : "1.5",
+            version_code     : 20170122,
+            version_name     : "1.6.0",
     ]
 
 }

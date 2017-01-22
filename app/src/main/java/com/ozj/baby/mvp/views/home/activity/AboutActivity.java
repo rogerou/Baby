@@ -41,7 +41,7 @@ public class AboutActivity extends BaseActivity implements IAboutView {
 
     @Override
     public void initDagger() {
-        mActivityComponet.inject(this);
+        mActivityComponent.inject(this);
     }
 
     @Override

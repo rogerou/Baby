@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,11 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.avos.avoscloud.AVUser;
-import com.avos.avoscloud.PushService;
 import com.avos.avoscloud.feedback.FeedbackAgent;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -54,11 +51,9 @@ import pl.aprilapps.easyphotopicker.EasyImage;
 public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener, IMainView {
     @Inject
-    MainPresenterImpl mMainPersenter;
+    MainPresenterImpl mMainPresenter;
     @BindView(R.id.iv_album)
     ImageView ivAlbum;
-    @BindView(R.id.rl_loverbackground)
-    RelativeLayout rlLoverbackground;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
     @BindView(R.id.collaspingToolBarlayout)
@@ -76,8 +71,6 @@ public class MainActivity extends BaseActivity
     @Inject
     RxBus mRxbus;
 
-    @BindView(R.id.coordinatorlayout)
-    CoordinatorLayout coordinatorlayout;
 
     ImageView iv_avatar;
     TextView tv_nick;
@@ -101,22 +94,19 @@ public class MainActivity extends BaseActivity
 
     @Override
     protected void initData() {
-        mMainPersenter.initData(iv_avatar, tv_nick, ivAlbum);
-
-
+        mMainPresenter.initData(iv_avatar, tv_nick, ivAlbum);
     }
 
     @Override
     public void initDagger() {
-        mActivityComponet.inject(this);
+        mActivityComponent.inject(this);
     }
 
     @Override
     public void initContentView() {
         setContentView(R.layout.activity_main);
-     
         if (getIntent().getBooleanExtra(EaseConstant.ACCOUNT_CONFLICT, false) && !isConflictDialogShow) {
-            ConflictAngRestart();
+            ConflictAndRestart();
         }
     }
 
@@ -142,12 +132,12 @@ public class MainActivity extends BaseActivity
         });
         navView.getMenu().getItem(0).setChecked(true);
         souvenirFragment = SouvenirFragment.newInsatance();
-        mMainPersenter.replaceFragment(souvenirFragment, "Moment", true);
+        mMainPresenter.replaceFragment(souvenirFragment, "Moment", true);
     }
 
     @Override
     public void initPresenter() {
-        mMainPersenter.attachView(this);
+        mMainPresenter.attachView(this);
     }
 
     @Override
@@ -199,14 +189,14 @@ public class MainActivity extends BaseActivity
             }
             isAlbum = true;
             collaspingToolBarlayout.setTitle("Moment");
-            mMainPersenter.replaceFragment(souvenirFragment, "Moment", true);
+            mMainPresenter.replaceFragment(souvenirFragment, "Moment", true);
         } else if (id == R.id.nav_gallery) {
             if (galleryFragment == null) {
                 galleryFragment = GalleryFragment.newInstance();
             }
             isAlbum = false;
             collaspingToolBarlayout.setTitle("相册");
-            mMainPersenter.replaceFragment(galleryFragment, "Gallery", false);
+            mMainPresenter.replaceFragment(galleryFragment, "Gallery", false);
         } else if (id == R.id.nav_manage) {
             toFeedBackActivity();
         } else if (id == R.id.nav_logout) {
@@ -214,14 +204,14 @@ public class MainActivity extends BaseActivity
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
                     sweetAlertDialog.dismissWithAnimation();
-                    mMainPersenter.Logout();
+                    mMainPresenter.Logout();
 
                 }
             });
         } else if (id == R.id.nav_share) {
-            mMainPersenter.Share();
+            mMainPresenter.Share();
         } else if (id == R.id.nav_send) {
-            if (mMainPersenter.isHavedLover()) {
+            if (mMainPresenter.isHavedLover()) {
                 toChatActivity();
             } else {
                 toProfileActivity();
@@ -241,7 +231,7 @@ public class MainActivity extends BaseActivity
                 showPicDialog();
                 break;
             case R.id.fab:
-                mMainPersenter.fabOnclick();
+                mMainPresenter.fabOnclick();
                 break;
             default:
                 break;
@@ -292,7 +282,7 @@ public class MainActivity extends BaseActivity
     }
 
     @Override
-    public void ConflictAngRestart() {
+    public void ConflictAndRestart() {
         /**
          * 显示帐号在别处登录dialog
          */
@@ -303,7 +293,7 @@ public class MainActivity extends BaseActivity
             showErrorDialog(st, getString(R.string.connect_conflict), new SweetAlertDialog.OnSweetClickListener() {
                 @Override
                 public void onClick(SweetAlertDialog sweetAlertDialog) {
-                    mMainPersenter.Logout();
+                    mMainPresenter.Logout();
                     sweetAlertDialog.dismissWithAnimation();
                 }
             });
@@ -358,7 +348,7 @@ public class MainActivity extends BaseActivity
             mRxbus.post(new UploadPhotoUri(0, UCrop.getOutput(data)));
         } else if (resultCode == RESULT_OK && requestCode == ALBUM_PHOTO) {
             Glide.with(MainActivity.this).load(UCrop.getOutput(data)).crossFade().fitCenter().diskCacheStrategy(DiskCacheStrategy.ALL).into(ivAlbum);
-            mMainPersenter.UploadPicTure(UCrop.getOutput(data));
+            mMainPresenter.UploadPic(UCrop.getOutput(data));
         } else if (resultCode == UCrop.RESULT_ERROR) {
             //noinspection ConstantConditions
             Logger.e(UCrop.getError(data).getMessage());
@@ -370,7 +360,7 @@ public class MainActivity extends BaseActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mMainPersenter.detachView();
+        mMainPresenter.detachView();
     }
 }
 

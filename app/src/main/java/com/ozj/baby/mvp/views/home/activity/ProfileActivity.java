@@ -57,7 +57,7 @@ public class ProfileActivity extends BaseActivity implements IProfileView {
 
     @Override
     public void initDagger() {
-        mActivityComponet.inject(this);
+        mActivityComponent.inject(this);
     }
 
     @Override

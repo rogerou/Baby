@@ -6,10 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.avos.avoscloud.AVAnalytics;
-import com.ozj.baby.BabyApplication;
+import com.ozj.baby.BabyApplicationLike;
 import com.ozj.baby.R;
-import com.ozj.baby.di.component.ActivityComponet;
-import com.ozj.baby.di.component.DaggerActivityComponet;
+import com.ozj.baby.di.component.ActivityComponent;
+import com.ozj.baby.di.component.DaggerActivityComponent;
 import com.ozj.baby.di.module.ActivityModule;
 
 import butterknife.ButterKnife;
@@ -23,13 +23,13 @@ import cn.pedant.SweetAlert.SweetAlertDialog;
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
     public SweetAlertDialog mProgressdialog;
     public BasePresenter mIPresenter;
-    public ActivityComponet mActivityComponet;
+    public ActivityComponent mActivityComponent;
     private Unbinder unbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mActivityComponet = DaggerActivityComponet.builder().activityModule(new ActivityModule(this)).applicationComponet(((BabyApplication) getApplication()).getAppComponet()).build();
+        mActivityComponent = DaggerActivityComponent.builder().activityModule(new ActivityModule(this)).applicationComponent(BabyApplicationLike.getAppComponent()).build();
         initContentView();
         unbinder = ButterKnife.bind(this);
         initDagger();

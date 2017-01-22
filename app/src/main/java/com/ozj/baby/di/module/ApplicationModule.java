@@ -1,8 +1,8 @@
 package com.ozj.baby.di.module;
 
+import android.app.Application;
 import android.content.Context;
 
-import com.ozj.baby.BabyApplication;
 import com.ozj.baby.di.scope.ContextLife;
 import com.ozj.baby.mvp.model.rx.RxBus;
 import com.ozj.baby.mvp.model.rx.RxLeanCloud;
@@ -18,12 +18,12 @@ import dagger.Provides;
  */
 @Module
 public class ApplicationModule {
-    private final BabyApplication mApplication;
+    private final Application mApplication;
     private final PreferenceManager mPreferenceManager;
     private final RxLeanCloud mRxLeanCloud;
     private final RxBus mRxBus;
 
-    public ApplicationModule(BabyApplication application) {
+    public ApplicationModule(Application application) {
         mApplication = application;
         mPreferenceManager = new PreferenceManager(mApplication.getApplicationContext());
         mRxLeanCloud = new RxLeanCloud(mApplication.getApplicationContext());

@@ -55,7 +55,7 @@ public class AddSouvenirActivity extends BaseActivity implements Toolbar.OnMenuI
 
     @Override
     public void initDagger() {
-        mActivityComponet.inject(this);
+        mActivityComponent.inject(this);
 
     }
 
