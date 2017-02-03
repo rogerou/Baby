@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 24
+    compileSdkVersion 25
     buildToolsVersion "23.0.3"
 
     defaultConfig {
@@ -22,7 +22,7 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.android.support:support-v4:25.1.0'
     compile 'jp.wasabeef:glide-transformations:2.0.0'
     compile 'com.jaeger.statusbaruitl:library:1.0.0'
     compile 'com.yqritc:recyclerview-flexibledivider:1.2.9'

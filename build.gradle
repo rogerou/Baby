@@ -7,7 +7,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.2.3'
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-        classpath 'com.jakewharton:butterknife-gradle-plugin:8.2.1'
+        classpath 'com.jakewharton:butterknife-gradle-plugin:8.5.1'
         classpath "com.tinkerpatch.sdk:tinkerpatch-gradle-plugin:1.1.1"
     }
 }
@@ -17,10 +17,10 @@ ext {
     configuration = [
             package          : "com.ozj.baby",
             buildToolsVersion: "23.0.2",
-            compileVersion   : 24,
+            compileVersion   : 25,
             minSdk           : 16,
             targetSdk        : 22,
-            version_code     : 20170122,
+            version_code     : 20170203,
             version_name     : "1.6.0",
     ]
 

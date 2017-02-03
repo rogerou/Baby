@@ -11,7 +11,7 @@ def variantName = "debug"
  */
 tinkerpatchSupport {
     /** 可以在debug的时候关闭 tinkerPatch **/
-    tinkerEnable = true
+    tinkerEnable = false
     reflectApplication = false
 
     autoBackupApkPath = "${bakPath}"
