@@ -1,7 +1,14 @@
+
+
 # Baby
 # ![](app/src/main/res/mipmap-mdpi/ic_launcher.png)一个恋爱社交APP
 
 Dagger2 MVP Rxjava 入门练手项目。
+
+## version 1.6
+* 1.加入[Tinker] (https://github.com/Tencent/tinker) 热修复
+* 2.更新部分依赖
+* 3.修复大量细节问题，加入部分注释
 
 ## version 1.5 
 * 1.bug fix
